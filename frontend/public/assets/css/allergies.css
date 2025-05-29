@@ -1,0 +1,255 @@
+/* Global Styles */
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: 'Poppins', sans-serif; /* Modern Font */
+    background: linear-gradient(to bottom, #f8f9fa, #e3e6ea);
+}
+
+main {
+    flex: 1;
+}
+/* 3D Header */
+.header-3d {
+    background: #fff;
+    padding: 15px 0;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* 3D shadow effect */
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    padding-right: 50px; /* Moves buttons more to the right */
+}
+
+.logo {
+    width: 100px;
+    margin-left: 50px; /* Moves logo towards right */
+}
+
+/* Header Navigation Buttons with Frames */
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 12px 25px;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.3);
+    display: inline-block;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+nav ul li a:hover {
+    transform: translateY(-5px); /* Pop-out effect */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Centered 3D Title */
+.section-title {
+    text-align: center;
+    font-size: 38px;
+    font-weight: bold;
+    color: black;
+    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.4); /* Enhanced 3D Effect */
+    margin-top: 40px;
+}
+
+/* 3D Title */
+.section-title {
+    font-size: 42px;
+    font-weight: bold;
+    text-align: left;
+    color: #222;
+    text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4); /* Stronger 3D effect */
+    margin-bottom: 20px;
+}
+
+/* Allergies Section */
+#allergies-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 60px 5%;
+    gap: 50px;
+}
+
+/* Left: Slideshow Container (Aligned to Left) */
+.slideshow-container {
+    width: 50%;
+    max-width: 1000px;
+    height: 450px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.4);
+    margin-left: 0; /* Moves it towards the left of the screen */
+}
+
+.slide {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+/* Right: Text Section (No Frame, Just Clean Layout) */
+.allergy-description {
+    width: 50%;
+    text-align: left;
+    font-size: 20px;
+    color: #333;
+    font-weight: 500;
+    line-height: 1.6;
+}
+
+/* 3D Consult Now Button */
+.consult-now-button {
+    display: inline-block;
+    background: #007bff;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 15px 40px;
+    border-radius: 30px;
+    text-decoration: none;
+    margin-top: 20px;
+    box-shadow: 0 6px 0 #0056b3, 0 10px 20px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover Effect - Pops Out */
+.consult-now-button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 0 #0056b3, 0 15px 25px rgba(0, 0, 0, 0.4);
+}
+/* Section 7-9: Footer-like Final Section */
+#section-7-9 {
+    background: #2c2c2c; /* Darkish Gray */
+    color: gray; /* Default Text Color */
+    padding: 50px 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* Left Side: Logo & Social Media */
+.footer-left {
+    text-align: left;
+    max-width: 300px;
+}
+
+.footer-logo {
+    width: 120px; /* Adjust logo size */
+    margin-bottom: 10px;
+}
+
+.clinic-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.social-icons {
+    display: flex;
+    gap: 10px;
+}
+
+.social-icons img {
+    width: 30px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.social-icons img:hover {
+    transform: scale(1.1);
+}
+
+/* Essential Links, Legal, and Contact Us */
+.footer-links, .footer-center, .footer-right {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    flex: 1;
+    padding: 10px;
+}
+
+/* Titles in White */
+.footer-links h3, 
+.footer-center h3, 
+.footer-right h3 {
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 10px;
+}
+
+/* Footer Links */
+.footer-links a, .footer-center a {
+    color: gray;
+    text-decoration: none;
+    margin-top: 5px;
+    transition: color 0.3s;
+}
+
+.footer-links a:hover, .footer-center a:hover {
+    color: white;
+}
+
+/* Contact Us Section */
+.footer-right {
+    text-align: right;
+    max-width: 300px;
+}
+
+.footer-right p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: gray;
+}
+
+/* Ensuring Legal Section is Centered */
+.footer-center {
+    text-align: center;
+}
+/* Footer Styling */
+#footer {
+    background: #1e1e1e; /* Slightly lighter dark gray than Section 7 */
+    color: #ccc; /* Light gray text for contrast */
+    text-align: center;
+    padding: 15px 0;
+    font-size: 14px;
+}
+
+#footer p {
+    margin: 0;
+}

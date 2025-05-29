@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Login</title>
+  <style>
+    :root {
+      --blue: #0077cc;
+      --blue-dark: #005fa3;
+      --light-bg: #f0f4f8;
+      --light-container-bg: #ffffff;
+      --light-text: #333;
+      --dark-bg: #121212;
+      --dark-container-bg: #1f1f1f;
+      --dark-text: #ddd;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--light-bg);
+      color: var(--light-text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      transition: background 0.3s, color 0.3s;
+      position: relative;
+    }
+
+    body.dark {
+      background: var(--dark-bg);
+      color: var(--dark-text);
+    }
+
+    .login-box {
+      background: var(--light-container-bg);
+      padding: 50px 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(0, 119, 204, 0.2), 0 4px 16px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      transition: background 0.3s, box-shadow 0.3s;
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    body.dark .login-box {
+      background: var(--dark-container-bg);
+      box-shadow: 0 8px 24px rgba(0, 119, 204, 0.8), 0 4px 16px rgba(0, 0, 0, 0.6);
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 28px;
+      margin-bottom: 30px;
+      font-weight: 600;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 95%;
+      padding: 12px;
+      margin: 10px 0 20px;
+      font-size: 16px;
+      border: 2px solid #ccc;
+      border-radius: 12px;
+      background: rgba(0, 119, 204, 0.07);
+      transition: background 0.3s, border-color 0.3s, color 0.3s;
+    }
+
+    body.dark input {
+      background: rgba(255, 255, 255, 0.05);
+      color: #f1f1f1;
+      border-color: #555;
+    }
+
+    input:focus {
+      border-color: var(--blue);
+      outline: none;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 40px;
+      border: 2px solid var(--blue);
+      background: transparent;
+      color: var(--blue-dark);
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s;
+    }
+
+    button[type="submit"]:hover {
+      background: var(--blue);
+      color: #fff;
+      border-color: var(--blue-dark);
+      box-shadow: 0 6px 16px rgba(0, 119, 204, 0.5);
+    }
+
+    body.dark button[type="submit"] {
+      color: rgba(0, 119, 204, 0.6);
+      border-color: rgba(0, 119, 204, 0.6);
+    }
+
+    body.dark button[type="submit"]:hover {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .flash {
+      color: #e63946;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .loading-gif {
+      display: none;
+      width: 20px;
+      height: 20px;
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+
+    #forgotForm a {
+      display: block;
+      margin-top: 12px;
+      font-size: 14px;
+      text-align: center;
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    #forgotForm a:hover {
+      text-decoration: underline;
+    }
+
+    #dark-mode-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(0, 119, 204, 0.15);
+      border: 2px solid var(--blue);
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--blue-dark);
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    #dark-mode-toggle:hover {
+      background: var(--blue);
+      color: #fff;
+      box-shadow: 0 6px 16px rgba(0, 119, 204, 0.4);
+    }
+
+    body.dark #dark-mode-toggle {
+      background: rgba(0, 119, 204, 0.35);
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <button id="dark-mode-toggle" title="Toggle dark mode">🌓</button>
+
+  <div class="login-box">
+    <h2>Admin Login</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <p class="flash">{{ message }}</p>
+      {% endfor %}
+    {% endwith %}
+
+    <!-- Login Form -->
+    <form method="POST" onsubmit="return showLoading()">
+      <input type="email" name="email" id="email" placeholder="Email" required />
+      <input type="password" name="password" id="password" placeholder="Password" required />
+      <button type="submit" id="loginBtn">
+        Login
+        <img
+          id="loadingGif"
+          class="loading-gif"
+          src="/assets/images/Eclipse@1x-1.0s-200px-200px.gif"
+          alt="Loading..."
+        />
+      </button>
+    </form>
+
+    <!-- Forgot Password Form -->
+    <form method="POST" action="/admin/forgot-password" id="forgotForm">
+      <a href="#" onclick="return submitForgot()">Forgot password?</a>
+      <div id="forgotLoading" style="display: none; text-align: center; margin-top: 10px;">
+        <img
+          id="forgotLoadingGif"
+          src="/assets/images/Eclipse@1x-1.0s-200px-200px.gif"
+          alt="Sending..."
+          style="width: 24px; height: 24px;"
+        />
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // Toggle dark mode
+    document.getElementById("dark-mode-toggle").addEventListener("click", () => {
+      document.body.classList.toggle("dark");
+      if (document.body.classList.contains("dark")) {
+        localStorage.setItem("darkMode", "enabled");
+      } else {
+        localStorage.setItem("darkMode", "disabled");
+      }
+    });
+
+    // Load dark mode from localStorage
+    window.onload = () => {
+      if (localStorage.getItem("darkMode") === "enabled") {
+        document.body.classList.add("dark");
+      }
+    };
+
+    function showLoading() {
+      const gif = document.getElementById("loadingGif");
+      const loginBtn = document.getElementById("loginBtn");
+      if (gif) gif.style.display = "inline-block";
+      if (loginBtn) loginBtn.disabled = true;
+      return true;
+    }
+
+    function submitForgot() {
+      const forgotGif = document.getElementById("forgotLoadingGif");
+      if (forgotGif) forgotGif.style.display = "inline-block";
+
+      const forgotLink = document.querySelector("#forgotForm a");
+      if (forgotLink) {
+        forgotLink.style.pointerEvents = "none";
+        forgotLink.style.opacity = "0.6";
+      }
+
+      document.getElementById("forgotForm").submit();
+      return false;
+    }
+  </script>
+</body>
+</html>

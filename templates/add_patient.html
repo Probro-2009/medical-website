@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Patient</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #e3f2fd, #ffffff);
+      padding: 40px;
+      color: #333;
+    }
+
+    .form-container {
+      background: #fff;
+      border-radius: 12px;
+      padding: 30px;
+      max-width: 900px;
+      margin: auto;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      border: 1px solid #ddd;
+      position: relative;
+    }
+
+    h1,
+    h3 {
+      text-align: center;
+      color: #0077cc;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 500;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-top: 5px;
+      font-size: 14px;
+    }
+
+    .row {
+      display: flex;
+      gap: 20px;
+    }
+
+    .row > div {
+      flex: 1;
+    }
+
+    #registerBtn {
+      background-color: #0077cc;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 8px;
+      margin-top: 30px;
+      cursor: pointer;
+      display: block;
+      width: 100%;
+    }
+
+    #registerBtn:hover {
+      background-color: #005fa3;
+    }
+
+    #signaturePreview {
+      margin-top: 10px;
+      max-width: 200px;
+      max-height: 100px;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h1>Dr. Dhanashree Chitre's Homeopathic and Cosmetic Clinic</h1>
+    <h3>Consultation Form</h3>
+    <form id="patientForm">
+      <label>Name:</label>
+      <input type="text" id="name" required />
+
+      <div class="row">
+        <div>
+          <label>Age:</label>
+          <input type="number" id="age" min="0" max="100" required />
+        </div>
+        <div>
+          <label>Date of Birth:</label>
+          <input type="date" id="dob" required />
+        </div>
+        <div>
+          <label>Marital Status:</label>
+          <select id="maritalStatus" required>
+            <option>Single</option>
+            <option>Married</option>
+            <option>Divorced</option>
+            <option>Widowed</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>Sex:</label>
+          <select id="sex" required>
+            <option>M</option>
+            <option>F</option>
+            <option>T</option>
+          </select>
+        </div>
+        <div>
+          <label>Mobile No.:</label>
+          <input type="tel" id="mobile" required />
+        </div>
+      </div>
+
+      <label>Occupation:</label>
+      <input type="text" id="occupation" />
+
+      <label>Address:</label>
+      <textarea id="address" rows="2"></textarea>
+
+      <label>E-Mail:</label>
+      <input type="email" id="email" />
+
+      <label>Referred By:</label>
+      <input type="text" id="referredBy" />
+
+      <label>Chief Complaints:</label>
+      <textarea id="chiefComplaints" rows="3"></textarea>
+
+      <label>Past History:</label>
+      <textarea id="pastHistory" rows="2"></textarea>
+
+      <label>Personal History:</label>
+      <textarea id="personalHistory" rows="2"></textarea>
+
+      <label>Family History:</label>
+      <textarea id="familyHistory" rows="2"></textarea>
+
+      <h3>Examination</h3>
+      <label>General:</label>
+      <textarea id="examGeneral" rows="2"></textarea>
+
+      <label>Local:</label>
+      <textarea id="examLocal" rows="2"></textarea>
+
+      <label>Investigation:</label>
+      <textarea id="investigation" rows="2"></textarea>
+
+      <label>Diagnosis:</label>
+      <textarea id="diagnosis" rows="2"></textarea>
+
+      <label>Treatment:</label>
+      <textarea id="treatment" rows="2"></textarea>
+
+      <label>Consent:</label>
+      <p>
+        All information given by me is true to my knowledge. The procedure has been explained to me & I am ready to undergo treatment at my own risk. Result may vary from patient to patient. Please note there is no facility to refund.
+      </p>
+
+      <label>Relation with patient:</label>
+      <input type="text" id="relation" />
+
+      <label>Witness:</label>
+      <input type="text" id="witness" />
+
+      <label>Signature Upload (.jpg only):</label>
+      <input type="file" id="signatureUpload" accept="image/jpeg" />
+      <img id="signaturePreview" src="" alt="Signature Preview" />
+
+      <button type="button" id="registerBtn">Register as Patient</button>
+    </form>
+  </div>
+
+  <script>
+    let signatureImage = null;
+
+    document.getElementById("signatureUpload").addEventListener("change", function (e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (evt) {
+          signatureImage = evt.target.result;
+          document.getElementById("signaturePreview").src = signatureImage;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    document.getElementById("registerBtn").addEventListener("click", async function () {
+  const name = document.getElementById("name").value.trim();
+  if (!name) {
+    alert("Please enter a name.");
+    return;
+  }
+
+  const patientData = {
+    name: name,
+    age: document.getElementById("age").value,
+    dob: document.getElementById("dob").value,
+    maritalStatus: document.getElementById("maritalStatus").value,
+    sex: document.getElementById("sex").value,
+    mobile: document.getElementById("mobile").value,
+    occupation: document.getElementById("occupation").value,
+    address: document.getElementById("address").value,
+    email: document.getElementById("email").value,
+    referredBy: document.getElementById("referredBy").value,
+    chiefComplaints: document.getElementById("chiefComplaints").value,
+    pastHistory: document.getElementById("pastHistory").value,
+    personalHistory: document.getElementById("personalHistory").value,
+    familyHistory: document.getElementById("familyHistory").value,
+    examGeneral: document.getElementById("examGeneral").value,
+    examLocal: document.getElementById("examLocal").value,
+    investigation: document.getElementById("investigation").value,
+    diagnosis: document.getElementById("diagnosis").value,
+    treatment: document.getElementById("treatment").value,
+    relation: document.getElementById("relation").value,
+    witness: document.getElementById("witness").value,
+    signatureImage: signatureImage
+  };
+
+  try {
+    const response = await fetch("/admin/register-patient", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(patientData)
+    });
+
+    const result = await response.json();
+    if (result.success) {
+      alert("✅ Patient registered successfully!");
+      document.getElementById("patientForm").reset();
+      document.getElementById("signaturePreview").src = "";
+    } else {
+      alert("❌ " + result.message);
+    }
+  } catch (err) {
+    alert("❌ Failed to register patient.");
+    console.error(err);
+  }
+});
+
+  </script>
+</body>
+</html>

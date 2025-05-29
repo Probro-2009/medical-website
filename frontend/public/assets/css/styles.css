@@ -1,0 +1,255 @@
+/* Global Styles */
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensures full height of the page */
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom, #f8f9fa, #e3e6ea); /* Light gradient background */
+}
+
+main {
+    flex: 1; /* Pushes footer to bottom */
+}
+
+/* 3D Header */
+.header-3d {
+    background: #fff;
+    padding: 15px 0;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* 3D shadow effect */
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    padding-right: 50px; /* Moves buttons more to the right */
+}
+
+.logo {
+    width: 100px;
+    margin-left: 50px; /* Moves logo towards right */
+}
+
+/* Header Navigation Buttons with Frames */
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 12px 25px;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.3);
+    display: inline-block;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+nav ul li a:hover {
+    transform: translateY(-5px); /* Pop-out effect */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Centered 3D Title */
+.section-title {
+    text-align: center;
+    font-size: 38px;
+    font-weight: bold;
+    color: black;
+    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.4); /* Enhanced 3D Effect */
+    margin-top: 40px;
+}
+
+/* Treatment Buttons - Attractive Layout */
+.treatments-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+    max-width: 1200px;
+    margin: auto;
+    padding: 50px 20px;
+}
+
+/* Staggered Button Layout */
+.treatment-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+}
+
+/* Treatment Buttons - Always 3D */
+.treatment-button {
+    background: linear-gradient(to bottom, #007bff, #0056b3);
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 18px 35px;
+    border-radius: 12px;
+    text-align: center;
+    text-decoration: none;
+    position: relative;
+    box-shadow: 0 6px 0 #0056b3, 0 10px 20px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover Effect: Pops Out More */
+.treatment-button:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 0 #0056b3, 0 18px 28px rgba(0, 0, 0, 0.4);
+}
+
+/* Staggered Button Arrangement */
+.treatment-row:nth-child(odd) {
+    justify-content: flex-start;
+}
+
+.treatment-row:nth-child(even) {
+    justify-content: flex-end;
+}
+
+/* Responsive Layout */
+@media (max-width: 1024px) {
+    .treatment-row {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .treatment-button {
+        padding: 15px 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .treatment-button {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* Section 7-9: Footer-like Final Section */
+#section-7-9 {
+    background: #2c2c2c; /* Darkish Gray */
+    color: gray; /* Default Text Color */
+    padding: 50px 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* Left Side: Logo & Social Media */
+.footer-left {
+    text-align: left;
+    max-width: 300px;
+}
+
+.footer-logo {
+    width: 120px; /* Adjust logo size */
+    margin-bottom: 10px;
+}
+
+.clinic-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.social-icons {
+    display: flex;
+    gap: 10px;
+}
+
+.social-icons img {
+    width: 30px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.social-icons img:hover {
+    transform: scale(1.1);
+}
+
+/* Essential Links, Legal, and Contact Us */
+.footer-links, .footer-center, .footer-right {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    flex: 1;
+    padding: 10px;
+}
+
+/* Titles in White */
+.footer-links h3, 
+.footer-center h3, 
+.footer-right h3 {
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 10px;
+}
+
+/* Footer Links */
+.footer-links a, .footer-center a {
+    color: gray;
+    text-decoration: none;
+    margin-top: 5px;
+    transition: color 0.3s;
+}
+
+.footer-links a:hover, .footer-center a:hover {
+    color: white;
+}
+
+/* Contact Us Section */
+.footer-right {
+    text-align: right;
+    max-width: 300px;
+}
+
+.footer-right p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: gray;
+}
+
+/* Ensuring Legal Section is Centered */
+.footer-center {
+    text-align: center;
+}
+/* Footer Styling */
+#footer {
+    background: #1e1e1e; /* Slightly lighter dark gray than Section 7 */
+    color: #ccc; /* Light gray text for contrast */
+    text-align: center;
+    padding: 15px 0;
+    font-size: 14px;
+}
+
+#footer p {
+    margin: 0;
+}

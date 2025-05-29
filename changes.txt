@@ -1,0 +1,16 @@
+Injuries.html changes:
+Addition = Homeopathic medicines work wonderfully with faster healing.
+
+sinusitis.html changes:
+Addition = Managing sinusitis involves staying hydrated, using steam therapy, and addressing underlying causes such as allergies or infections with the help of homeopathic medicines.
+
+fungal.html changes:
+Deletion = While there is no cure, antiviral medications can reduce symptoms and prevent outbreaks.
+
+psoriasis.html changes:
+Deletion = While there is no cure, treatments such as moisturizers, medicated creams, and lifestyle adjustments can help manage flare-ups and improve skin health.
+
+All html changes = writeup based on homeopathic perspective
+
+ 
+

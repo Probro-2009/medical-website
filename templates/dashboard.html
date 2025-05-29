@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Patient Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
+  <style>
+    :root {
+      --bg-light: #f0f4f8;
+      --bg-dark: #1e1e2f;
+      --text-light: #1e1e2f;
+      --text-dark: #f4f4f4;
+      --card-light: #ffffff;
+      --card-dark: #2a2a3b;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-light);
+      transition: background 0.3s, color 0.3s;
+      display: flex;
+    }
+
+    body.dark {
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: var(--card-light);
+      padding: 100px 20px 20px;
+      height: 100vh;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .sidebar.dark {
+      background-color: var(--card-dark);
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 12px;
+      margin: 10px 0;
+      text-decoration: none;
+      background: #4CAF50;
+      color: white;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: var(--card-light);
+      padding: 30px;
+      box-shadow: var(--shadow);
+      z-index: 10;
+      position: sticky;
+      top: 0;
+    }
+
+    .header.dark {
+      background-color: var(--card-dark);
+    }
+
+    .header h2 {
+      margin: 0;
+    }
+
+    .header .actions button {
+      margin-left: 10px;
+      padding: 10px 20px;
+      border: none;
+      background: #2196F3;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+    }
+
+    .header .actions i {
+      margin-left: 15px;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      padding: 30px;
+      margin-top: 20px;
+    }
+
+    .row .card {
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .card {
+      background-color: var(--card-light);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: var(--shadow);
+      transition: background 0.3s;
+    }
+
+    .card.dark {
+      background-color: var(--card-dark);
+    }
+
+    #calendar-card {
+      margin: 0 30px 30px;
+    }
+
+    #calendar, #glance-calendar {
+      width: 100%;
+      padding-top: 20px;
+    }
+
+    table.appointment-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    table.appointment-table th, table.appointment-table td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h3>Menu</h3>
+    <a href="{{ url_for('serve_book') }}">Book Appointment</a>
+    <a href="{{ url_for('consult') }}">Consult with Doctor</a>
+    <a href="{{ url_for('add_review') }}">Add a Review</a>
+    <a href="{{ url_for('write_blog') }}">Write a Blog</a>
+    <a href="{{ url_for('grievance') }}">Add Grievances</a>
+    <a href="{{ url_for('offers') }}">Offers & Discounts</a>
+    <a href="{{ url_for('support') }}">Support Us</a>
+  </div>
+
+  <div class="main">
+    <div class="header" id="header">
+      <h2 id="greeting">Hello, {{ username }}</h2>
+      <div class="actions">
+        <button onclick="location.href='/profile'">Profile</button>
+        <button onclick="location.href='/help'">Help</button>
+        <button onclick="location.href='/logout'">Logout</button>
+        <i class="fas fa-moon" onclick="toggleDarkMode()" title="Toggle Dark Mode"></i>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="card" id="appointments-card">
+        <h3>Appointments Booked</h3>
+        <p>{{ appointments|length }} total</p>
+      </div>
+
+      <div class="card" id="blogs-card">
+        <h3>Blogs Written</h3>
+        <p>{{ blogs_count }}</p>
+      </div>
+
+      <div class="card" id="reviews-card">
+        <h3>Reviews Submitted</h3>
+        <p>{{ reviews_count }}</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="card" style="flex: 2">
+        <h3 style="margin-bottom: 20px;">Upcoming Appointments</h3>
+        <table class="appointment-table">
+          <thead>
+            <tr><th>ID</th><th>Patient</th><th>Status</th><th>Time</th></tr>
+          </thead>
+          <tbody>
+            {% for a in appointments %}
+              <tr>
+                <td>{{ a.id }}</td>
+                <td>{{ a.first_name }} {{ a.last_name }}</td>
+                <td>{{ a.status }}</td>
+                <td>{{ a.appointment }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="card" style="flex: 1">
+        <h3>Quick Calendar</h3>
+        <div id="glance-calendar"></div>
+      </div>
+    </div>
+
+    <div class="card" id="calendar-card">
+      <h3 style="margin-bottom: 20px;">Full Calendar View</h3>
+      <div id="calendar"></div>
+    </div>
+  </div>
+
+  <script>
+    const greeting = document.getElementById("greeting");
+    const hour = new Date().getHours();
+    const timeGreeting = hour < 12 ? "Good Morning" : hour < 17 ? "Good Afternoon" : "Good Evening";
+    greeting.innerText = `${timeGreeting}, {{ username }}`;
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark");
+      document.querySelectorAll('.card, .sidebar, .header').forEach(el => el.classList.toggle('dark'));
+      localStorage.setItem("darkMode", document.body.classList.contains("dark"));
+    }
+
+    if (localStorage.getItem("darkMode") === "true") {
+      toggleDarkMode();
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      var calendarEl = document.getElementById('calendar');
+      var glanceCalEl = document.getElementById('glance-calendar');
+
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        height: 500,
+        events: [
+          {% for a in appointment_dates %}
+            { title: 'Appointment', date: '{{ a }}' },
+          {% endfor %}
+        ]
+      });
+      calendar.render();
+
+      var glanceCal = new FullCalendar.Calendar(glanceCalEl, {
+        initialView: 'dayGridMonth',
+        height: 300,
+        headerToolbar: false,
+        events: [
+          {% for a in appointment_dates %}
+            { title: '', date: '{{ a }}' },
+          {% endfor %}
+        ]
+      });
+      glanceCal.render();
+    });
+  </script>
+</body>
+</html>

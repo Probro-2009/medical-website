@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f0f4f8, #e3e7ef);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            font-size: 30px;
+            margin-bottom: 40px;
+        }
+
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            margin: 15px 0;
+            background: #f7f7f7;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+
+        .stat:hover {
+            background: #f0f0f0;
+        }
+
+        .stat-title {
+            color: #555;
+        }
+
+        .stat-value {
+            color: #0077cc;
+            font-weight: bold;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 40px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            background: #0077cc;
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 0 #005fa3;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 119, 204, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 3px 0 #005fa3;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Dashboard</title>
+  <style>
+    :root {
+      --blue: #0077cc;
+      --blue-dark: #005fa3;
+      --light-bg: #f0f4f8;
+      --light-container-bg: #fff;
+      --light-text: #333;
+      --dark-bg: #121212;
+      --dark-container-bg: #1f1f1f;
+      --dark-text: #ddd;
+      --btn-bg-light: rgba(0, 119, 204, 0.15);
+      --btn-bg-dark: rgba(0, 119, 204, 0.35);
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: var(--light-bg);
+      color: var(--light-text);
+      transition: background 0.3s, color 0.3s;
+      position: relative;
+    }
+
+    body.dark {
+      background: var(--dark-bg);
+      color: var(--dark-text);
+    }
+
+    .container {
+      background: var(--light-container-bg);
+      padding: 50px 40px;
+      border-radius: 20px;
+      box-shadow:
+        0 8px 24px rgba(0, 119, 204, 0.2),
+        0 4px 16px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+
+    body.dark .container {
+      background: var(--dark-container-bg);
+      box-shadow:
+        0 8px 24px rgba(0, 119, 204, 0.8),
+        0 4px 16px rgba(0, 0, 0, 0.6);
+    }
+
+    h2 {
+      font-size: 32px;
+      margin-bottom: 50px;
+      font-weight: 700;
+      letter-spacing: 1.1px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .btn {
+      padding: 15px 0;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--blue-dark);
+      background: var(--btn-bg-light);
+      border: 2.5px solid var(--blue);
+      border-radius: 40px;
+      cursor: pointer;
+      transition:
+        background 0.3s,
+        color 0.3s,
+        border-color 0.3s,
+        box-shadow 0.3s,
+        transform 0.2s;
+      user-select: none;
+    }
+
+    .btn:hover {
+      background: var(--blue);
+      color: white;
+      border-color: var(--blue-dark);
+      box-shadow: 0 8px 20px rgba(0, 119, 204, 0.6);
+      transform: translateY(-3px);
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+      box-shadow: 0 4px 12px rgba(0, 119, 204, 0.8);
+    }
+
+    body.dark .btn {
+      color: var(--btn-bg-dark);
+      background: transparent;
+      border-color: var(--btn-bg-dark);
+    }
+
+    body.dark .btn:hover {
+      background: var(--blue);
+      color: white;
+      border-color: var(--blue-dark);
+      box-shadow: 0 8px 20px rgba(0, 119, 204, 0.9);
+    }
+
+    /* Dark mode toggle button */
+    #dark-mode-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--btn-bg-light);
+      border: 2px solid var(--blue);
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--blue-dark);
+      font-size: 20px;
+      transition: background 0.3s, color 0.3s, border-color 0.3s;
+      user-select: none;
+    }
+
+    #dark-mode-toggle:hover {
+      background: var(--blue);
+      color: white;
+      border-color: var(--blue-dark);
+      box-shadow: 0 6px 18px rgba(0, 119, 204, 0.6);
+      transform: translateY(-2px);
+    }
+
+    body.dark #dark-mode-toggle {
+      background: var(--btn-bg-dark);
+      color: var(--btn-bg-light);
+      border-color: var(--btn-bg-dark);
+    }
+
+    body.dark #dark-mode-toggle:hover {
+      background: var(--blue);
+      color: white;
+      border-color: var(--blue-dark);
+      box-shadow: 0 6px 18px rgba(0, 119, 204, 0.9);
+    }
+  </style>
+</head>
+<body>
+  <button id="dark-mode-toggle" title="Toggle dark mode">🌓</button>
+
+  <div class="container">
+    <h2>Admin Dashboard</h2>
+    <div class="buttons">
+      <button class="btn" onclick="location.href='{{ url_for('admin.add_patient') }}'">Add a Patient</button>
+<button class="btn" onclick="location.href='{{ url_for('admin.view_patient') }}'">View Patient</button>
+<button class="btn" onclick="location.href='{{ url_for('admin.login') }}'">Logout</button>
+
+    </div>
+  </div>
+
+  <script>
+    const toggleBtn = document.getElementById('dark-mode-toggle');
+    toggleBtn.addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+      // Optionally save preference to localStorage
+      if(document.body.classList.contains('dark')) {
+        localStorage.setItem('darkMode', 'enabled');
+      } else {
+        localStorage.setItem('darkMode', 'disabled');
+      }
+    });
+
+    // Load saved mode on page load
+    window.onload = () => {
+      if(localStorage.getItem('darkMode') === 'enabled') {
+        document.body.classList.add('dark');
+      }
+    }
+  </script>
+</body>
+</html>
+
+</html>

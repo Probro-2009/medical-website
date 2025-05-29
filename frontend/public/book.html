@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment</title>
+    <!-- Header will be inserted here -->
+   <style>
+  /* Global Styles */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: 'Poppins', sans-serif; /* Modern Font */
+    background: linear-gradient(to bottom, #f8f9fa, #e3e6ea);
+}
+
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+}
+
+/* 3D Header */
+.header-3d {
+    background: #fff;
+    padding: 15px 0;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* 3D shadow effect */
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    padding-right: 50px; /* Moves buttons more to the right */
+}
+
+.logo {
+    width: 100px;
+    margin-left: 50px; /* Moves logo towards right */
+}
+
+/* Header Navigation Buttons with Frames */
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 12px 25px;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.3);
+    display: inline-block;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+nav ul li a:hover {
+    transform: translateY(-5px); /* Pop-out effect */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Centered 3D Title */
+.section-title {
+    text-align: center;
+    font-size: 38px;
+    font-weight: bold;
+    color: black;
+    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.4); /* Enhanced 3D Effect */
+    margin-top: 40px;
+}
+
+/* 3D Title */
+.section-title {
+    font-size: 42px;
+    font-weight: bold;
+    text-align: left;
+    color: #222;
+    text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4); /* Stronger 3D effect */
+    margin-bottom: 20px;
+}
+
+/* ----------------------- */
+/* APPOINTMENT CONTAINER */
+/* ----------------------- */
+
+.center-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 5px;
+}
+
+#booking-section {
+    width: 100%;
+    max-width: 500px;
+    background: #ffffff;
+    padding: 40px 30px;
+    border-radius: 18px;
+    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.booking-title {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 600;
+    color: #1976d2;
+    margin-bottom: 25px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    gap: 10px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    font-size: 16px;
+    background: #f8f9fa;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #1976d2;
+    box-shadow: 0 0 6px rgba(25, 118, 210, 0.4);
+    outline: none;
+}
+
+textarea {
+    resize: none;
+}
+
+.book-button {
+    background: linear-gradient(to right, #2196f3, #1976d2);
+    color: #fff;
+    padding: 14px;
+    font-size: 18px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 8px 18px rgba(25, 118, 210, 0.4);
+}
+
+.book-button:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 20px rgba(25, 118, 210, 0.5);
+}
+
+#confirmation {
+    margin-top: 20px;
+    background: #c8e6c9;
+    color: #2e7d32;
+    font-weight: bold;
+    padding: 14px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 100, 0, 0.2);
+    transition: opacity 0.5s ease-in-out;
+}
+
+.hidden {
+    display: none;
+}
+
+/* ----------------------- */
+/* SECTION 7–9 + FOOTER   */
+/* ----------------------- */
+
+#section-7-9 {
+    background: #2c2c2c;
+    color: gray;
+    padding: 50px 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 1200px;
+    flex-wrap: wrap;
+}
+
+.footer-left {
+    text-align: left;
+    max-width: 300px;
+}
+
+.footer-logo {
+    width: 120px;
+    margin-bottom: 10px;
+}
+
+.clinic-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.social-icons {
+    display: flex;
+    gap: 10px;
+}
+
+.social-icons img {
+    width: 30px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.social-icons img:hover {
+    transform: scale(1.1);
+}
+
+.footer-links, .footer-center, .footer-right {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    flex: 1;
+    padding: 10px;
+}
+
+.footer-links h3,
+.footer-center h3,
+.footer-right h3 {
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.footer-links a, .footer-center a {
+    color: gray;
+    text-decoration: none;
+    margin-top: 5px;
+    transition: color 0.3s;
+}
+
+.footer-links a:hover, .footer-center a:hover {
+    color: white;
+}
+
+.footer-right {
+    text-align: right;
+    max-width: 500px;
+}
+
+.footer-right p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: gray;
+}
+
+.footer-center {
+    text-align: center;
+}
+
+/* Sticky Footer */
+#footer {
+    background: #1e1e1e;
+    color: #ccc;
+    text-align: center;
+    padding: 15px 0;
+    font-size: 14px;
+    width: 100%;
+}
+
+#footer p {
+    margin: 0;
+}
+
+</style>
+
+
+</head>
+<body>
+
+   <!-- 3D Header -->
+    <header class="header-3d">
+        <div class="header-container">
+            <img src="assets/images/logo.png.png" alt="Logo" class="logo">
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="blogs.html">Blogs</a></li>
+                    <li><a href="testimonials.html">Testimonials</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+  <main>
+  <div class="center-wrapper">
+    <section id="booking-section">
+      <h2 class="booking-title">Book an Appointment</h2>
+
+      <form id="booking-form" method="POST" action="/submit">
+        <div class="form-group">
+          <input type="text" name="firstName" placeholder="First Name" required>
+          <input type="text" name="lastName" placeholder="Last Name" required>
+        </div>
+
+        <div class="form-group">
+          <input type="number" name="age" placeholder="Age" required>
+          <select name="gender" required>
+            <option value="" disabled selected>Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <input type="tel" name="mobile" placeholder="Mobile Number" required pattern="[0-9]{10}">
+        <p style="text-align: center; font-weight: bold; color: #1976d2; margin: 10px 0;">Suggested Period of Appointment</p>
+        <input type="datetime-local" name="appointment" required>
+        <textarea name="problem" placeholder="Problem / Symptoms" rows="4" required></textarea>
+
+        <button type="submit" class="book-button">Book</button>
+      </form>
+
+      <!-- Loading spinner (hidden by default) -->
+      <div id="loading-spinner" style="display: none; text-align: center; margin-top: 20px;">
+       <img src="/assets/images/Eclipse@1x-1.0s-200px-200px.gif" alt="Loading..." style="width: 50px;">
+
+      </div>
+    </section>
+  </div>
+</main>
+
+
+
+    <!-- Section 7-9: Final Section Before Footer -->
+<section id="section-7-9">
+    <div class="footer-container">
+        <!-- Left Side: Logo and Socials -->
+        <div class="footer-left">
+            <img src="assets/images/logo.png.png" alt="Clinic Logo" class="footer-logo">
+            <p class="clinic-name white-text">Dr. Dhanashree Chitre's Homeopathic Cosmetic and Laser Clinic</p>
+            <div class="social-icons">
+                <a href="https://www.google.com" target="_blank">
+                    <img src="assets/images/google-icon.png" alt="Google">
+                </a>
+                <a href="https://www.facebook.com" target="_blank">
+                    <img src="assets/images/facebook-icon.png" alt="Facebook">
+                </a>
+                <a href="https://www.instagram.com" target="_blank">
+                    <img src="assets/images/instagram-icon.png" alt="Instagram">
+                </a>
+            </div>
+        </div>
+
+        <!-- Essential Links (Left) -->
+        <div class="footer-links">
+            <h3 class="white-text">Essential Links</h3>
+            <a href="book.html">Book an Appointment</a>
+            <a href="about.html">About Us</a>
+            <a href="blog.html">Blogs</a>
+            <a href="testimonials.html">Testimonials</a>
+        </div>
+
+        <!-- Legal (Centered) -->
+        <div class="footer-center">
+            <h3 class="white-text">Legal</h3>
+            <a href="terms.html">Terms & Conditions</a>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="refund.html">Refund Policy</a>
+        </div>
+
+        <!-- Contact Us (Right) -->
+        <div class="footer-right">
+            <h3 class="white-text">Contact Us</h3>
+            <p>
+                Shop no. 1, Bobby Pathak Avenue Society,  
+                near Aapla Samadhan Hotel, Sudhindra Nagar,  
+                Dahisar East, Mumbai, Maharashtra 400068
+            </p>
+            <p>📞 9819139154, 9869345997</p>
+        </div>
+    </div>
+</section>
+<!-- Footer Section -->
+<footer id="footer">
+    <p>© 2025 Dr. Dhanashree R. Chitre | Developed by Vedant R. Chitre</p>
+</footer>
+
+
+   <script>
+  const form = document.getElementById("booking-form");
+  const spinner = document.getElementById("loading-spinner");
+
+  form.addEventListener("submit", function(event) {
+      event.preventDefault();  // Prevent immediate form submission
+      spinner.style.display = "block";  // Show spinner
+
+      // Now manually submit using fetch
+      const formData = new FormData(form);
+
+      fetch("/submit", {
+          method: "POST",
+          body: formData
+      })
+      .then(response => {
+          if (response.ok) {
+              window.location.href = "/thankyou";  // Redirect after success
+          } else {
+              alert("Failed to submit the form. Please try again.");
+              spinner.style.display = "none";
+          }
+      })
+      .catch(error => {
+          alert("Error occurred: " + error);
+          spinner.style.display = "none";
+      });
+  });
+</script>
+
+
+</body>
+</html>
