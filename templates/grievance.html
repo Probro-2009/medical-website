@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add Grievance - Patient Dashboard</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #74ebd5, #acb6e5);
+      min-height: 100vh;
+    }
+    .form-section {
+      background: white;
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .form-section:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+    }
+    .btn-primary-custom {
+      background: linear-gradient(to right, #007acc, #005fa3);
+      color: white;
+      border: none;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .btn-primary-custom:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    .btn-back {
+      background-color: #6c757d;
+      color: white;
+      border: none;
+    }
+    .btn-back:hover {
+      background-color: #5a6268;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="bg-blue-700 text-white p-4 flex justify-between items-center">
+    <h1 class="text-xl font-bold">Add Grievance</h1>
+    <div>
+      <button class="btn btn-back me-2" onclick="history.back()">← Back</button>
+      <button class="btn btn-outline-light" onclick="toggleTheme()">Toggle Theme</button>
+    </div>
+  </header>
+
+  <main class="container my-5">
+    <div class="form-section">
+      <h2 class="text-lg font-semibold text-blue-700 mb-4">Submit Your Concern</h2>
+      <form id="grievanceForm">
+        <div class="mb-3">
+          <label for="name" class="form-label">Full Name</label>
+          <input type="text" class="form-control" id="name" required>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" required>
+        </div>
+        <div class="mb-3">
+          <label for="subject" class="form-label">Subject</label>
+          <input type="text" class="form-control" id="subject" required>
+        </div>
+        <div class="mb-3">
+          <label for="message" class="form-label">Grievance Details</label>
+          <textarea class="form-control" id="message" rows="5" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary-custom">Submit Grievance</button>
+      </form>
+      <div id="successMessage" class="alert alert-success mt-3 d-none" role="alert">
+        ✅ Your grievance has been submitted successfully!
+      </div>
+    </div>
+  </main>
+
+  <footer class="text-center py-4 text-sm text-white bg-blue-800">
+    &copy; 2025 YourClinic Health Portal. All rights reserved.
+  </footer>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle('bg-gray-900');
+      document.body.classList.toggle('text-white');
+      const section = document.querySelector('.form-section');
+      section.classList.toggle('bg-gray-800');
+    }
+
+    document.getElementById('grievanceForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      document.getElementById('grievanceForm').reset();
+      document.getElementById('successMessage').classList.remove('d-none');
+    });
+  </script>
+</body>
+</html>

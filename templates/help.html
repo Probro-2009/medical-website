@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Help & Support - Patient Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f9fcff;
+      color: #333;
+    }
+
+    header {
+      background-color: #007acc;
+      color: white;
+      padding: 1rem 2rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 1.5rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    h2 {
+      color: #007acc;
+      margin-bottom: 1rem;
+    }
+
+    .accordion {
+      border-top: 1px solid #ddd;
+    }
+
+    .accordion-item {
+      border-bottom: 1px solid #ddd;
+    }
+
+    .accordion-title {
+      background: #f1f9ff;
+      padding: 1rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+
+    .accordion-title:hover {
+      background: #e0f0ff;
+    }
+
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+      background: #fdfefe;
+      padding: 0 1rem;
+    }
+
+    .accordion-content p {
+      margin: 1rem 0;
+    }
+
+    .active .accordion-content {
+      max-height: 300px;
+      padding-bottom: 1rem;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      color: #777;
+      font-size: 0.9rem;
+    }
+
+    .toggle-theme {
+      cursor: pointer;
+      background: white;
+      color: #007acc;
+      border: 1px solid #007acc;
+      padding: 0.3rem 0.8rem;
+      border-radius: 5px;
+      font-size: 0.9rem;
+    }
+
+    .dark-mode {
+      background: #1c1c1e;
+      color: #f2f2f2;
+    }
+
+    .dark-mode header {
+      background: #111;
+      color: #fff;
+    }
+
+    .dark-mode .container {
+      background: #2a2a2c;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+
+    .dark-mode .accordion-title {
+      background: #333;
+      color: #fff;
+    }
+
+    .dark-mode .accordion-content {
+      background: #2a2a2c;
+    }
+
+    .dark-mode .toggle-theme {
+      background: #2a2a2c;
+      color: #fff;
+      border: 1px solid #fff;
+    }
+
+    .accordion-title::after {
+      content: '+';
+      float: right;
+      font-size: 1.2rem;
+    }
+
+    .active .accordion-title::after {
+      content: '-';
+    }
+  </style>
+</head>
+<body>
+  <header>
+    Help & Support
+    <button class="toggle-theme" onclick="toggleTheme()">Toggle Theme</button>
+  </header>
+
+  <div class="container">
+    <h2>Frequently Asked Questions</h2>
+    <div class="accordion">
+      <div class="accordion-item">
+        <div class="accordion-title">How do I book an appointment?</div>
+        <div class="accordion-content">
+          <p>Log in to your patient dashboard and click on "Book an Appointment" from the sidebar. Choose your preferred doctor, date, and time slot, then confirm.</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <div class="accordion-title">How can I reschedule or cancel my appointment?</div>
+        <div class="accordion-content">
+          <p>Go to "Appointments" in your dashboard. Select the appointment you wish to change, and you'll find options to reschedule or cancel.</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <div class="accordion-title">Where can I view my medical reports?</div>
+        <div class="accordion-content">
+          <p>Your medical reports are available under "My Records" section. You can view or download your lab results, prescriptions, and previous consultations.</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <div class="accordion-title">How do I contact support?</div>
+        <div class="accordion-content">
+          <p>Use the "Contact Us" form in the dashboard footer or email us at support@yourclinic.com. Our team is available 24x7.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 YourClinic Health Portal. All rights reserved.
+  </footer>
+
+  <script>
+    const accordions = document.querySelectorAll('.accordion-title');
+    accordions.forEach(title => {
+      title.addEventListener('click', () => {
+        const item = title.parentElement;
+        item.classList.toggle('active');
+        document.querySelectorAll('.accordion-item').forEach(i => {
+          if (i !== item) i.classList.remove('active');
+        });
+      });
+    });
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+    }
+  </script>
+</body>
+</html>

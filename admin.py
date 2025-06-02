@@ -153,6 +153,19 @@ def login():
             return render_template('admin_login.html')
     return render_template('admin_login.html')
 
+from flask import send_from_directory, abort, current_app
+
+@admin_blueprint.route('/assets/<path:filename>')
+def serve_template_assets(filename):
+    assets_path = os.path.join(current_app.root_path, 'templates', 'assets')
+    file_path = os.path.join(assets_path, filename)
+
+    if os.path.isfile(file_path):
+        return send_from_directory(assets_path, filename)
+    abort(404)
+
+
+
 
 @admin_blueprint.route('/dashboard')
 def dashboard():

@@ -1,3 +1,5 @@
+from video import video
+from flask_socketio import SocketIO, emit, join_room
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, request, send_from_directory, redirect, url_for, render_template, session
 from flask_sqlalchemy import SQLAlchemy
@@ -5,6 +7,8 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import requests
+import uuid
+from flask import redirect
 
 # ✅ Import the admin blueprint
 from admin import admin_blueprint
@@ -13,11 +17,11 @@ app = Flask(__name__, static_folder="frontend/public")
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///appointments.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = '3f7a2c2b5e8a4a1c9d6e0f9c4b47f607'
+socketio = SocketIO(app)
 
 # ✅ Register the blueprint
 app.register_blueprint(admin_blueprint, url_prefix='/admin')
-
-
+app.register_blueprint(video)
 
 # Initialize SQLAlchemy
 db = SQLAlchemy(app)
@@ -67,6 +71,31 @@ def send_sms(mobile, message):
     }
     response = requests.post(url, json=payload, headers=headers)
     print("SMS Status:", response.status_code, response.text)
+
+@app.route('/start_call')
+def start_call():
+    room_id = str(uuid.uuid4())[:8]  # Generate short unique ID
+    return redirect(url_for('video.video_call', room_id=room_id))
+
+import os
+from flask import send_from_directory, abort
+
+@app.route('/assets/<path:filename>')
+def serve_combined_assets(filename):
+    frontend_path = os.path.join('frontend', 'public', 'assets')
+    templates_path = os.path.join('templates', 'assets')
+
+    # Priority: frontend/public/assets first
+    file_path_frontend = os.path.join(frontend_path, filename)
+    file_path_templates = os.path.join(templates_path, filename)
+
+    if os.path.isfile(file_path_frontend):
+        return send_from_directory(frontend_path, filename)
+    elif os.path.isfile(file_path_templates):
+        return send_from_directory(templates_path, filename)
+    else:
+        abort(404)
+
 
 @app.route("/")
 def serve_index():
@@ -282,9 +311,46 @@ def logout():
     session.pop("patient_user", None)
     return redirect(url_for("serve_index"))
 
+@app.route('/video_call')
+def video_call():
+    return render_template("video_call.html")
+
+import requests
+from flask import request, jsonify
+
+@app.route("/webrtc_offer", methods=["POST"])
+def webrtc_offer():
+    offer_sdp = request.json.get("sdp")
+    
+    try:
+        response = requests.post("http://localhost:8081", json={"sdp": offer_sdp})
+        return jsonify(response.json())
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@socketio.on('join')
+def handle_join(room):
+    join_room(room)
+    emit('joined', room=room)
+
+@socketio.on('offer')
+def handle_offer(room, offer):
+    emit('offer', offer, room=room, include_self=False)
+
+@socketio.on('answer')
+def handle_answer(room, answer):
+    emit('answer', answer, room=room, include_self=False)
+
+@socketio.on('ice-candidate')
+def handle_ice(room, candidate):
+    emit('ice-candidate', candidate, room=room, include_self=False)
+
+
+
+
 
 if __name__ == '__main__':
-    from waitress import serve
     with app.app_context():
         db.create_all()
-    serve(app, host="0.0.0.0", port=5000)
+    socketio.run(app, host="0.0.0.0", port=5000)
+

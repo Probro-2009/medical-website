@@ -1,15 +1,14 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Patient Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
   <style>
     :root {
-      --bg-light: #f0f4f8;
+      --bg-light: linear-gradient(to right, #e0c3fc, #8ec5fc);
       --bg-dark: #1e1e2f;
       --text-light: #1e1e2f;
       --text-dark: #f4f4f4;
@@ -18,250 +17,419 @@
       --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
 
-    body {
+    html, body {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: var(--bg-light);
-      color: var(--text-light);
-      transition: background 0.3s, color 0.3s;
+      padding: 0;
+      height: 100%;
       display: flex;
+      flex-direction: column;
+      font-family: 'Segoe UI', sans-serif;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    body {
+      background: var(--bg-light);
+      color: var(--text-light);
     }
 
     body.dark {
-      background-color: var(--bg-dark);
-      color: var(--text-dark);
+  background: var(--bg-light); /* Keep gradient background */
+  color: var(--text-dark);
+}
+
+
+    .container {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
     }
 
     .sidebar {
-      width: 250px;
-      background-color: var(--card-light);
-      padding: 100px 20px 20px;
-      height: 100vh;
-      box-shadow: var(--shadow);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+  width: 250px;
+  background-color: var(--card-light);
+  height: 100vh;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch; /* <--- THIS IS KEY */
+  padding: 20px 10px;
+  transition: width 0.3s ease;
+}
+
+
+    .sidebar.collapsed {
+      width: 80px;
+      align-items: center;
     }
 
-    .sidebar.dark {
-      background-color: var(--card-dark);
+    .sidebar h3 {
+      color: #333;
+      width: 100%;
+      text-align: center;
+      margin-bottom: 20px;
     }
+
+    .sidebar.collapsed h3 {
+      display: none;
+    }
+
+    .sidebar button.collapse-toggle {
+  background: none;
+  border: none;
+  color: #4CAF50;
+  font-size: 20px;
+  margin-bottom: 20px;
+  margin-left: 10px;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+
+  .sidebar h3 {
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.sidebar.dark h3 {
+  color: #f4f4f4;
+}
+
 
     .sidebar a {
-      display: block;
-      padding: 12px;
-      margin: 10px 0;
-      text-decoration: none;
-      background: #4CAF50;
-      color: white;
-      border-radius: 8px;
-      box-shadow: var(--shadow);
-      text-align: center;
-    }
+  color: white;
+  background: #4CAF50;
+  padding: 12px 16px;
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  margin: 6px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: flex-start;
+  transition: transform 0.2s ease;
+  white-space: nowrap;
+  text-decoration: none; /* <-- This removes the underline */
+}
 
-    .main {
+
+.sidebar.collapsed a span {
+  display: none;
+}
+
+
+    .main-content {
       flex: 1;
       display: flex;
       flex-direction: column;
+      padding: 20px;
     }
+.sidebar.dark {
+  background-color: var(--card-dark);
+}
+
 
     .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       background-color: var(--card-light);
-      padding: 30px;
+      padding: 20px;
       box-shadow: var(--shadow);
-      z-index: 10;
-      position: sticky;
-      top: 0;
     }
 
     .header.dark {
       background-color: var(--card-dark);
     }
 
-    .header h2 {
-      margin: 0;
-    }
-
     .header .actions button {
       margin-left: 10px;
-      padding: 10px 20px;
+      padding: 8px 16px;
       border: none;
       background: #2196F3;
       color: white;
       border-radius: 8px;
       cursor: pointer;
+      font-weight: bold;
       box-shadow: var(--shadow);
+      transition: transform 0.2s ease;
     }
 
-    .header .actions i {
-      margin-left: 15px;
-      cursor: pointer;
-      font-size: 20px;
+    .header .actions button:hover {
+      transform: translateY(-2px);
+    }
+
+    .header .actions .toggle-dark {
+      background: linear-gradient(to right, #141E30, #243B55);
     }
 
     .row {
       display: flex;
       flex-wrap: wrap;
-      gap: 30px;
-      padding: 30px;
+      gap: 20px;
       margin-top: 20px;
-    }
-
-    .row .card {
-      flex: 1;
-      min-width: 280px;
     }
 
     .card {
       background-color: var(--card-light);
       padding: 20px;
-      border-radius: 15px;
+      border-radius: 10px;
       box-shadow: var(--shadow);
-      transition: background 0.3s;
+      flex: 1;
+      min-width: 300px;
+      position: relative;
     }
 
     .card.dark {
       background-color: var(--card-dark);
+      color: var(--text-dark);
     }
 
-    #calendar-card {
-      margin: 0 30px 30px;
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+      text-align: center;
+      font-weight: bold;
     }
 
-    #calendar, #glance-calendar {
-      width: 100%;
-      padding-top: 20px;
+    .calendar div {
+      padding: 8px;
+      background: #fff;
+      border-radius: 6px;
     }
 
-    table.appointment-table {
+    .calendar.dark div {
+      background: #444;
+      color: #fff;
+    }
+
+    table {
       width: 100%;
       border-collapse: collapse;
     }
 
-    table.appointment-table th, table.appointment-table td {
+    table, th, td {
       border: 1px solid #ccc;
-      padding: 10px;
+    }
+
+    th, td {
+      padding: 8px;
       text-align: left;
+    }
+
+    table.dark, .card.dark table {
+      border-color: #666;
+      color: var(--text-dark);
+    }
+
+    table.dark th, table.dark td {
+      border-color: #666;
+    }
+
+    .edit-btn {
+      margin-top: 15px;
+      padding: 8px 16px;
+      background: #ff9800;
+      border: none;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px;
+      font-size: 14px;
+      background: #222;
+      color: white;
     }
   </style>
 </head>
 <body>
-  <div class="sidebar">
-    <h3>Menu</h3>
-    <a href="{{ url_for('serve_book') }}">Book Appointment</a>
-    <a href="{{ url_for('consult') }}">Consult with Doctor</a>
-    <a href="{{ url_for('add_review') }}">Add a Review</a>
-    <a href="{{ url_for('write_blog') }}">Write a Blog</a>
-    <a href="{{ url_for('grievance') }}">Add Grievances</a>
-    <a href="{{ url_for('offers') }}">Offers & Discounts</a>
-    <a href="{{ url_for('support') }}">Support Us</a>
+  <div class="container">
+    <div class="sidebar" id="sidebar">
+      <button class="collapse-toggle" onclick="toggleSidebar()" title="Collapse Sidebar"><i class="fas fa-bars"></i></button>
+      <h3>Patient Menu</h3>
+      <a href="/book"><i class="fas fa-calendar-plus"></i><span>Book Appointment</span></a>
+      <a href="/consult"><i class="fas fa-user-md"></i><span>Consult with Doctor</span></a>
+      <a href="/add_review"><i class="fas fa-star"></i><span>Add a Review</span></a>
+      <a href="/write_blog"><i class="fas fa-pen"></i><span>Write a Blog</span></a>
+      <a href="/grievance"><i class="fas fa-comment-dots"></i><span>Add Grievances</span></a>
+      <a href="/offers"><i class="fas fa-tags"></i><span>Offers & Discounts</span></a>
+      <a href="/support"><i class="fas fa-hands-helping"></i><span>Support Us</span></a>
+    </div>
+    <div class="main-content">
+      <div class="header" id="header">
+        <h2 id="greeting">Hello, {{ username }}</h2>
+        <div class="actions">
+          <span id="timeDisplay"></span>
+          <button onclick="location.href='/profile'">Profile</button>
+          <button onclick="location.href='/help'">Help</button>
+          <button onclick="location.href='/logout'">Logout</button>
+          <button class="toggle-dark" onclick="toggleDarkMode()">🌙 Dark Mode</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="card" id="apptCard">
+          <h3>Upcoming Appointments</h3>
+          <table id="apptTable">
+            <thead>
+              <tr><th>ID</th><th>Patient</th><th>Status</th><th>Time</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>001</td><td>John Doe</td><td>Confirmed</td><td>10:00 AM, 5 June</td></tr>
+            </tbody>
+          </table>
+          <button class="edit-btn">Edit</button>
+        </div>
+        <div class="card" id="calendarCard">
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <button onclick="prevMonth()" style="border: none; background: transparent; font-size: 18px;">←</button>
+    <h3 id="monthYear" style="margin: 0 auto;">Quick Calendar</h3>
+    <button onclick="nextMonth()" style="border: none; background: transparent; font-size: 18px;">→</button>
   </div>
+  <div id="calendar" class="calendar" style="margin-top: 10px;"></div>
+</div>
 
-  <div class="main">
-    <div class="header" id="header">
-      <h2 id="greeting">Hello, {{ username }}</h2>
-      <div class="actions">
-        <button onclick="location.href='/profile'">Profile</button>
-        <button onclick="location.href='/help'">Help</button>
-        <button onclick="location.href='/logout'">Logout</button>
-        <i class="fas fa-moon" onclick="toggleDarkMode()" title="Toggle Dark Mode"></i>
       </div>
-    </div>
-
-    <div class="row">
-      <div class="card" id="appointments-card">
-        <h3>Appointments Booked</h3>
-        <p>{{ appointments|length }} total</p>
-      </div>
-
-      <div class="card" id="blogs-card">
-        <h3>Blogs Written</h3>
-        <p>{{ blogs_count }}</p>
-      </div>
-
-      <div class="card" id="reviews-card">
-        <h3>Reviews Submitted</h3>
-        <p>{{ reviews_count }}</p>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="card" style="flex: 2">
-        <h3 style="margin-bottom: 20px;">Upcoming Appointments</h3>
-        <table class="appointment-table">
-          <thead>
-            <tr><th>ID</th><th>Patient</th><th>Status</th><th>Time</th></tr>
-          </thead>
-          <tbody>
-            {% for a in appointments %}
-              <tr>
-                <td>{{ a.id }}</td>
-                <td>{{ a.first_name }} {{ a.last_name }}</td>
-                <td>{{ a.status }}</td>
-                <td>{{ a.appointment }}</td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-      <div class="card" style="flex: 1">
-        <h3>Quick Calendar</h3>
-        <div id="glance-calendar"></div>
-      </div>
-    </div>
-
-    <div class="card" id="calendar-card">
-      <h3 style="margin-bottom: 20px;">Full Calendar View</h3>
-      <div id="calendar"></div>
     </div>
   </div>
+  <footer>Developed by Vedant R. Chitre</footer>
 
   <script>
-    const greeting = document.getElementById("greeting");
-    const hour = new Date().getHours();
-    const timeGreeting = hour < 12 ? "Good Morning" : hour < 17 ? "Good Afternoon" : "Good Evening";
-    greeting.innerText = `${timeGreeting}, {{ username }}`;
+   function toggleDarkMode() {
+  document.body.classList.toggle("dark");
+  document.getElementById("header").classList.toggle("dark");
+  document.getElementById("sidebar").classList.toggle("dark");
+  document.querySelectorAll('.card').forEach(c => c.classList.toggle("dark"));
+  document.querySelector("table").classList.toggle("dark");
+  document.getElementById("calendar").classList.toggle("dark");
+}
 
-    function toggleDarkMode() {
-      document.body.classList.toggle("dark");
-      document.querySelectorAll('.card, .sidebar, .header').forEach(el => el.classList.toggle('dark'));
-      localStorage.setItem("darkMode", document.body.classList.contains("dark"));
+
+    function generateCalendar() {
+      const now = new Date();
+      const month = now.getMonth();
+      const year = now.getFullYear();
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+      const calendar = document.getElementById("calendar");
+      calendar.innerHTML = "";
+
+      const dayLabels = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      dayLabels.forEach(day => {
+        const div = document.createElement("div");
+        div.className = "header";
+        div.textContent = day;
+        calendar.appendChild(div);
+      });
+
+      for (let i = 0; i < firstDay; i++) {
+        const empty = document.createElement("div");
+        calendar.appendChild(empty);
+      }
+
+      for (let i = 1; i <= daysInMonth; i++) {
+        const day = document.createElement("div");
+        day.textContent = i;
+        calendar.appendChild(day);
+      }
     }
 
-    if (localStorage.getItem("darkMode") === "true") {
-      toggleDarkMode();
+    function updateTime() {
+      const now = new Date();
+      const timeString = now.toLocaleTimeString();
+      document.getElementById("timeDisplay").textContent = timeString;
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
-      var calendarEl = document.getElementById('calendar');
-      var glanceCalEl = document.getElementById('glance-calendar');
+    setInterval(updateTime, 1000);
 
-      var calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',
-        height: 500,
-        events: [
-          {% for a in appointment_dates %}
-            { title: 'Appointment', date: '{{ a }}' },
-          {% endfor %}
-        ]
-      });
-      calendar.render();
-
-      var glanceCal = new FullCalendar.Calendar(glanceCalEl, {
-        initialView: 'dayGridMonth',
-        height: 300,
-        headerToolbar: false,
-        events: [
-          {% for a in appointment_dates %}
-            { title: '', date: '{{ a }}' },
-          {% endfor %}
-        ]
-      });
-      glanceCal.render();
+    document.addEventListener("DOMContentLoaded", () => {
+      generateCalendar();
+      updateTime();
+      const hour = new Date().getHours();
+      const greeting = document.getElementById("greeting");
+      const timeGreeting = hour < 12 ? "Good Morning" : hour < 17 ? "Good Afternoon" : "Good Evening";
+      greeting.innerText = `${timeGreeting}, {{ username }}`;
     });
+  </script>
+<script>
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("collapsed");
+    }
+
+ let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
+
+function updateMonthLabel() {
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+  document.getElementById("monthYear").textContent = `${monthNames[currentMonth]} ${currentYear}`;
+}
+
+function generateCalendar() {
+  const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+  const calendar = document.getElementById("calendar");
+  calendar.innerHTML = "";
+
+  const dayLabels = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  dayLabels.forEach(day => {
+    const div = document.createElement("div");
+    div.className = "header";
+    div.textContent = day;
+    calendar.appendChild(div);
+  });
+
+  for (let i = 0; i < firstDay; i++) {
+    calendar.appendChild(document.createElement("div"));
+  }
+
+  for (let i = 1; i <= daysInMonth; i++) {
+    const day = document.createElement("div");
+    day.textContent = i;
+    day.style.transition = "background 0.2s, transform 0.2s";
+    day.style.cursor = "pointer";
+    day.onmouseenter = () => {
+      day.style.background = "#00bcd4";
+      day.style.color = "white";
+      day.style.transform = "scale(1.05)";
+    };
+    day.onmouseleave = () => {
+      day.style.background = "";
+      day.style.color = "";
+      day.style.transform = "scale(1)";
+    };
+    calendar.appendChild(day);
+  }
+
+  updateMonthLabel();
+}
+
+function prevMonth() {
+  currentMonth--;
+  if (currentMonth < 0) {
+    currentMonth = 11;
+    currentYear--;
+  }
+  generateCalendar();
+}
+
+function nextMonth() {
+  currentMonth++;
+  if (currentMonth > 11) {
+    currentMonth = 0;
+    currentYear++;
+  }
+  generateCalendar();
+}
+
   </script>
 </body>
 </html>
