@@ -1,26 +1,211 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Register</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-    body { font-family: 'Segoe UI', sans-serif; background: #e3f2fd; display: flex; align-items: center; justify-content: center; height: 100vh; }
-    .register-box {
-      background: white; padding: 30px; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 300px;
+    body {
+      margin: 0;
+      padding: 0;
+      background: url('assets/images/register.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Segoe UI', sans-serif;
     }
-    input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
-    button { width: 100%; padding: 10px; background: #2196F3; color: white; border: none; border-radius: 5px; }
-    a { text-decoration: none; display: block; text-align: center; margin-top: 10px; color: #2196F3; }
+
+    .register-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 360px;
+      padding: 40px;
+      background: rgba(0, 0, 0, 0.4); /* Darker glass effect */
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border-radius: 15px;
+      color: white;
+      text-align: center;
+      animation: fadeInUp 1s ease;
+    }
+
+    h2 {
+      margin-bottom: 25px;
+      font-weight: 600;
+      font-size: 26px;
+      animation: fadeIn 1s ease;
+    }
+
+    .input-group {
+      position: relative;
+      width: 75%;
+      margin-left: 0%;
+      margin-bottom: 20px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 10px 46px;
+      background: rgba(255, 255, 255, 0.15); /* more contrast */
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-size: 14px;
+      outline: none;
+      transition: 0.3s ease;
+    }
+
+    .input-group input::placeholder {
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 15px;
+      color: #ddd;
+      pointer-events: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #00bcd4;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      animation: popIn 1s ease;
+    }
+
+    button:hover {
+      background: #0097a7;
+    }
+
+    .footer-link {
+      margin-top: 15px;
+      font-size: 13px;
+      animation: fadeIn 1.4s ease;
+    }
+
+    .footer-link a {
+      color: #00bcd4;
+      text-decoration: none;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+      }
+      to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes popIn {
+      0% {
+        transform: scale(0.95);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @media screen and (max-width: 600px) {
+      .register-container {
+        width: 90%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+
+.toggle-password {
+  position: absolute;
+  right: -75px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 15px;
+  color: #ccc;
+  cursor: pointer;
+}
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
+input[type="password"]::-webkit-credentials-auto-fill-button {
+  visibility: hidden;
+  display: none !important;
+}
+
   </style>
 </head>
 <body>
-  <div class="register-box">
-    <h2>Register</h2>
+  <div class="register-container">
     <form method="POST">
-      <input type="text" name="username" placeholder="Username" required>
-      <input type="password" name="password" placeholder="Password" required>
+      <h2>REGISTER</h2>
+
+      <div class="input-group">
+        <i class="fas fa-user input-icon"></i>
+        <input type="text" name="username" placeholder="Username" required />
+      </div>
+
+      <div class="input-group">
+        <i class="fas fa-envelope input-icon"></i>
+        <input type="email" name="email" placeholder="Email" required />
+      </div>
+
+      <div class="input-group">
+        <i class="fas fa-phone input-icon"></i>
+        <input type="text" name="mobile" placeholder="Mobile Number" required pattern="[0-9]{10}" />
+      </div>
+
+      <div class="input-group">
+  <i class="fas fa-lock input-icon"></i>
+  <input type="password" name="password" id="password" placeholder="Password" required />
+  <i class="fas fa-eye toggle-password" id="togglePassword" onclick="togglePassword()"></i>
+</div>
+
+
       <button type="submit">Register</button>
+
+      <div class="footer-link">
+        <a href="/login">Already registered? Login</a>
+      </div>
     </form>
-    <a href="/login">Already registered? Login</a>
   </div>
+
+<script>
+  function togglePassword() {
+    const passwordField = document.getElementById("password");
+    const toggleIcon = document.getElementById("togglePassword");
+    const isPassword = passwordField.type === "password";
+    passwordField.type = isPassword ? "text" : "password";
+    toggleIcon.classList.toggle("fa-eye");
+    toggleIcon.classList.toggle("fa-eye-slash");
+  }
+</script>
+
 </body>
 </html>

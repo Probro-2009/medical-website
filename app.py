@@ -1,30 +1,60 @@
-from video import video
+from flask import Flask, request, send_from_directory, redirect, url_for, render_template, session, flash, jsonify, abort
+from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO, emit, join_room
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask import Flask, request, send_from_directory, redirect, url_for, render_template, session
-from flask_sqlalchemy import SQLAlchemy
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-import requests
 import uuid
-from flask import redirect
-
-# ✅ Import the admin blueprint
+import requests
+import os
 from admin import admin_blueprint
+from video import video
+from login import login_bp
+
 
 app = Flask(__name__, static_folder="frontend/public")
+app.secret_key = '3f7a2c2b5e8a4a1c9d6e0f9c4b47f607'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///appointments.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.secret_key = '3f7a2c2b5e8a4a1c9d6e0f9c4b47f607'
 socketio = SocketIO(app)
+db = SQLAlchemy(app)
+
+
+class User(db.Model):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100), nullable=False, unique=True)
+    email = db.Column(db.String(150), nullable=False, unique=True)
+    mobile = db.Column(db.String(20), nullable=False, unique=True)
+    password = db.Column(db.String(200), nullable=False)
+
+    def set_password(self, password):
+        from werkzeug.security import generate_password_hash
+        self.password = generate_password_hash(password)
+
+    def check_password(self, password):
+        from werkzeug.security import check_password_hash
+        return check_password_hash(self.password, password)
+
+
+
+# ✅ Now import blueprint and pass model
+from login import login_bp
+app.register_blueprint(login_bp(User))
 
 # ✅ Register the blueprint
 app.register_blueprint(admin_blueprint, url_prefix='/admin')
 app.register_blueprint(video)
 
-# Initialize SQLAlchemy
-db = SQLAlchemy(app)
+class Patient(db.Model):
+    __tablename__ = 'patient'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(200), nullable=False)  # or password_hash if applicable
+
+
+
 
 # Define the Appointment model
 class Appointment(db.Model):
@@ -43,18 +73,6 @@ class Appointment(db.Model):
 with app.app_context():
     db.create_all()
 
-# Login database
-class Patient(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100), unique=True, nullable=False)
-    password_hash = db.Column(db.String(200), nullable=False)
-
-    def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
-    
-    def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
-
 
 def send_sms(mobile, message):
     url = "https://www.fast2sms.com/dev/bulkV2"
@@ -71,6 +89,7 @@ def send_sms(mobile, message):
     }
     response = requests.post(url, json=payload, headers=headers)
     print("SMS Status:", response.status_code, response.text)
+
 
 @app.route('/start_call')
 def start_call():
@@ -215,37 +234,48 @@ def serve_thankyou():
     return render_template('thankyou.html', mobile=mobile)
 
 
+from flask import flash
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        username = request.form["username"]
+        email = request.form["email"]
         password = request.form["password"]
 
-        patient = Patient.query.filter_by(username=username).first()
-        if patient and patient.check_password(password):
-            session["patient_user"] = username
+        user = User.query.filter_by(email=email).first()
+        if user and user.check_password(password):
+            session["user_email"] = user.email
             return redirect(url_for("dashboard"))
         else:
-            return "Invalid username or password", 401
+            flash("❌ Invalid email or password.")
+            return render_template("login.html")
     return render_template("login.html")
+
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
         username = request.form["username"]
+        email = request.form["email"]
+        mobile = request.form["mobile"]
         password = request.form["password"]
 
-        if Patient.query.filter_by(username=username).first():
-            return "Username already exists", 409
+        if User.query.filter_by(username=username).first():
+            return "❌ Username already taken", 409
+        if User.query.filter_by(email=email).first():
+            return "❌ Email already registered", 409
 
-        new_patient = Patient(username=username)
-        new_patient.set_password(password)
+        # ✅ Create user and set hashed password
+        user = User(username=username, email=email, mobile=mobile)
+        user.set_password(password)  # ✅ sets hashed password
 
-        db.session.add(new_patient)
+        db.session.add(user)
         db.session.commit()
+
         return redirect(url_for("login"))
 
     return render_template("register.html")
+
 
 @app.route("/dashboard")
 def dashboard():

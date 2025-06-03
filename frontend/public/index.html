@@ -917,14 +917,6 @@
 </head>
 <body>
 
-<div id="loginPopup" style="position: fixed; top: 15%; left: 30%; width: 40%; background: #ffffff; border-radius: 10px; padding: 30px; box-shadow: 0 15px 30px rgba(0,0,0,0.2); z-index: 999;">
-    <span style="position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer;" onclick="document.getElementById('loginPopup').style.display='none'">✖</span>
-    <h2 style="text-align: center; color: #333;">Are you an existing patient?</h2>
-    <div style="text-align: center; margin-top: 20px;">
-        <a href="/login"><button style="padding: 10px 20px; margin: 10px; background-color: #4CAF50; color: white; border: none; border-radius: 5px;">Login</button></a>
-        <a href="/register"><button style="padding: 10px 20px; margin: 10px; background-color: #2196F3; color: white; border: none; border-radius: 5px;">Register</button></a>
-    </div>
-</div>
 
     <!-- Video Section -->
 <div id="video-container">
@@ -936,7 +928,7 @@
     <div class="overlay">
         <img src="assets/images/logo.png.png" alt="Logo" class="logo">
         <div class="buttons">
-            <a href="index.html" class="btn">Home</a>
+            <a href="/login" class="btn" onclick="showLoginPopup()">Login</a>
             <a href="about.html" class="btn">About</a>
             <a href="services.html" class="btn">Services</a>
             <a href="contact.html" class="btn">Contact</a>
@@ -1313,7 +1305,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     setInterval(changeBlog, 5000); // Change every 5 seconds
 });
-
 </script>
 </body>
 </html>
