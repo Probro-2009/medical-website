@@ -11,6 +11,8 @@ import os
 from admin import admin_blueprint
 from video import video
 from login import login_bp
+from fallback import fallback_bp
+from datetime import timedelta
 
 
 app = Flask(__name__, static_folder="frontend/public")
@@ -19,7 +21,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///appointments.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 socketio = SocketIO(app)
 db = SQLAlchemy(app)
-
+app.permanent_session_lifetime = timedelta(hours=1)  # Optional
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -38,7 +40,6 @@ class User(db.Model):
         return check_password_hash(self.password, password)
 
 
-
 # ✅ Now import blueprint and pass model
 from login import login_bp
 app.register_blueprint(login_bp(User))
@@ -46,7 +47,7 @@ app.register_blueprint(login_bp(User))
 # ✅ Register the blueprint
 app.register_blueprint(admin_blueprint, url_prefix='/admin')
 app.register_blueprint(video)
-
+app.register_blueprint(fallback_bp)
 class Patient(db.Model):
     __tablename__ = 'patient'
     id = db.Column(db.Integer, primary_key=True)
@@ -303,7 +304,13 @@ def dashboard():
 
 @app.route("/consult")
 def consult():
-    return render_template("consult.html")
+    username = session.get("username", "Guest")
+    return render_template("consult.html", username=username)
+
+@app.route("/chat")
+def chat():
+    username = session.get("username", "Guest")
+    return render_template("chat.html", username=username)
 
 @app.route("/add_review")
 def add_review():
@@ -339,6 +346,7 @@ def help():
 @app.route("/logout")
 def logout():
     session.pop("patient_user", None)
+    session.pop("chat_history", None)  # Clear LLaMA memory
     return redirect(url_for("serve_index"))
 
 @app.route('/video_call')

@@ -254,6 +254,7 @@
       <h3>Patient Menu</h3>
       <a href="/book"><i class="fas fa-calendar-plus"></i><span>Book Appointment</span></a>
       <a href="/consult"><i class="fas fa-user-md"></i><span>Consult with Doctor</span></a>
+      <a href="/chat" id="medicalAiBtn"><i class="fas fa-robot"></i><span>Medical AI</span></a>
       <a href="/add_review"><i class="fas fa-star"></i><span>Add a Review</span></a>
       <a href="/write_blog"><i class="fas fa-pen"></i><span>Write a Blog</span></a>
       <a href="/grievance"><i class="fas fa-comment-dots"></i><span>Add Grievances</span></a>
@@ -271,6 +272,10 @@
           <button class="toggle-dark" onclick="toggleDarkMode()">🌙 Dark Mode</button>
         </div>
       </div>
+      <div id="aiNotice" style="background: #fffae6; color: #333; border: 1px solid #f0c36d; padding: 12px 20px; margin: 20px 0; border-radius: 10px; position: relative; box-shadow: var(--shadow);">
+  <strong>✨ Check out our new <a href="/chat" style="color: #e67e22; font-weight: bold; text-decoration: underline;">Medical Chatbot (Beta)</a>!</strong>
+  <button onclick="document.getElementById('aiNotice').style.display='none'" style="position: absolute; right: 12px; top: 8px; border: none; background: none; font-size: 18px; cursor: pointer;">&times;</button>
+</div>
 
       <div class="row">
         <div class="card" id="apptCard">
@@ -300,6 +305,20 @@
   <footer>Developed by Vedant R. Chitre</footer>
 
   <script>
+
+  function toggleSidebar() {
+  const sidebar = document.getElementById("sidebar");
+  sidebar.classList.toggle("collapsed");
+
+  // Optional: hide AI notice if sidebar collapsed
+  const aiBtn = document.getElementById("medicalAiBtn");
+  if (sidebar.classList.contains("collapsed")) {
+    aiBtn.title = "Medical AI";
+  } else {
+    aiBtn.removeAttribute("title");
+  }
+}
+
    function toggleDarkMode() {
   document.body.classList.toggle("dark");
   document.getElementById("header").classList.toggle("dark");
