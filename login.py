@@ -1,10 +1,6 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, current_app
-from werkzeug.security import check_password_hash
+from flask import Blueprint, render_template, request, redirect, url_for, session
 import datetime
 import requests
-
-def login_bp(User):
-    login = Blueprint('login', __name__, template_folder='templates')
 
 def get_location(ip):
     try:
@@ -14,17 +10,13 @@ def get_location(ip):
     except:
         return "Unknown"
 
-
 def get_client_info(request):
     ip = request.remote_addr
     user_agent = request.headers.get("User-Agent")
     return ip, user_agent
 
-# On register
-ip, agent = get_client_info(request)
-cursor.execute("INSERT INTO users (username, ..., ip_address, user_agent, registered_at) VALUES (?, ?, ?, ?, ?)",
-               (username, ..., ip, agent, datetime.datetime.now()))
-
+def login_bp(User):  # This function returns a Blueprint configured for user login
+    login = Blueprint('login', __name__, template_folder='templates')
 
     @login.route('/login', methods=['GET', 'POST'])
     def login_view():
