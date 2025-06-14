@@ -18,9 +18,9 @@ def developer_required(f):
 def dev_dashboard():
     # Only runs after IP + password passes
     # Render developer dashboard
-    return render_template("dev_dashboard.html", ...)
+    return render_template("dev_dashboard.html")
 
-    db_path = os.path.join("instance", "users.db")
+    db_path = os.path.join("instance", "appointments.db")
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
