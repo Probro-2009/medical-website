@@ -13,7 +13,14 @@ from video import video
 from login import login_bp
 from fallback import fallback_bp
 from datetime import timedelta
+from dev import dev_bp
+from dotenv import load_dotenv
 
+
+load_dotenv()
+
+RECAPTCHA_SECRET = os.environ.get("RECAPTCHA_SECRET_KEY")
+RECAPTCHA_SITE = os.environ.get("RECAPTCHA_SITE_KEY")
 
 app = Flask(__name__, static_folder="frontend/public")
 app.secret_key = '3f7a2c2b5e8a4a1c9d6e0f9c4b47f607'
@@ -48,6 +55,8 @@ app.register_blueprint(login_bp(User))
 app.register_blueprint(admin_blueprint, url_prefix='/admin')
 app.register_blueprint(video)
 app.register_blueprint(fallback_bp)
+app.register_blueprint(dev_bp)
+
 class Patient(db.Model):
     __tablename__ = 'patient'
     id = db.Column(db.Integer, primary_key=True)
@@ -91,7 +100,43 @@ def send_sms(mobile, message):
     response = requests.post(url, json=payload, headers=headers)
     print("SMS Status:", response.status_code, response.text)
 
+# Set allowed developer IP
+ALLOWED_DEV_IP = "110.226.180.170"
 
+@app.before_request
+def restrict_dev_access():
+    if request.path.startswith("/dev"):
+        client_ip = request.remote_addr
+        if client_ip != ALLOWED_DEV_IP:
+            return "Access Denied: Unauthorized IP", 403
+        if not session.get("dev_authenticated"):
+            return redirect(url_for("dev_auth"))
+
+# Route to the dev auth page (password or Windows Hello)@app.route("/dev_auth", methods=["GET", "POST"])
+@app.route("/dev_auth", methods=["GET", "POST"])
+def dev_auth():
+    if request.method == "POST":
+        password = request.form.get("password")
+        recaptcha_response = request.form.get("g-recaptcha-response")
+
+        # Verify reCAPTCHA
+        verify_url = "https://www.google.com/recaptcha/api/siteverify"
+        resp = requests.post(verify_url, data={
+            'secret': RECAPTCHA_SECRET,
+            'response': recaptcha_response
+        })
+        result = resp.json()
+
+        if not result.get("success"):
+            return render_template("dev_auth.html", error="reCAPTCHA failed.", sitekey=RECAPTCHA_SITE)
+
+        if password == "abha0519$":
+            session["dev_authenticated"] = True
+            return redirect(url_for("dev.dev_dashboard"))
+        else:
+            return render_template("dev_auth.html", error="Incorrect password.", sitekey=RECAPTCHA_SITE)
+
+    return render_template("dev_auth.html", sitekey=RECAPTCHA_SITE)
 @app.route('/start_call')
 def start_call():
     room_id = str(uuid.uuid4())[:8]  # Generate short unique ID

@@ -1,8 +1,30 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, current_app
 from werkzeug.security import check_password_hash
+import datetime
+import requests
 
 def login_bp(User):
     login = Blueprint('login', __name__, template_folder='templates')
+
+def get_location(ip):
+    try:
+        response = requests.get(f"https://ipapi.co/{ip}/json")
+        data = response.json()
+        return f"{data['city']}, {data['region']}, {data['country_name']}"
+    except:
+        return "Unknown"
+
+
+def get_client_info(request):
+    ip = request.remote_addr
+    user_agent = request.headers.get("User-Agent")
+    return ip, user_agent
+
+# On register
+ip, agent = get_client_info(request)
+cursor.execute("INSERT INTO users (username, ..., ip_address, user_agent, registered_at) VALUES (?, ?, ?, ?, ?)",
+               (username, ..., ip, agent, datetime.datetime.now()))
+
 
     @login.route('/login', methods=['GET', 'POST'])
     def login_view():

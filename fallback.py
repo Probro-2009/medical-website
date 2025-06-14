@@ -1,10 +1,11 @@
 from flask import Blueprint, render_template, request, jsonify, session
 import requests
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 fallback_bp = Blueprint("fallback", __name__, template_folder="templates")
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "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")
-
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 @fallback_bp.route("/chat")
 def consult_page():
     username = session.get("username", "User")
