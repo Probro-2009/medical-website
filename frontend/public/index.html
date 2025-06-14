@@ -927,7 +927,57 @@
     </video>
 
     <div class="overlay">
+    <!-- Glassmorphism Modal -->
+<div id="devModal" class="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md bg-black/30">
+  <div class="bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl rounded-3xl text-white w-11/12 md:w-2/3 lg:w-1/2 p-6 relative max-h-[90vh] overflow-y-auto">
     
+    <!-- Cancel Icon -->
+    <button onclick="document.getElementById('devModal').style.display='none'" 
+      class="absolute top-4 right-4 text-white text-2xl font-bold hover:text-red-400">&times;</button>
+
+    <!-- Title -->
+    <h2 class="text-2xl font-bold mb-2 text-center text-blue-200 drop-shadow">Medical-Website V1.0.0.0</h2>
+    <p class="text-sm text-center text-gray-200 mb-4">🚀 Feature Update Log:</p>
+
+    <!-- Feature List -->
+    <ul class="list-disc list-inside space-y-2 text-sm text-gray-100">
+      <li>Flask system <strong>{{ latest version }}</strong></li>
+      <li>Gmail SMTP <strong>{{ latest version }}</strong>, forgot password.</li>
+      <li>Functional login and register for patients.</li>
+      <li>Flask Fast2SMS API for appointment confirmation.</li>
+      <li>Tailwind CSS with Bootstrap.</li>
+      <li class="hidden more-features">Patient dashboard connected to SQLite3 <strong>{{ latest version }}</strong>.</li>
+      <li class="hidden more-features">Admin dashboard.</li>
+      <li class="hidden more-features">Developer dashboard.</li>
+      <li class="hidden more-features">Custom medical chatbot.</li>
+      <li class="hidden more-features">WebRTC video calling (developmental stage).</li>
+      <li class="hidden more-features">GitHub integration.</li>
+    </ul>
+
+    <!-- Read More -->
+    <div class="text-center mt-4">
+      <button id="readMoreBtn" onclick="toggleFeatures()" class="text-blue-300 hover:underline text-sm">
+        📖 Read more...
+      </button>
+    </div>
+
+    <!-- Credits -->
+    <p class="text-xs text-center text-gray-300 mt-6 italic">— Developed with ❤️ by Vedant Chitre</p>
+  </div>
+</div>
+
+<script>
+  function toggleFeatures() {
+    document.querySelectorAll('.more-features').forEach(el => el.classList.remove('hidden'));
+    document.getElementById('readMoreBtn').style.display = 'none';
+  }
+
+  // Show modal on page load
+  window.onload = () => {
+    document.getElementById('devModal').style.display = 'flex';
+  };
+</script>
+
         <img src="assets/images/logo.png.png" alt="Logo" class="logo">
         <div class="buttons">
             <a href="/login" class="btn" onclick="showLoginPopup()">Login</a>
@@ -940,54 +990,6 @@
 
    
 </div>
-
-
-<!-- Modal Popup -->
-<div id="devModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-  <div class="bg-white rounded-2xl shadow-xl w-11/12 md:w-2/3 lg:w-1/2 max-h-[90vh] overflow-y-auto relative p-6 border border-gray-300">
-    
-    <!-- Cancel Icon -->
-    <button onclick="document.getElementById('devModal').style.display='none'" class="absolute top-4 right-4 text-gray-500 hover:text-red-600 text-xl font-bold">&times;</button>
-
-    <!-- Title -->
-    <h2 class="text-xl font-bold mb-2 text-center text-blue-800">Medical-Website V1.0.0.0</h2>
-    <p class="text-sm text-center text-gray-500 mb-4">Latest Feature Updates:</p>
-
-    <!-- Feature List -->
-    <ul class="list-disc pl-5 space-y-1 text-gray-700 text-sm">
-      <li>Flask system <strong>{{ latest version }}</strong></li>
-      <li>Gmail SMTP <strong>{{ latest version }}</strong>, forgot password.</li>
-      <li>Functional login and register for patients.</li>
-      <li>Flask fast2sms API for appointment confirmation.</li>
-      <li>Tailwind CSS with Bootstrap.</li>
-      <li class="hidden more-features">Functional Patient dashboard connected to SQLite3 <strong>{{ latest version }}</strong>.</li>
-      <li class="hidden more-features">Admin dashboard.</li>
-      <li class="hidden more-features">Developer side dashboard.</li>
-      <li class="hidden more-features">Custom medical chatbot.</li>
-      <li class="hidden more-features">WebRTC video calling (developmental stage).</li>
-      <li class="hidden more-features">GitHub integration.</li>
-    </ul>
-
-    <!-- Read More Button -->
-    <button id="readMoreBtn" onclick="toggleFeatures()" class="mt-3 text-blue-600 hover:underline text-sm">
-      Read more...
-    </button>
-
-    <!-- Credits -->
-    <p class="text-xs text-center mt-6 text-gray-500">— Developed by Vedant Chitre</p>
-  </div>
-</div>
-
-<script>
-  function toggleFeatures() {
-    document.querySelectorAll('.more-features').forEach(el => el.classList.remove('hidden'));
-    document.getElementById('readMoreBtn').style.display = 'none';
-  }
-  // Show on load
-  window.onload = () => {
-    document.getElementById('devModal').style.display = 'flex';
-  };
-</script>
 
 
   <!-- Section 2 -->
