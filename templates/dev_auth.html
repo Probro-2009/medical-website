@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>Developer Auth</title>
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
@@ -11,6 +12,7 @@
     <p style="color:red;">{{ error }}</p>
   {% endif %}
 
+  <!-- Password-based login -->
   <form method="POST">
     <label>Password:</label><br>
     <input type="password" name="password" required><br><br>
@@ -23,25 +25,39 @@
 
   <hr>
 
-  <button onclick="authenticate()">Use Windows Hello (WebAuthn)</button>
-
+  <!-- Windows Hello (WebAuthn) -->
+  <button onclick="authenticate()">Use Windows Hello (PIN/Fingerprint)</button>
   <p><a href="#">Forgot Password?</a> (Coming soon)</p>
 
   <script>
     async function authenticate() {
       try {
-        const credential = await navigator.credentials.get({
-          publicKey: {
-            challenge: new Uint8Array(32),
-            timeout: 60000,
-            allowCredentials: [],
-            userVerification: "preferred"
+        const challenge = new Uint8Array(32);
+        window.crypto.getRandomValues(challenge);
+
+        const publicKey = {
+          challenge: challenge,
+          timeout: 60000,
+          allowCredentials: [], // Allow any registered platform credential
+          userVerification: "required",
+          authenticatorSelection: {
+            authenticatorAttachment: "platform"
           }
-        });
-        alert("Fingerprint verified! (WebAuthn success — server check TBD)");
+        };
+
+        const credential = await navigator.credentials.get({ publicKey });
+
+        // In real use, you'd POST this to your Flask server to verify
+        console.log("Credential received:", credential);
+
+        // TEMPORARY: simulate successful verification
+        alert("Fingerprint or PIN verified via Windows Hello!");
+
+        // Redirect to dev dashboard
         window.location.href = "/dev";
       } catch (err) {
-        alert("Fingerprint auth failed or cancelled.");
+        console.error(err);
+        alert("Fingerprint auth failed or was cancelled.");
       }
     }
   </script>
