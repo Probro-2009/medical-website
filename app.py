@@ -100,19 +100,29 @@ def send_sms(mobile, message):
     response = requests.post(url, json=payload, headers=headers)
     print("SMS Status:", response.status_code, response.text)
 
-# Set allowed developer IP
-ALLOWED_DEV_IP = "110.226.180.170"
+# ✅ List of allowed developer IPs
+ALLOWED_DEV_IPS = ["110.226.180.170"]  # Add more IPs if needed
 
+# ✅ Function to get client IP safely (handles proxy)
+def get_client_ip():
+    if request.headers.get("X-Forwarded-For"):
+        return request.headers.get("X-Forwarded-For").split(",")[0].strip()
+    return request.remote_addr
+
+# ✅ Restrict access to /dev routes
 @app.before_request
 def restrict_dev_access():
     if request.path.startswith("/dev"):
-        client_ip = request.remote_addr
-        if client_ip != ALLOWED_DEV_IP:
-            return "Access Denied: Unauthorized IP", 403
-        if not session.get("dev_authenticated"):
+        client_ip = get_client_ip()
+        app.logger.info(f"Client IP: {client_ip}")
+
+        if client_ip not in ALLOWED_DEV_IPS:
+            return f"Access Denied: Unauthorized IP = {client_ip}", 403
+
+        if not session.get("dev_authenticated") and request.endpoint != "dev_auth":
             return redirect(url_for("dev_auth"))
 
-# Route to the dev auth page (password or Windows Hello)@app.route("/dev_auth", methods=["GET", "POST"])
+# ✅ Dev auth route (login with password + reCAPTCHA)
 @app.route("/dev_auth", methods=["GET", "POST"])
 def dev_auth():
     if request.method == "POST":
