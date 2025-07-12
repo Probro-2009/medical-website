@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pricing Plans</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-sky-50 to-indigo-100 min-h-screen relative">
+
+    <!-- Cross button -->
+    <a href="/dashboard" class="absolute top-4 right-4 text-gray-500 hover:text-red-600 text-2xl font-bold">&times;</a>
+
+    <div class="max-w-7xl mx-auto px-4 py-12">
+        <h1 class="text-4xl font-bold text-center text-gray-800 mb-10">Choose Your Plan</h1>
+
+        <!-- Free Plan -->
+        <div class="mb-10">
+            <div class="bg-white rounded-2xl shadow-md p-6 max-w-md mx-auto">
+                <h2 class="text-lg font-semibold text-gray-800 mb-2">Free Plan (Current)</h2>
+                <ul class="text-sm text-gray-700 space-y-1">
+                    <li>✔ Basic dashboard access</li>
+                    <li>✔ 1 Online Appointment / Month</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+
+            <!-- Standard Patient Plan -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 flex flex-col justify-between hover:scale-105 transition">
+                <div>
+                    <h2 class="text-lg font-semibold text-blue-700 mb-3">Standard Patient Plan</h2>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li>✔ 24/7 limited access to dashboard</li>
+                        <li>✔ 2 appointment bookings</li>
+                        <li>✔ Limited Medical Chatbot</li>
+                        <li>✘ No blog creation</li>
+                        <li>✘ No video calling</li>
+                    </ul>
+                    <p class="mt-4 font-bold text-xl text-gray-900">₹149/month<br><span class="text-base">or ₹1499/year</span></p>
+                    <a href="/read" class="text-blue-500 text-sm mt-1 hover:underline">Read more</a>
+
+                </div>
+                <a href="/buy" class="mt-6 bg-blue-600 text-white py-2 px-4 rounded-xl text-center hover:bg-blue-700 transition">Buy Now</a>
+            </div>
+
+            <!-- Patient Plus + -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 flex flex-col justify-between hover:scale-105 transition">
+                <div>
+                    <h2 class="text-lg font-semibold text-green-700 mb-3">Patient Plus +</h2>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li>✔ Full dashboard access 24/7</li>
+                        <li>✔ 5 appointment bookings</li>
+                        <li>✔ Limited AI access</li>
+                        <li>✔ 2 blogs/month</li>
+                        <li>✔ 1 video call/month</li>
+                    </ul>
+                    <p class="mt-4 font-bold text-xl text-gray-900">₹299/month<br><span class="text-base">or ₹3499/year</span></p>
+                    <a href="/read" class="text-green-500 text-sm mt-1 cursor-pointer hover:underline">Read more</p>
+                </div>
+                <a href="/buy" class="mt-6 bg-green-600 text-white py-2 px-4 rounded-xl text-center hover:bg-green-700 transition">Buy Now</a>
+            </div>
+
+            <!-- Patient Pro -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 flex flex-col justify-between hover:scale-105 transition">
+                <div>
+                    <h2 class="text-lg font-semibold text-yellow-700 mb-3">Patient Pro</h2>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li>✔ All Patient Plus+ features</li>
+                        <li>✔ Full AI + Medical AI</li>
+                        <li>✔ 10 appointments/month</li>
+                        <li>✔ 5 video calls/month</li>
+                        <li>✔ 10 blogs/month</li>
+                    </ul>
+                    <p class="mt-4 font-bold text-xl text-gray-900">₹699/month<br><span class="text-base">or ₹7999/year</span></p>
+                    <a href="/read" class="text-yellow-500 text-sm mt-1 cursor-pointer hover:underline">Read more</p>
+                </div>
+                <a href="/buy" class="mt-6 bg-yellow-600 text-white py-2 px-4 rounded-xl text-center hover:bg-yellow-700 transition">Buy Now</a>
+            </div>
+
+            <!-- AI Bundle + Dashboard -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 flex flex-col justify-between hover:scale-105 transition">
+                <div>
+                    <h2 class="text-lg font-semibold text-red-700 mb-3">AI Bundle + Dashboard</h2>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li>✔ All dashboard features</li>
+                        <li>✔ Full AI & ML access</li>
+                        <li>✔ Medical chatbot</li>
+                        <li>✔ Future AI model access</li>
+                        <li>✘ Not for patients</li>
+                    </ul>
+                    <p class="mt-4 font-bold text-xl text-gray-900">₹999/month<br><span class="text-base">or ₹11,499/year</span></p>
+                    <a href="/read" class="text-red-500 text-sm mt-1 cursor-pointer hover:underline">Read more</p>
+                </div>
+                <a href="/buy" class="mt-6 bg-red-600 text-white py-2 px-4 rounded-xl text-center hover:bg-red-700 transition">Buy Now</a>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

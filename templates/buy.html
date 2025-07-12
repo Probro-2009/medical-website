@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Buy Plan - Checkout</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f9ff;
+      margin: 0;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .checkout-container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      width: 800px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .payment-form, .bill-summary {
+      width: 48%;
+    }
+
+    .section {
+      margin-bottom: 25px;
+    }
+
+    h2 {
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    select, input[type="text"], input[type="email"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-bottom: 15px;
+    }
+
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .bill-summary {
+      background: #f0f6ff;
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    .bill-summary h3 {
+      margin-top: 0;
+    }
+
+    .price-line {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .btn {
+      padding: 12px;
+      width: 100%;
+      background: #2196f3;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="checkout-container">
+    <div class="payment-form">
+      <h2>Plan Selected: <span id="selectedPlan">Loading...</span></h2>
+
+      <div class="section">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" placeholder="you@example.com">
+      </div>
+
+      <div class="section">
+        <label>Payment Method</label>
+        <div class="radio-group">
+          <label><input type="radio" name="payment" value="card" checked> Debit/Credit Card</label>
+          <label><input type="radio" name="payment" value="upi"> UPI</label>
+          <label><input type="radio" name="payment" value="netbanking"> Net Banking</label>
+        </div>
+      </div>
+
+      <button class="btn" onclick="proceedToPay()">Buy Now</button>
+    </div>
+
+    <div class="bill-summary">
+      <h3>Billing Summary</h3>
+      <div class="price-line"><span>Plan</span><span id="billPlan">--</span></div>
+      <div class="price-line"><span>Price</span><span id="billPrice">--</span></div>
+      <hr>
+      <div class="price-line" style="font-weight: bold;"><span>Total</span><span id="billTotal">--</span></div>
+    </div>
+  </div>
+
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const plan = "{{ plan }}";
+
+
+    const planDetails = {
+      "Standard Patient Plan": 149,
+      "Patient Plus +": 299,
+      "Patient Pro": 699,
+      "AI Bundle + Dashboard": 999
+    };
+
+    document.getElementById("selectedPlan").textContent = plan;
+    document.getElementById("billPlan").textContent = plan;
+    document.getElementById("billPrice").textContent = `₹${planDetails[plan]}/month`;
+    document.getElementById("billTotal").textContent = `₹${planDetails[plan]}`;
+
+    function proceedToPay() {
+      const email = document.getElementById("email").value;
+      const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+      const amount = planDetails[plan] * 100; // in paise
+
+      const options = {
+        key: "YOUR_RAZORPAY_KEY", // Replace with your Razorpay key
+        amount: amount,
+        currency: "INR",
+        name: "Health Panel",
+        description: `Payment for ${plan}`,
+        handler: function (response) {
+          alert("Payment Successful: " + response.razorpay_payment_id);
+        },
+        prefill: {
+          email: email,
+        },
+        theme: {
+          color: "#2196f3"
+        }
+      };
+
+      const rzp = new Razorpay(options);
+      rzp.open();
+    }
+  </script>
+</body>
+</html>

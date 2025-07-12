@@ -245,22 +245,110 @@
       background: #222;
       color: white;
     }
+
+   .sidebar-profile {
+  margin-top: auto;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.4); /* translucent by default */
+  transition: background 0.3s ease;
+  cursor: pointer;
+
+}
+.sidebar-profile:hover {
+  background-color: rgba(0, 0, 0, 0.1); /* darker on hover */
+}
+
+.profile-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ccc;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.profile-name {
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profile-plan {
+  font-size: 12px;
+  color: gray;
+}
+.sidebar:not(.collapsed) .profile-pic {
+  display: true;
+}
+
+.sidebar.collapsed .profile-info {
+  display: none;
+}
+.sidebar.collapsed .profile-pic {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+
+}
+
+.sidebar.collapsed .sidebar-profile {
+  width: 20px;
+  height: 20px;
+  background-color: #4CAF50;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 15px auto; /* centers in sidebar & adds spacing */
+}
+
+
   </style>
 </head>
 <body>
   <div class="container">
     <div class="sidebar" id="sidebar">
-      <button class="collapse-toggle" onclick="toggleSidebar()" title="Collapse Sidebar"><i class="fas fa-bars"></i></button>
-      <h3>Patient Menu</h3>
-      <a href="/book"><i class="fas fa-calendar-plus"></i><span>Book Appointment</span></a>
-      <a href="/consult"><i class="fas fa-user-md"></i><span>Consult with Doctor</span></a>
-      <a href="/chat" id="medicalAiBtn"><i class="fas fa-robot"></i><span>Medical AI</span></a>
-      <a href="/add_review"><i class="fas fa-star"></i><span>Add a Review</span></a>
-      <a href="/write_blog"><i class="fas fa-pen"></i><span>Write a Blog</span></a>
-      <a href="/grievance"><i class="fas fa-comment-dots"></i><span>Add Grievances</span></a>
-      <a href="/offers"><i class="fas fa-tags"></i><span>Offers & Discounts</span></a>
-      <a href="/support"><i class="fas fa-hands-helping"></i><span>Support Us</span></a>
+  <button class="collapse-toggle" onclick="toggleSidebar()" title="Collapse Sidebar"><i class="fas fa-bars"></i></button>
+  <h3>Patient Menu</h3>
+  <a href="/book"><i class="fas fa-calendar-plus"></i><span>Book Appointment</span></a>
+  <a href="/consult"><i class="fas fa-user-md"></i><span>Consult with Doctor</span></a>
+  <a href="/chat" id="medicalAiBtn"><i class="fas fa-robot"></i><span>Medical AI</span></a>
+  <a href="/add_review"><i class="fas fa-star"></i><span>Add a Review</span></a>
+  <a href="/write_blog"><i class="fas fa-pen"></i><span>Write a Blog</span></a>
+  <a href="/grievance"><i class="fas fa-comment-dots"></i><span>Add Grievances</span></a>
+  <a href="/offers"><i class="fas fa-tags"></i><span>Offers & Discounts</span></a>
+  <a href="/support"><i class="fas fa-hands-helping"></i><span>Support Us</span></a>
+
+  <!-- 👇 ChatGPT-like transparent profile card -->
+  <a href="/pricing" class="sidebar-profile">
+    <img src="assets/images/default-profile.png" alt="Profile Picture" class="profile-pic">
+    <div class="profile-info">
+      <div class="profile-name">{{ full_name }}</div>
+      <div class="profile-plan">
+        {% if full_name == 'Vedant R. Chitre' %}
+          Developer Access
+        {% else %}
+          Free Plan
+        {% endif %}
+      </div>
     </div>
+  </a>
+</div>
+
+
     <div class="main-content">
       <div class="header" id="header">
         <h2 id="greeting">Hello, {{ username }}</h2>
