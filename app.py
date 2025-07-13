@@ -235,7 +235,7 @@ def send_log_file(file_path, log_type):
         print(f"❌ Failed to send {log_type} log: {e}")
 
 def send_logs_if_due():
-    now = datetime.now(datetime.UTC)
+    now = datetime.now(timezone.utc)
 
     due_time = now.replace(hour=9, minute=0, second=0, microsecond=0)
 
@@ -600,3 +600,5 @@ with app.app_context():
     send_logs_if_due()
 
 
+if __name__ == "__main__":
+    socketio.run(app, debug=True)
