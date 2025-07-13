@@ -30,6 +30,8 @@ from datetime import datetime, timedelta
 import json
 from email.mime.application import MIMEApplication
 from datetime import datetime, timezone
+import threading
+import time
 
 
 login_attempts = defaultdict(list)  # { ip_address: [timestamps...] }
@@ -597,8 +599,15 @@ app.logger.info('Application startup')
 
 with app.app_context():
     db.create_all()
-    send_logs_if_due()
 
+    def delayed_log_send():
+        import time
+        time.sleep(10)  # wait for app to log something
+        with app.app_context():
+            send_logs_if_due()
+
+    import threading
+    threading.Thread(target=delayed_log_send).start()
 
 if __name__ == "__main__":
     socketio.run(app, debug=True)
