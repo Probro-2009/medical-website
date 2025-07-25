@@ -1,20 +1,4 @@
-2025-07-06 16:48:43,229 ERROR: Exception on /analyze_symptom [POST] 
-Traceback (most recent call last):
-  File "C:\Users\aruna\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\requests\models.py", line 974, in json
-    return complexjson.loads(self.text, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1520.0_x64__qbz5n2kfra8p0\Lib\json\__init__.py", line 346, in loads
-    return _default_decoder.decode(s)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1520.0_x64__qbz5n2kfra8p0\Lib\json\decoder.py", line 337, in decode
-    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1520.0_x64__qbz5n2kfra8p0\Lib\json\decoder.py", line 355, in raw_decode
-    raise JSONDecodeError("Expecting value", s, err.value) from None
-json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
-
-During handling of the above exception, another exception occurred:
-
+2025-07-06 17:07:18,377 ERROR: Exception on /symptom [GET] 
 Traceback (most recent call last):
   File "C:\Users\aruna\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\flask\app.py", line 1473, in wsgi_app
     response = self.full_dispatch_request()
@@ -28,92 +12,174 @@ Traceback (most recent call last):
   File "C:\Users\aruna\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\flask\app.py", line 865, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\aruna\Downloads\medical-website\symptom.py", line 85, in analyze_symptom
-    blip_caption = query_model(image_bytes, "What medical symptom does this image show?", BLIP2_URL)
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\aruna\Downloads\medical-website\symptom.py", line 30, in query_model
-    result = response.json()
-             ^^^^^^^^^^^^^^^
-  File "C:\Users\aruna\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\requests\models.py", line 978, in json
-    raise RequestsJSONDecodeError(e.msg, e.doc, e.pos)
-requests.exceptions.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
-2025-07-06 16:48:43,491 ERROR: Exception on /analyze_symptom [POST] 
-Traceback (most recent call last):
-  File "C:\Users\aruna\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\requests\models.py", line 974, in json
-    return complexjson.loads(self.text, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1520.0_x64__qbz5n2kfra8p0\Lib\json\__init__.py", line 346, in loads
-    return _default_decoder.decode(s)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1520.0_x64__qbz5n2kfra8p0\Lib\json\decoder.py", line 337, in decode
-    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1520.0_x64__qbz5n2kfra8p0\Lib\json\decoder.py", line 355, in raw_decode
-    raise JSONDecodeError("Expecting value", s, err.value) from None
-json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\aruna\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\flask\app.py", line 1473, in wsgi_app
-    response = self.full_dispatch_request()
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\aruna\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\flask\app.py", line 882, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\aruna\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\flask\app.py", line 880, in full_dispatch_request
-    rv = self.dispatch_request()
-         ^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\aruna\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\flask\app.py", line 865, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\aruna\Downloads\medical-website\symptom.py", line 85, in analyze_symptom
-    blip_caption = query_model(image_bytes, "What medical symptom does this image show?", BLIP2_URL)
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\aruna\Downloads\medical-website\symptom.py", line 30, in query_model
-    result = response.json()
-             ^^^^^^^^^^^^^^^
-  File "C:\Users\aruna\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\requests\models.py", line 978, in json
-    raise RequestsJSONDecodeError(e.msg, e.doc, e.pos)
-requests.exceptions.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
-2025-07-06 16:48:43,623 ERROR: Exception on /analyze_symptom [POST] 
-Traceback (most recent call last):
-  File "C:\Users\aruna\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\requests\models.py", line 974, in json
-    return complexjson.loads(self.text, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1520.0_x64__qbz5n2kfra8p0\Lib\json\__init__.py", line 346, in loads
-    return _default_decoder.decode(s)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1520.0_x64__qbz5n2kfra8p0\Lib\json\decoder.py", line 337, in decode
-    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.1520.0_x64__qbz5n2kfra8p0\Lib\json\decoder.py", line 355, in raw_decode
-    raise JSONDecodeError("Expecting value", s, err.value) from None
-json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\aruna\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\flask\app.py", line 1473, in wsgi_app
-    response = self.full_dispatch_request()
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\aruna\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\flask\app.py", line 882, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\aruna\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\flask\app.py", line 880, in full_dispatch_request
-    rv = self.dispatch_request()
-         ^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\aruna\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\flask\app.py", line 865, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\aruna\Downloads\medical-website\symptom.py", line 85, in analyze_symptom
-    blip_caption = query_model(image_bytes, "What medical symptom does this image show?", BLIP2_URL)
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\aruna\Downloads\medical-website\symptom.py", line 30, in query_model
-    result = response.json()
-             ^^^^^^^^^^^^^^^
-  File "C:\Users\aruna\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\requests\models.py", line 978, in json
-    raise RequestsJSONDecodeError(e.msg, e.doc, e.pos)
-requests.exceptions.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
-2025-07-06 17:04:27,383 INFO: Application startup 
-2025-07-06 17:07:11,579 INFO: Application startup 
+  File "C:\Users\aruna\Downloads\medical-website\symptom.py", line 65, in show_symptom_ui
+    return render_template("symptom.html")
+           ^^^^^^^^^^^^^^^
+NameError: name 'render_template' is not defined
+2025-07-06 17:07:54,016 INFO: Application startup 
+2025-07-06 17:09:36,108 INFO: Application startup 
+2025-07-06 17:10:42,265 INFO: Application startup 
+2025-07-06 17:12:01,736 INFO: Application startup 
+2025-07-06 17:18:53,735 INFO: Application startup 
+2025-07-06 17:27:02,775 INFO: Application startup 
+2025-07-06 17:29:10,429 INFO: Application startup 
+2025-07-06 17:31:15,424 INFO: Application startup 
+2025-07-06 17:34:00,764 INFO: Application startup 
+2025-07-06 17:35:09,369 INFO: Application startup 
+2025-07-06 17:36:11,299 INFO: Application startup 
+2025-07-06 17:38:19,147 INFO: Application startup 
+2025-07-06 17:39:39,473 INFO: Application startup 
+2025-07-06 17:40:50,717 INFO: Application startup 
+2025-07-06 17:42:06,719 INFO: Application startup 
+2025-07-06 17:43:24,889 INFO: Application startup 
+2025-07-08 16:18:53,864 INFO: Application startup 
+2025-07-08 17:03:23,921 INFO: Application startup 
+2025-07-08 19:04:00,419 INFO: Application startup 
+2025-07-08 19:17:38,277 INFO: Application startup 
+2025-07-08 19:24:21,875 INFO: Application startup 
+2025-07-08 19:26:30,912 INFO: Application startup 
+2025-07-08 19:30:14,651 INFO: Application startup 
+2025-07-08 19:36:49,804 INFO: Application startup 
+2025-07-08 19:41:36,019 INFO: Application startup 
+2025-07-08 19:44:06,747 INFO: Application startup 
+2025-07-12 21:01:24,768 INFO: Application startup 
+2025-07-12 21:01:40,969 INFO: Application startup 
+2025-07-12 23:13:04,472 INFO: Application startup 
+2025-07-12 23:17:26,273 INFO: Application startup 
+2025-07-12 23:18:23,740 INFO: Application startup 
+2025-07-13 18:55:43,275 INFO: Application startup 
+2025-07-13 18:58:52,130 INFO: Application startup 
+2025-07-13 19:01:17,931 INFO: Application startup 
+2025-07-13 19:01:20,657 INFO: Application startup 
+2025-07-13 19:02:53,345 INFO: Application startup 
+2025-07-14 00:28:35,255 INFO: Application startup 
+2025-07-14 00:29:19,646 INFO: Application startup 
+2025-07-14 00:29:29,565 INFO: Application startup 
+2025-07-14 00:32:00,890 INFO: Application startup 
+2025-07-14 00:32:03,309 INFO: Application startup 
+2025-07-14 00:46:11,641 INFO: Application startup 
+2025-07-14 12:20:56,512 INFO: Application startup 
+2025-07-14 12:20:58,924 INFO: Application startup 
+2025-07-14 12:22:30,886 INFO: Application startup 
+2025-07-14 12:23:45,410 INFO: Application startup 
+2025-07-14 18:40:19,985 INFO: Application startup 
+2025-07-14 18:40:22,547 INFO: Application startup 
+2025-07-14 18:41:30,840 INFO: Application startup 
+2025-07-14 18:45:35,776 INFO: Application startup 
+2025-07-14 18:50:00,223 INFO: Application startup 
+2025-07-14 18:50:03,003 INFO: Application startup 
+2025-07-14 18:53:05,494 INFO: Application startup 
+2025-07-14 18:53:08,281 INFO: Application startup 
+2025-07-14 18:57:29,298 INFO: Application startup 
+2025-07-14 18:58:04,721 INFO: Application startup 
+2025-07-14 18:58:07,364 INFO: Application startup 
+2025-07-14 18:59:40,060 INFO: Application startup 
+2025-07-14 18:59:42,852 INFO: Application startup 
+2025-07-14 19:02:47,543 INFO: Application startup 
+2025-07-14 19:02:50,700 INFO: Application startup 
+2025-07-14 19:11:27,749 INFO: Application startup 
+2025-07-14 19:11:30,303 INFO: Application startup 
+2025-07-14 19:13:32,326 INFO: Application startup 
+2025-07-14 19:13:34,986 INFO: Application startup 
+2025-07-14 19:16:16,580 INFO: Application startup 
+2025-07-14 19:16:19,237 INFO: Application startup 
+2025-07-14 19:17:26,547 INFO: Application startup 
+2025-07-14 19:17:29,326 INFO: Application startup 
+2025-07-14 20:03:53,255 INFO: Application startup 
+2025-07-14 20:03:56,192 INFO: Application startup 
+2025-07-14 20:05:08,071 INFO: Application startup 
+2025-07-14 20:05:10,847 INFO: Application startup 
+2025-07-14 20:06:28,046 INFO: Application startup 
+2025-07-14 20:06:30,979 INFO: Application startup 
+2025-07-14 20:08:00,487 INFO: Application startup 
+2025-07-14 20:08:03,547 INFO: Application startup 
+2025-07-14 20:09:03,726 INFO: Application startup 
+2025-07-14 20:09:06,857 INFO: Application startup 
+2025-07-14 20:09:57,924 INFO: Application startup 
+2025-07-14 20:10:00,638 INFO: Application startup 
+2025-07-14 20:12:50,192 INFO: Application startup 
+2025-07-14 20:12:53,308 INFO: Application startup 
+2025-07-14 20:17:31,441 INFO: Application startup 
+2025-07-14 20:17:34,573 INFO: Application startup 
+2025-07-14 20:18:34,117 INFO: Application startup 
+2025-07-14 20:18:37,055 INFO: Application startup 
+2025-07-14 20:22:42,392 INFO: Application startup 
+2025-07-14 20:22:45,754 INFO: Application startup 
+2025-07-14 20:24:12,593 INFO: Application startup 
+2025-07-14 20:24:15,546 INFO: Application startup 
+2025-07-14 20:25:28,016 INFO: Application startup 
+2025-07-14 20:25:31,929 INFO: Application startup 
+2025-07-14 20:30:10,395 INFO: Application startup 
+2025-07-14 20:30:13,326 INFO: Application startup 
+2025-07-14 20:30:54,853 INFO: Application startup 
+2025-07-14 20:30:57,763 INFO: Application startup 
+2025-07-14 20:32:18,424 INFO: Application startup 
+2025-07-14 20:32:21,102 INFO: Application startup 
+2025-07-14 20:33:19,572 INFO: Application startup 
+2025-07-14 20:33:23,352 INFO: Application startup 
+2025-07-14 20:36:10,592 INFO: Application startup 
+2025-07-14 20:36:13,412 INFO: Application startup 
+2025-07-14 20:39:44,953 INFO: Application startup 
+2025-07-14 20:39:48,101 INFO: Application startup 
+2025-07-14 20:40:53,034 INFO: Application startup 
+2025-07-14 20:40:55,955 INFO: Application startup 
+2025-07-14 20:43:00,186 INFO: Application startup 
+2025-07-14 20:43:03,133 INFO: Application startup 
+2025-07-14 20:46:18,230 INFO: Application startup 
+2025-07-14 20:46:21,729 INFO: Application startup 
+2025-07-14 20:51:14,293 INFO: Application startup 
+2025-07-14 20:51:17,124 INFO: Application startup 
+2025-07-14 20:56:47,979 INFO: Application startup 
+2025-07-14 20:56:50,795 INFO: Application startup 
+2025-07-14 20:58:45,805 INFO: Application startup 
+2025-07-14 20:58:48,669 INFO: Application startup 
+2025-07-14 21:00:35,598 INFO: Application startup 
+2025-07-14 21:00:38,547 INFO: Application startup 
+2025-07-14 21:02:10,810 INFO: Application startup 
+2025-07-14 21:02:13,640 INFO: Application startup 
+2025-07-14 21:03:12,229 INFO: Application startup 
+2025-07-14 21:03:15,088 INFO: Application startup 
+2025-07-14 21:04:32,346 INFO: Application startup 
+2025-07-14 21:04:35,128 INFO: Application startup 
+2025-07-14 21:07:31,830 INFO: Application startup 
+2025-07-14 21:07:34,593 INFO: Application startup 
+2025-07-14 21:10:12,548 INFO: Application startup 
+2025-07-14 21:10:15,364 INFO: Application startup 
+2025-07-14 21:13:19,341 INFO: Application startup 
+2025-07-14 21:13:22,262 INFO: Application startup 
+2025-07-14 21:16:15,254 INFO: Application startup 
+2025-07-14 21:16:18,239 INFO: Application startup 
+2025-07-14 21:18:45,005 INFO: Application startup 
+2025-07-14 21:18:47,969 INFO: Application startup 
+2025-07-14 21:20:53,162 INFO: Application startup 
+2025-07-14 21:20:56,092 INFO: Application startup 
+2025-07-14 21:22:14,699 INFO: Application startup 
+2025-07-14 21:22:17,534 INFO: Application startup 
+2025-07-16 08:50:28,585 INFO: Application startup 
+2025-07-16 08:50:31,755 INFO: Application startup 
+2025-07-16 08:52:00,905 INFO: Application startup 
+2025-07-16 08:52:05,306 INFO: Application startup 
+2025-07-16 08:54:10,242 INFO: Application startup 
+2025-07-16 08:54:15,924 INFO: Application startup 
+2025-07-18 23:18:14,504 INFO: Application startup 
+2025-07-18 23:18:17,571 INFO: Application startup 
+2025-07-18 23:39:25,447 INFO: Application startup 
+2025-07-18 23:39:28,188 INFO: Application startup 
+2025-07-18 23:43:28,939 INFO: Application startup 
+2025-07-18 23:43:31,695 INFO: Application startup 
+2025-07-18 23:45:28,614 INFO: Application startup 
+2025-07-18 23:45:31,830 INFO: Application startup 
+2025-07-23 22:19:19,435 INFO: Application startup 
+2025-07-23 22:19:22,511 INFO: Application startup 
+2025-07-23 23:59:45,218 INFO: Application startup 
+2025-07-23 23:59:47,979 INFO: Application startup 
+2025-07-24 00:01:34,656 INFO: Application startup 
+2025-07-24 00:01:37,496 INFO: Application startup 
+2025-07-24 00:07:33,703 INFO: Application startup 
+2025-07-24 00:07:36,857 INFO: Application startup 
+2025-07-24 00:12:44,802 INFO: Application startup 
+2025-07-24 00:12:47,882 INFO: Application startup 
+2025-07-24 00:15:42,207 INFO: Application startup 
+2025-07-24 00:15:45,044 INFO: Application startup 
+2025-07-24 00:17:31,886 INFO: Application startup 
+2025-07-24 00:17:34,572 INFO: Application startup 

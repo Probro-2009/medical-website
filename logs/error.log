@@ -1,59 +1,60 @@
-2025-07-06 17:07:18,377 ERROR: Exception on /symptom [GET] 
-Traceback (most recent call last):
-  File "C:\Users\aruna\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\flask\app.py", line 1473, in wsgi_app
-    response = self.full_dispatch_request()
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\aruna\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\flask\app.py", line 882, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\aruna\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\flask\app.py", line 880, in full_dispatch_request
-    rv = self.dispatch_request()
-         ^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\aruna\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\flask\app.py", line 865, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\aruna\Downloads\medical-website\symptom.py", line 65, in show_symptom_ui
-    return render_template("symptom.html")
-           ^^^^^^^^^^^^^^^
-NameError: name 'render_template' is not defined
-2025-07-06 17:07:54,016 INFO: Application startup 
-2025-07-06 17:09:36,108 INFO: Application startup 
-2025-07-06 17:10:42,265 INFO: Application startup 
-2025-07-06 17:12:01,736 INFO: Application startup 
-2025-07-06 17:18:53,735 INFO: Application startup 
-2025-07-06 17:27:02,775 INFO: Application startup 
-2025-07-06 17:29:10,429 INFO: Application startup 
-2025-07-06 17:31:15,424 INFO: Application startup 
-2025-07-06 17:34:00,764 INFO: Application startup 
-2025-07-06 17:35:09,369 INFO: Application startup 
-2025-07-06 17:36:11,299 INFO: Application startup 
-2025-07-06 17:38:19,147 INFO: Application startup 
-2025-07-06 17:39:39,473 INFO: Application startup 
-2025-07-06 17:40:50,717 INFO: Application startup 
-2025-07-06 17:42:06,719 INFO: Application startup 
-2025-07-06 17:43:24,889 INFO: Application startup 
-2025-07-08 16:18:53,864 INFO: Application startup 
-2025-07-08 17:03:23,921 INFO: Application startup 
-2025-07-08 19:04:00,419 INFO: Application startup 
-2025-07-08 19:17:38,277 INFO: Application startup 
-2025-07-08 19:24:21,875 INFO: Application startup 
-2025-07-08 19:26:30,912 INFO: Application startup 
-2025-07-08 19:30:14,651 INFO: Application startup 
-2025-07-08 19:36:49,804 INFO: Application startup 
-2025-07-08 19:41:36,019 INFO: Application startup 
-2025-07-08 19:44:06,747 INFO: Application startup 
-2025-07-12 21:01:24,768 INFO: Application startup 
-2025-07-12 21:01:40,969 INFO: Application startup 
-2025-07-12 23:13:04,472 INFO: Application startup 
-2025-07-12 23:17:26,273 INFO: Application startup 
-2025-07-12 23:18:23,740 INFO: Application startup 
-2025-07-13 18:55:43,275 INFO: Application startup 
-2025-07-13 18:58:52,130 INFO: Application startup 
-2025-07-13 19:01:17,931 INFO: Application startup 
-2025-07-13 19:01:20,657 INFO: Application startup 
-2025-07-13 19:02:53,345 INFO: Application startup 
-2025-07-14 00:28:35,255 INFO: Application startup 
-2025-07-14 00:29:19,646 INFO: Application startup 
-2025-07-14 00:29:29,565 INFO: Application startup 
-2025-07-14 00:32:00,890 INFO: Application startup 
-2025-07-14 00:32:03,309 INFO: Application startup 
+2025-07-24 00:19:47,757 INFO: Application startup 
+2025-07-24 00:19:50,689 INFO: Application startup 
+2025-07-24 00:24:00,674 INFO: Application startup 
+2025-07-24 00:24:03,469 INFO: Application startup 
+2025-07-24 00:32:05,950 INFO: Application startup 
+2025-07-24 00:32:08,862 INFO: Application startup 
+2025-07-24 09:25:04,391 INFO: Application startup 
+2025-07-24 09:25:07,228 INFO: Application startup 
+2025-07-24 09:27:08,883 INFO: Application startup 
+2025-07-24 09:27:11,686 INFO: Application startup 
+2025-07-24 14:37:13,421 INFO: Application startup 
+2025-07-24 14:37:16,276 INFO: Application startup 
+2025-07-24 14:39:56,956 INFO: Application startup 
+2025-07-24 14:39:59,729 INFO: Application startup 
+2025-07-24 14:45:36,749 INFO: Application startup 
+2025-07-24 14:45:39,494 INFO: Application startup 
+2025-07-25 17:54:36,946 INFO: Application startup 
+2025-07-25 17:54:39,624 INFO: Application startup 
+2025-07-25 17:56:06,611 INFO: Application startup 
+2025-07-25 17:56:09,648 INFO: Application startup 
+2025-07-25 18:07:42,414 INFO: Application startup 
+2025-07-25 18:07:45,059 INFO: Application startup 
+2025-07-25 18:14:48,472 INFO: Application startup 
+2025-07-25 18:14:51,278 INFO: Application startup 
+2025-07-25 18:19:05,588 INFO: Application startup 
+2025-07-25 18:19:08,418 INFO: Application startup 
+2025-07-25 21:51:22,198 INFO: Application startup 
+2025-07-25 21:51:31,393 INFO: Application startup 
+2025-07-25 22:08:52,155 INFO: Application startup 
+2025-07-25 22:12:13,338 INFO: Application startup 
+2025-07-25 22:40:27,419 INFO: Application startup 
+2025-07-25 22:45:22,107 INFO: Application startup 
+2025-07-25 22:50:25,391 INFO: Application startup 
+2025-07-25 22:51:17,101 INFO: Application startup 
+2025-07-25 23:01:45,709 INFO: Application startup 
+2025-07-25 23:02:09,329 INFO: Application startup 
+2025-07-25 23:02:24,491 INFO: Application startup 
+2025-07-25 23:04:31,741 INFO: Application startup 
+2025-07-25 23:04:33,578 INFO: Application startup 
+2025-07-25 23:05:35,756 INFO: Application startup 
+2025-07-25 23:12:16,143 INFO: Application startup 
+2025-07-25 23:13:54,651 INFO: Application startup 
+2025-07-25 23:15:52,444 INFO: Application startup 
+2025-07-25 23:27:54,587 INFO: Application startup 
+2025-07-25 23:30:22,823 INFO: Application startup 
+2025-07-25 23:30:24,547 INFO: Application startup 
+2025-07-25 23:31:14,733 INFO: Application startup 
+2025-07-25 23:31:23,522 INFO: Application startup 
+2025-07-25 23:31:31,329 INFO: Application startup 
+2025-07-25 23:34:19,473 INFO: Application startup 
+2025-07-25 23:34:21,206 INFO: Application startup 
+2025-07-25 23:35:22,541 INFO: Application startup 
+2025-07-25 23:36:12,914 INFO: Application startup 
+2025-07-25 23:36:36,118 INFO: Application startup 
+2025-07-25 23:41:27,720 INFO: Application startup 
+2025-07-25 23:41:29,490 INFO: Application startup 
+2025-07-25 23:52:04,953 INFO: Application startup 
+2025-07-26 00:05:22,774 INFO: Application startup 
+2025-07-26 00:05:24,505 INFO: Application startup 
+2025-07-26 00:07:49,296 INFO: Application startup 

@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 fallback_bp = Blueprint("fallback", __name__, template_folder="templates")
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
+GROQ_API_KEY = os.environ.get("API_KEY")
 @fallback_bp.route("/chat")
 def consult_page():
     username = session.get("username", "User")

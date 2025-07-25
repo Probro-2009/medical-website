@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Search Patients</title>
+  <style>
+    body {
+      font-family: Calibri, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 30px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+    }
+
+    .search-bar {
+      max-width: 700px;
+      margin: 20px auto;
+      display: flex;
+      gap: 10px;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      padding: 10px 15px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    table {
+  width: centre; /* Use a fixed or auto width to enable centering */
+  border-collapse: collapse;
+  margin: 20px auto 20px auto; /* ← This centers it horizontally */
+  background-color: white;
+  position: centre
+
+}
+
+    th, td {
+      padding: 15px 100px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+
+    th {
+      background-color: #2980b9;
+      color: white;
+      padding: 20px 30px;
+    }
+
+    .actions a {
+      margin: 0 6px;
+      text-decoration: none;
+      font-size: 1.2em;
+    }
+
+    .actions a:hover {
+      opacity: 0.7;
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 20px;
+      font-style: italic;
+      color: #666;
+    }
+
+   .back-button {
+  margin-bottom: 20px;
+}
+
+.back-button a {
+  text-decoration: none;
+  color: #fff;
+  background-color: #3498db;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  display: inline-block;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.back-button a:hover {
+  background-color: #2c80b4;
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Search Patients</h1>
+    <div class="back-button">
+  <a href="/admin">⬅️ Back to Dashboard</a>
+</div>
+
+
+    <form method="GET" class="search-bar">
+      <input type="text" name="query" placeholder="Enter Patient ID or Name..." value="{{ query }}">
+      <button type="submit">Search</button>
+    </form>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul style="color: green; text-align: center; font-weight: bold;">
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <table>
+      <thead>
+        <tr>
+          <th>Patient ID</th>
+          <th>Full Name</th>
+          <th>Registration Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if patients %}
+          {% for patient in patients %}
+            <tr>
+              <td>{{ patient.patient_id }}</td>
+              <td>{{ patient.full_name }}</td>
+              <td>{{ patient.reg_date }}</td>
+              <td class="actions">
+                <a href="/admin/search-patient/patients/{{ patient.patient_id }}" target="_blank" title="View PDF">📄</a>
+                <a href="/admin/add-patient/{{ patient.patient_id }}" title="Edit">✏️</a>
+                <a href="/admin/delete-patient/{{ patient.patient_id }}" title="Delete" onclick="return confirm('Are you sure you want to delete Patient ID {{ patient.patient_id }}?');">🗑️</a>
+              </td>
+            </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="4" class="no-results">No patients found.</td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

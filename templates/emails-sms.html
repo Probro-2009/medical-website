@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Email Center</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #fff;
+      font-family: "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 30px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background-color: #1e1e2f;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    }
+
+    h1 {
+      text-align: center;
+      color: #00eaff;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 20px;
+      margin-bottom: 6px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      background-color: #2b2b3c;
+      color: #fff;
+    }
+
+    .actions {
+      margin-top: 20px;
+      text-align: right;
+    }
+
+    .icon-btn {
+      background: none;
+      border: none;
+      color: #00eaff;
+      font-size: 1.2em;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+
+    .icon-btn:hover {
+      color: #1dd3c4;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: #2c2f3c;
+      padding: 20px;
+      border-radius: 10px;
+      width: 400px;
+    }
+
+    .modal-content input {
+      margin-bottom: 10px;
+    }
+
+    .btn {
+      background-color: #00eaff;
+      color: #000;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #1dd3c4;
+    }
+
+    .flash {
+      margin: 15px 0;
+      color: lightgreen;
+    }
+    .btn-back {
+  display: inline-block;
+  background-color: #2d72d9;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background 0.3s;
+  margin-bottom: 20px;
+}
+
+.btn-back:hover {
+  background-color: #1e5bb8;
+}
+
+
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Email Center</h1>
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="flash">
+        {% for msg in messages %}
+          <div>{{ msg }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+   <a href="/admin" class="btn btn-back">
+  <i class="fa fa-arrow-left"></i> Back to Dashboard
+</a>
+
+  <form action="" method="POST" enctype="multipart/form-data">
+
+    <label>Sender's Email</label>
+    <div style="display: flex; gap: 10px;">
+      <select name="from_email">
+  {% for sender in sender_options %}
+    <option value="{{ sender.email }}">{{ sender.email }}</option>
+  {% endfor %}
+</select>
+
+      <button type="button" class="icon-btn" onclick="openModal()">➕</button>
+    </div>
+
+    <label>Receiver Email(s)</label>
+    <input type="text" name="to_emails" placeholder="Separate with commas">
+
+    <label>Subject</label>
+    <input type="text" name="subject">
+
+    <label>Body</label>
+    <textarea name="body" rows="6"></textarea>
+
+    <label>Attachment (Max 5MB)</label>
+    <input type="file" name="attachment" accept=".pdf,.doc,.jpg,.png,.zip">
+
+    <div class="actions">
+      <button type="submit" class="btn">📨 Send Email</button>
+    </div>
+  </form>
+</div>
+
+<!-- Modal for Add New Sender -->
+<div class="modal" id="addSenderModal">
+  <div class="modal-content">
+    <h3>Add New Sender</h3>
+    <input type="email" id="newEmail" placeholder="Email ID" required>
+    <input type="text" id="newKey" placeholder="SMTP App Key" required>
+    <div class="actions">
+      <button class="btn" onclick="saveSender()">Save</button>
+      <button class="btn" style="background:#555;" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openModal() {
+    document.getElementById('addSenderModal').style.display = 'flex';
+  }
+
+  function closeModal() {
+    document.getElementById('addSenderModal').style.display = 'none';
+  }
+
+  function saveSender() {
+    const email = document.getElementById('newEmail').value.trim();
+    const password = document.getElementById('newKey').value.trim();
+
+    if (!email || !password) {
+      alert("Please fill in both email and SMTP app password.");
+      return;
+    }
+
+    fetch('/admin/emails-sms/save-sender', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        const option = document.createElement('option');
+        option.value = data.email;
+        option.textContent = data.email;
+        document.querySelector('select[name="from_email"]').appendChild(option);
+        alert("✅ Sender saved. Select it from the dropdown.");
+        closeModal();
+      } else {
+        alert("❌ Failed to save sender.");
+      }
+    });
+  }
+</script>
+
+</body>
+</html>

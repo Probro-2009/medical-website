@@ -1,0 +1,287 @@
+{% set readonly = request.args.get('view') == '1' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Consultation Form</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Calibri, sans-serif;
+      background: linear-gradient(to right, #e0f7fa, #ffffff);
+      padding: 40px;
+      margin: 0;
+    }
+
+    .form-container {
+      background: #fff;
+      max-width: 1000px;
+      margin: auto;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #2c3e50;
+    }
+
+    h2 {
+      margin-top: 40px;
+      font-size: 1.5rem;
+      position: relative;
+    }
+
+    h2::before {
+      content: "🩺 ";
+      position: absolute;
+      left: -30px;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 6px;
+      color: #333;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .row {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .row .form-group {
+      flex: 1;
+      min-width: 220px;
+    }
+
+    input[type="text"], input[type="date"], input[type="number"],
+    textarea, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #bbb;
+      border-radius: 6px;
+      background-color: #fefefe;
+      font-size: 1rem;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    input[readonly], textarea[readonly] {
+      background-color: #f2f2f2;
+      cursor: not-allowed;
+    }
+
+    .form-actions {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    input[type="submit"] {
+      background-color: #2c3e50;
+      color: #fff;
+      border: none;
+      padding: 12px 30px;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #1a252f;
+    }
+
+    .consent-text {
+      background-color: #f8f9fa;
+      border-left: 4px solid #3498db;
+      padding: 10px 15px;
+      font-style: italic;
+      color: #555;
+      margin-bottom: 20px;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    ul li {
+      color: green;
+      margin-bottom: 5px;
+    }
+.back-button {
+  margin-bottom: 50px;
+}
+
+.back-button a {
+  text-decoration: none;
+  color: #fff;
+  background-color: #3498db;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  display: inline-block;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.back-button a:hover {
+  background-color: #2c80b4;
+}
+
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <h1>Dr. Dhanashree Chitre's Homeopathic and Cosmetic Clinic</h1>
+    <h2>Consultation Form</h2>
+    <div class="back-button">
+  <a href="/admin">⬅️ Back to Dashboard</a>
+</div>
+
+
+    <form action="/admin/submit_form" method="POST" enctype="multipart/form-data">
+      {{ form.hidden_tag() }}
+
+      <div class="form-group">
+        <label>Full Name:</label>
+        {{ form.full_name(readonly=readonly) }}
+      </div>
+
+      <div class="row">
+        <div class="form-group">
+          <label>Age:</label>
+          {{ form.age(readonly=readonly) }}
+        </div>
+        <div class="form-group">
+          <label>Date of Birth:</label>
+          {{ form.dob(readonly=readonly) }}
+        </div>
+        <div class="form-group">
+          <label>Marital Status:</label>
+          {{ form.marital_status(readonly=readonly) }}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group">
+          <label>Sex:</label>
+          {{ form.sex(readonly=readonly) }}
+        </div>
+        <div class="form-group">
+          <label>Mobile No.:</label>
+          {{ form.mobile(readonly=readonly) }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Occupation:</label>
+        {{ form.occupation(readonly=readonly) }}
+      </div>
+
+      <div class="form-group">
+        <label>Address:</label>
+        {{ form.address(readonly=readonly) }}
+      </div>
+
+      <div class="row">
+        <div class="form-group">
+          <label>Email ID:</label>
+          {{ form.email(readonly=readonly) }}
+        </div>
+        <div class="form-group">
+          <label>Referred By:</label>
+          {{ form.referred_by(readonly=readonly) }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Chief Complaints:</label>
+        {{ form.chief_complaints(readonly=readonly) }}
+      </div>
+      <div class="form-group">
+        <label>Past History:</label>
+        {{ form.past_history(readonly=readonly) }}
+      </div>
+      <div class="form-group">
+        <label>Personal History:</label>
+        {{ form.personal_history(readonly=readonly) }}
+      </div>
+      <div class="form-group">
+        <label>Family History:</label>
+        {{ form.family_history(readonly=readonly) }}
+      </div>
+
+      <h2>🧪 Examination</h2>
+      <div class="form-group">
+        <label>General:</label>
+        {{ form.examination_general(readonly=readonly) }}
+      </div>
+      <div class="form-group">
+        <label>Local:</label>
+        {{ form.examination_local(readonly=readonly) }}
+      </div>
+      <div class="form-group">
+        <label>Investigation:</label>
+        {{ form.investigation(readonly=readonly) }}
+      </div>
+      <div class="form-group">
+        <label>Diagnosis:</label>
+        {{ form.diagnosis(readonly=readonly) }}
+      </div>
+      <div class="form-group">
+        <label>Treatment:</label>
+        {{ form.treatment(readonly=readonly) }}
+      </div>
+
+      <h2>📝 Consent</h2>
+      <div class="consent-text">
+        All information given by me is true to my knowledge. The procedure has been explained to me & I am ready to undergo treatment at my own risk. Result may vary from patient to patient. Please note there is no facility for refund. Terms and Conditions may apply.
+      </div>
+
+      <div class="form-group">
+        <label>Signature (Upload):</label>
+        {% if not readonly %}
+          {{ form.signature_file() }}
+        {% else %}
+          <p><i>(Signature upload disabled in view mode)</i></p>
+        {% endif %}
+      </div>
+
+      <div class="row">
+        <div class="form-group">
+          <label>Relation with patient:</label>
+          {{ form.relation(readonly=readonly) }}
+        </div>
+        <div class="form-group">
+          <label>Witness:</label>
+          {{ form.witness(readonly=readonly) }}
+        </div>
+      </div>
+
+      {% if not readonly %}
+      <div class="form-actions">
+        <input type="submit" value="Save">
+      </div>
+      {% endif %}
+    </form>
+  </div>
+</body>
+</html>

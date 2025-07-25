@@ -12,7 +12,7 @@ from email.mime.text import MIMEText
 import uuid
 import requests
 import os
-from admin import admin_blueprint
+from admin import admin_bp
 from login import login_bp
 from fallback import fallback_bp
 from datetime import timedelta
@@ -20,7 +20,8 @@ from dotenv import load_dotenv
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask import Flask, request, Response
-from symptom import symptom_bp
+from developer import developer_bp
+from sysmon import sysmon_bp
 from market.market import market_bp
 from werkzeug.utils import secure_filename
 from logging.handlers import RotatingFileHandler
@@ -47,29 +48,29 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///appointments.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 socketio = SocketIO(app)
 db = SQLAlchemy(app)
-app.config.update({
-    'SESSION_COOKIE_SECURE': True,         # Only over HTTPS
-    'SESSION_COOKIE_HTTPONLY': True,       # JS can't access session
-    'SESSION_COOKIE_SAMESITE': 'Lax',      # Prevent CSRF
-    'PERMANENT_SESSION_LIFETIME': timedelta(hours=1)  # Auto-logout after 1 hour
-})
-csrf = CSRFProtect(app)
-limiter = Limiter(
-    get_remote_address,
-    storage_uri="redis://localhost:6379",  # Change if hosted
-    app=app
-)
+#app.config.update({
+   # 'SESSION_COOKIE_SECURE': True,         # Only over HTTPS
+    #'SESSION_COOKIE_HTTPONLY': True,       # JS can't access session
+   # 'SESSION_COOKIE_SAMESITE': 'Lax',      # Prevent CSRF
+   # 'PERMANENT_SESSION_LIFETIME': timedelta(hours=1)  # Auto-logout after 1 hour
+#})
+#csrf = CSRFProtect(app)
+#limiter = Limiter(
+    #get_remote_address,
+   # storage_uri="redis://localhost:6379",  # Change if hosted
+    #app=app
+#)
 # ✅ Flask-Talisman for security headers and HTTPS enforcement
-Talisman(app,
-    content_security_policy={
-        'default-src': "'self'",
-        'img-src': "'self' data:",
-        'script-src': "'self'",
-        'style-src': "'self' 'unsafe-inline'"
-    },
-    force_https=False
-)
-
+#Talisman(app,
+   # content_security_policy={
+        #'default-src': "'self'",
+        #'img-src': "'self' data:",
+        #'script-src': "'self'",
+        #'style-src': "'self' 'unsafe-inline'"
+   # },
+    #force_https=False
+#)
+socketio = SocketIO(app)
 
 # ✅ Audit log setup
 audit_logger = logging.getLogger("audit")
@@ -129,10 +130,11 @@ from login import login_bp
 app.register_blueprint(login_bp(User))
 
 # ✅ Register the blueprint
-app.register_blueprint(admin_blueprint, url_prefix='/admin')
+app.register_blueprint(admin_bp, url_prefix='/admin')
 app.register_blueprint(fallback_bp)
-app.register_blueprint(symptom_bp)
+app.register_blueprint(developer_bp)
 app.register_blueprint(market_bp)
+app.register_blueprint(sysmon_bp)
 
 class Patient(db.Model):
     __tablename__ = 'patient'
@@ -293,7 +295,7 @@ def serve_static_files(filename):
     return send_from_directory(app.static_folder, filename)
 
 @app.route("/submit", methods=["POST"])
-@limiter.limit("3 per minute")
+#@limiter.limit("3 per minute")
 def submit_form():
     try:
         first_name = request.form.get('firstName')
@@ -373,7 +375,7 @@ def submit_form():
         return f"Failed to send email: {str(e)}", 500
 
 @app.route("/respond", methods=["POST"])
-@limiter.limit("3 per minute")
+#@limiter.limit("3 per minute")
 def respond():
     mobile = request.form.get('mobile')
     status = request.form.get('status')
@@ -415,10 +417,10 @@ def login():
         # Clean old attempts
         login_attempts[ip] = [t for t in login_attempts[ip] if now - t < BLOCK_WINDOW]
 
-        if len(login_attempts[ip]) >= MAX_ATTEMPTS:
-            audit_logger.warning(f"BLOCKED LOGIN - Too many attempts from {ip}")
-            send_security_alert(ip, email)  # email alert
-            return "❌ Too many failed attempts. Try again later.", 400
+       # if len(login_attempts[ip]) >= MAX_ATTEMPTS:
+           # audit_logger.warning(f"BLOCKED LOGIN - Too many attempts from {ip}")
+           # send_security_alert(ip, email)  # email alert
+           # return "❌ Too many failed attempts. Try again later.", 400
 
         user = User.query.filter_by(email=email).first()
         if user and user.check_password(password):
@@ -444,9 +446,9 @@ def register():
         password = request.form["password"]
 
         # ✅ Enforce strong password policy
-        import re
-        if not re.fullmatch(r'(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}', password):
-            return "❌ Password must be at least 8 characters long and include uppercase, lowercase, and a number.", 400
+       # import re
+        #if not re.fullmatch(r'(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}', password):
+           # return "❌ Password must be at least 8 characters long and include uppercase, lowercase, and a number.", 400
 
         if User.query.filter_by(username=username).first():
             return "❌ Username already taken", 409
