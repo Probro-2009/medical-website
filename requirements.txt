@@ -27,5 +27,7 @@ loguru==0.7.2
 
 # Email
 secure-smtplib==0.1.1  # Optional if using secure SMTP
+reportlab>=3.6.0
+
 
 
