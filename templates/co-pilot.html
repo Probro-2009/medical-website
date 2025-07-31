@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Developer Co-pilot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <style>
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .animate-gradient {
+      background-size: 200% 200%;
+      animation: gradientShift 3s ease infinite;
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white">
+  <!-- Main Chat UI -->
+  <div class="h-screen flex flex-col">
+    <header class="bg-gray-800 text-white px-6 py-4 flex justify-between items-center">
+      <h1 class="text-xl font-bold">Developer Co-pilot</h1>
+      <button onclick="openVoicePopup()" class="text-white text-2xl"><i class="bi bi-mic-fill"></i></button>
+    </header>
+    <main id="chatContainer" class="flex-1 overflow-y-auto p-6 space-y-4"></main>
+    <footer class="p-4 bg-gray-800">
+      <div class="flex items-center bg-black px-4 py-2 rounded-full">
+        <input id="chatInput" class="flex-1 bg-transparent text-white placeholder-gray-400 focus:outline-none" placeholder="Write your symptoms...">
+        <button id="sendBtn" class="ml-3 text-xl text-blue-500"><i class="bi bi-send-fill"></i></button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Voice Popup -->
+  <div id="voicePopup" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-90">
+    <div class="relative flex flex-col items-center text-center text-white p-6 rounded-lg">
+      <!-- Close button -->
+      <button onclick="closeVoicePopup()" class="absolute top-4 right-4 text-white text-2xl">
+        <i class="bi bi-x-circle-fill"></i>
+      </button>
+      <!-- Mic Select -->
+      <select id="micSelect" class="mb-4 px-4 py-2 rounded text-black"></select>
+
+      <div id="aiCircle" class="w-64 h-64 rounded-full mb-6 animate-gradient bg-gradient-to-r from-purple-500 via-blue-500 to-pink-500"></div>
+      <div id="voiceStatus" class="text-lg font-semibold mb-2">Hey there, let's start our conversation!</div>
+      <button id="voiceControlBtn" onclick="toggleVoiceChat()" class="bg-white text-black px-6 py-2 rounded-full font-semibold">Start</button>
+      <p id="subText" class="mt-2 text-sm text-gray-300">Subtitles will appear here...</p>
+    </div>
+  </div>
+
+  <script>
+    const voicePopup = document.getElementById("voicePopup");
+    const voiceStatus = document.getElementById("voiceStatus");
+    const voiceControlBtn = document.getElementById("voiceControlBtn");
+    const subText = document.getElementById("subText");
+    let mediaRecorder;
+    let audioChunks = [];
+
+    function openVoicePopup() {
+      voicePopup.classList.remove("hidden");
+      voiceStatus.innerText = "Hey there, let's start our conversation!";
+      subText.innerText = "Subtitles will appear here...";
+      speak("Hey there, let's start our conversation!");
+    }
+
+    function closeVoicePopup() {
+      voicePopup.classList.add("hidden");
+    }
+
+    function speak(text) {
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.onstart = () => document.getElementById("aiCircle").classList.add("animate-gradient");
+      utter.onend = () => document.getElementById("aiCircle").classList.remove("animate-gradient");
+      speechSynthesis.speak(utter);
+    }
+
+    function toggleVoiceChat() {
+      if (voiceControlBtn.innerText === "Start") {
+        voiceControlBtn.innerText = "Stop";
+        voiceStatus.innerText = "🎙️ Hearing user input...";
+        startRecording();
+      } else {
+        mediaRecorder?.stop();
+        voiceControlBtn.innerText = "Start";
+        voiceStatus.innerText = "Hey there, let's start our conversation!";
+        subText.innerText = "Subtitles will appear here...";
+      }
+    }
+
+    async function startRecording() {
+      const selectedMic = document.getElementById("micSelect").value;
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: selectedMic ? { deviceId: { exact: selectedMic } } : true
+      });
+
+      mediaRecorder = new MediaRecorder(stream);
+      audioChunks = [];
+
+      mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+      mediaRecorder.onstop = async () => {
+        const blob = new Blob(audioChunks, { type: 'audio/wav' });
+        const formData = new FormData();
+        formData.append("audio", blob);
+
+        const res = await fetch("http://localhost:5000/developer/ai/voice", {
+          method: "POST",
+          body: formData
+        });
+        const data = await res.json();
+
+        if (data.prompt && data.response) {
+          voiceStatus.innerText = `You said: ${data.prompt}`;
+          subText.innerText = "Speaking response...";
+          speak(data.response);
+          appendMessage("user", data.prompt);
+          appendMessage("ai", data.response);
+        } else {
+          subText.innerText = "❌ Could not understand audio.";
+        }
+      };
+
+      mediaRecorder.start();
+      setTimeout(() => mediaRecorder?.stop(), 6000);
+    }
+
+    function appendMessage(role, text) {
+      const msg = document.createElement("div");
+      msg.className = `p-3 rounded-lg max-w-xl mb-2 ${role === "user" ? "ml-auto bg-blue-600" : "mr-auto bg-gray-800"}`;
+      msg.innerText = text;
+      document.getElementById("chatContainer").appendChild(msg);
+    }
+
+    document.getElementById("sendBtn").onclick = async () => {
+      const input = document.getElementById("chatInput");
+      const text = input.value.trim();
+      if (!text) return;
+      appendMessage("user", text);
+      input.value = "";
+
+      const res = await fetch("http://localhost:5000/developer/ai", {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: text })
+      });
+      const data = await res.json();
+      appendMessage("ai", data.response);
+    };
+
+    navigator.mediaDevices.enumerateDevices().then(devices => {
+      const micSelect = document.getElementById("micSelect");
+      const audioInputs = devices.filter(device => device.kind === "audioinput");
+      micSelect.innerHTML = "";
+      audioInputs.forEach((device, index) => {
+        const option = document.createElement("option");
+        option.value = device.deviceId;
+        option.textContent = device.label || `Microphone ${index + 1}`;
+        micSelect.appendChild(option);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,9 +1,6 @@
 # .gitignore
-.env
 __pycache__/
-instance/
 *.pyc
-*.db
 *.sqlite
 .DS_Store
-.env.*
+

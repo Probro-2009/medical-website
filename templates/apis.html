@@ -1,0 +1,7 @@
+<h3>API Endpoints</h3>
+<table class="table">
+<tr><th>Method</th><th>Endpoint</th><th>Description</th></tr>
+{% for api in apis %}
+<tr><td>{{ api.method }}</td><td>{{ api.endpoint }}</td><td>{{ api.desc }}</td></tr>
+{% endfor %}
+</table>

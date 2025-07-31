@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Manage User Access</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #e0f7fa, #fce4ec);
+      padding: 30px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 15px;
+    }
+
+    th, td {
+      padding: 14px 18px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background: #673ab7;
+      color: white;
+    }
+
+    td:last-child {
+      white-space: nowrap;
+    }
+
+    .btn {
+      border: none;
+      padding: 6px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .btn-delete { background: #f44336; color: white; }
+    .btn-edit { background: #2196F3; color: white; }
+    .btn-access { background: #ff9800; color: white; }
+
+    .role-box {
+      display: none;
+      margin-top: 6px;
+      padding: 10px;
+      border-radius: 6px;
+      background: #f1f1f1;
+    }
+
+    .show { display: block; }
+
+    .hide-password {
+      cursor: pointer;
+      margin-left: 10px;
+      color: #888;
+    }
+
+    /* Toggle switch checkbox style */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 40px;
+      height: 22px;
+      margin-right: 10px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #ccc;
+      transition: 0.4s;
+      border-radius: 22px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px; width: 18px;
+      left: 2px;
+      bottom: 2px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #4CAF50;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(18px);
+    }
+
+  </style>
+</head>
+<body>
+  <h2>🛡️ Manage Access Roles</h2>
+  <div style="text-align: center; margin-bottom: 20px;">
+  <a href="/developer/dashboard" style="
+    display: inline-block;
+    background: #2196F3;
+    color: white;
+
+    padding: 10px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;">
+    ← Back to Developer Dashboard
+  </a>
+</div>
+
+
+<div style="text-align: center; margin-bottom: 20px;">
+  <input type="text" id="searchInput" placeholder="Search by name or email..." style="padding: 10px; width: 40%; border-radius: 8px; border: 1px solid #ccc;">
+</div>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Sr. No</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Password</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ user['username'] }}</td>
+          <td>{{ user['email'] }}</td>
+          <td>
+            <span class="password">{{ user['password'] }}</span>
+            <i class="fas fa-eye hide-password" onclick="togglePassword(this)"></i>
+          </td>
+          <td>
+            <form method="POST" onsubmit="closeBoxAfterSave(event, {{ user['id'] }})">
+              <input type="hidden" name="user_id" value="{{ user['id'] }}">
+              <input type="hidden" name="action" value="delete">
+              <button type="submit" class="btn btn-delete" title="Delete"><i class="fas fa-trash"></i></button>
+            </form>
+
+            <button class="btn btn-access" onclick="toggleRoleBox({{ user['id'] }})" title="Manage Access">
+              <i class="fas fa-user-cog"></i>
+            </button>
+
+            <div id="role-box-{{ user['id'] }}" class="role-box">
+              <form method="POST">
+                <input type="hidden" name="action" value="update_roles">
+                <input type="hidden" name="user_id" value="{{ user['id'] }}">
+
+                <label class="switch">
+                  <input type="checkbox" name="is_admin" value="1" {% if user['is_admin'] %}checked{% endif %}>
+                  <span class="slider"></span>
+                </label> Admin <br>
+
+                <label class="switch">
+                  <input type="checkbox" name="is_developer" value="1" {% if user['is_developer'] %}checked{% endif %}>
+                  <span class="slider"></span>
+                </label> Developer <br>
+
+                <button type="submit" class="btn btn-edit">Save</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    function togglePassword(icon) {
+      const span = icon.previousElementSibling;
+      if (span.innerText.startsWith('*')) {
+        span.innerText = icon.dataset.original;
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+      } else {
+        icon.dataset.original = span.innerText;
+        span.innerText = '*'.repeat(span.innerText.length);
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+      }
+    }
+
+    function toggleRoleBox(userId) {
+      const box = document.getElementById("role-box-" + userId);
+      box.classList.toggle("show");
+    }
+  </script>
+  <script>
+  document.getElementById("searchInput").addEventListener("keyup", function () {
+    const filter = this.value.toLowerCase();
+    const rows = document.querySelectorAll("tbody tr");
+
+    rows.forEach(row => {
+      const name = row.cells[1].innerText.toLowerCase();
+      const email = row.cells[2].innerText.toLowerCase();
+      row.style.display = (name.includes(filter) || email.includes(filter)) ? "" : "none";
+    });
+  });
+</script>
+<script>
+  function closeBoxAfterSave(event, userId) {
+    event.preventDefault();
+    const form = event.target;
+
+    // Submit the form with fetch API
+    fetch(form.action || window.location.href, {
+      method: "POST",
+      body: new FormData(form)
+    }).then(() => {
+      // Hide role box
+      const box = document.getElementById("role-box-" + userId);
+      box.classList.remove("show");
+
+      // Optional: Flash success message
+      alert("✅ Role updated successfully!");
+    });
+  }
+</script>
+
+</body>
+</html>

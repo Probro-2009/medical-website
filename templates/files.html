@@ -1,0 +1,6 @@
+<h3>Uploaded Files</h3>
+<ul>
+{% for file in files %}
+  <li><a href="{{ url_for('static', filename=base_path + '/' + file) }}" target="_blank">{{ file }}</a></li>
+{% endfor %}
+</ul>

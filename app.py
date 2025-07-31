@@ -31,6 +31,7 @@ from datetime import datetime, timedelta
 import json
 from email.mime.application import MIMEApplication
 from datetime import datetime, timezone
+from copilot_bp import copilot_bp
 
 
 login_attempts = defaultdict(list)  # { ip_address: [timestamps...] }
@@ -135,6 +136,7 @@ app.register_blueprint(fallback_bp)
 app.register_blueprint(developer_bp)
 app.register_blueprint(market_bp)
 app.register_blueprint(sysmon_bp)
+app.register_blueprint(copilot_bp)
 
 class Patient(db.Model):
     __tablename__ = 'patient'
@@ -499,12 +501,12 @@ def dashboard():
     appointment_dates = [a.appointment for a in appointments]
 
     return render_template("dashboard.html",
-                           username=user["username"],
-                           full_name=user["username"],
-                           appointments=appointments,
-                           blogs_count=blogs_count,
-                           reviews_count=reviews_count,
-                           appointment_dates=appointment_dates)
+                       user=user,
+                       username=user["username"],
+                       appointments=appointments,
+                       blogs_count=blogs_count,
+                       reviews_count=reviews_count,
+                       appointment_dates=appointment_dates)
 
 
 @app.route("/consult")

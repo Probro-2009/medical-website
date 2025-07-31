@@ -54,6 +54,7 @@
   align-items: stretch; /* <--- THIS IS KEY */
   padding: 20px 10px;
   transition: width 0.3s ease;
+  justify-content: space-between; /* Add this */
 }
 
 
@@ -66,7 +67,8 @@
       color: #333;
       width: 100%;
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 5px;
+
     }
 
     .sidebar.collapsed h3 {
@@ -82,13 +84,6 @@
   margin-left: 10px;
   cursor: pointer;
   align-self: flex-start;
-}
-
-
-  .sidebar h3 {
-  color: #333;
-  text-align: center;
-  margin-bottom: 20px;
 }
 
 .sidebar.dark h3 {
@@ -314,6 +309,39 @@
   align-items: center;
   margin: 0 auto 15px auto; /* centers in sidebar & adds spacing */
 }
+.sidebar {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #66bb6a #f1f1f1;
+}
+
+/* For WebKit-based browsers */
+.sidebar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: #66bb6a;
+  border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+.developer-banner {
+  animation: fadeInUp 0.6s ease-in-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 
   </style>
@@ -331,18 +359,31 @@
   <a href="/grievance"><i class="fas fa-comment-dots"></i><span>Add Grievances</span></a>
   <a href="/offers"><i class="fas fa-tags"></i><span>Offers & Discounts</span></a>
   <a href="/support"><i class="fas fa-hands-helping"></i><span>Support Us</span></a>
+  {% if user["is_developer"] %}
+  <a href="/developer/dashboard"><i class="fas fa-tools"></i><span>Developer Dashboard</span></a>
+{% endif %}
+  {% if user["is_admin"] %}
+  <a href="/admin" class="btn btn-success w-100"style="margin-top: 5px;"><i class="fas fa-star"></i>
+     Admin Dashboard
+  </a>
+{% endif %}
+
+
 
   <!-- 👇 ChatGPT-like transparent profile card -->
   <a href="/pricing" class="sidebar-profile">
     <img src="assets/images/default-profile.png" alt="Profile Picture" class="profile-pic">
     <div class="profile-info">
-      <div class="profile-name">{{ full_name }}</div>
+      <div class="profile-name">{{ username }}</div>
       <div class="profile-plan">
-        {% if full_name == 'Vedant R. Chitre' %}
-          Developer Access
-        {% else %}
-          Free Plan
-        {% endif %}
+       {% if user["is_admin"] %}
+  Admin Access
+{% elif user["is_developer"] %}
+  Developer Access
+{% else %}
+  Free Plan
+{% endif %}
+
       </div>
     </div>
   </a>
@@ -364,6 +405,25 @@
   <strong>✨ Check out our new <a href="/chat" style="color: #e67e22; font-weight: bold; text-decoration: underline;">Medical Chatbot (Beta)</a>!</strong>
   <button onclick="document.getElementById('aiNotice').style.display='none'" style="position: absolute; right: 12px; top: 8px; border: none; background: none; font-size: 18px; cursor: pointer;">&times;</button>
 </div>
+<!-- Developer Notification (conditional) -->
+{% if user["is_developer"] %}
+<div style="background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; border-radius: 10px; padding: 12px 20px; margin: 10px 0; font-weight: 500; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
+  <span>
+     <strong>Developer Access:</strong> Access advanced tools in your <a href="/developer/dashboard" style="color: #1b5e20; font-weight: bold; text-decoration: underline;">Developer Dashboard</a>.
+  </span>
+  <button onclick="this.parentElement.style.display='none'" style="background: none; border: none; font-size: 20px; color: #2e7d32;">×</button>
+</div>
+{% endif %}
+{% if user["is_admin"] %}
+<div style="background-color: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; border-radius: 10px; padding: 12px 20px; margin: 10px 0; font-weight: 500; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
+  <span>
+    🛡️ <strong>Admin Access:</strong> Manage platform settings in the <a href="/admin" style="color: #0d47a1; font-weight: bold; text-decoration: underline;">Admin Dashboard</a>
+  </span>
+  <button onclick="this.parentElement.style.display='none'" style="background: none; border: none; font-size: 20px; color: #1565c0;">×</button>
+</div>
+{% endif %}
+
+
 
       <div class="row">
         <div class="card" id="apptCard">
@@ -390,7 +450,7 @@
       </div>
     </div>
   </div>
-  <footer>Developed by Vedant R. Chitre</footer>
+
 
   <script>
 

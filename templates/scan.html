@@ -1,0 +1,6 @@
+<h3>Security Scan Results</h3>
+<ul>
+{% for k, v in results.items() %}
+  <li><strong>{{ k }}:</strong> {{ v }}</li>
+{% endfor %}
+</ul>
