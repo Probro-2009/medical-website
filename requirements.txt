@@ -28,4 +28,8 @@ loguru==0.7.2
 # Email
 secure-smtplib==0.1.1  # Optional if using secure SMTP
 
-
+# ➕ Newly Required Libraries
+reportlab>=4.0.0
+qrcode[pil]>=7.4.2
+psutil>=5.9.8
+Pillow>=10.3.0
