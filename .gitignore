@@ -1,9 +1,22 @@
-# .gitignore
+# Python
 __pycache__/
 *.pyc
-*.sqlite
-.DS_Store
+*.pyo
+*.pyd
+
+# SQLite DB
+instance/appointments.db
+
+# Environment
 .env
-instance/
-.db
 *.env
+
+# Logs
+*.log
+
+# VS Code
+.vscode/
+
+# System
+.DS_Store
+Thumbs.db
