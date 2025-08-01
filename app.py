@@ -32,7 +32,7 @@ import json
 from email.mime.application import MIMEApplication
 from datetime import datetime, timezone
 from copilot_bp import copilot_bp
-import sqlite3
+from models import db, User, Patient, Appointment
 
 
 login_attempts = defaultdict(list)  # { ip_address: [timestamps...] }
@@ -50,11 +50,12 @@ app.secret_key = os.getenv("SECRET_KEY")
 # Fix: allow thread-safe access for SQLite
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///appointments.db?check_same_thread=False'
 
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 socketio = SocketIO(app)
-db = SQLAlchemy(app)
 
+db.init_app(app)
 #app.config.update({
    # 'SESSION_COOKIE_SECURE': True,         # Only over HTTPS
     #'SESSION_COOKIE_HTTPONLY': True,       # JS can't access session
@@ -115,23 +116,6 @@ def add_mobile_meta(response):
 
     return response
 
-class User(db.Model):
-    __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100), nullable=False, unique=True)
-    email = db.Column(db.String(150), nullable=False, unique=True)
-    mobile = db.Column(db.String(20), nullable=False, unique=True)
-    password = db.Column(db.String(200), nullable=False)
-
-    def set_password(self, password):
-        from werkzeug.security import generate_password_hash
-        self.password = generate_password_hash(password)
-
-    def check_password(self, password):
-        from werkzeug.security import check_password_hash
-        return check_password_hash(self.password, password)
-
-
 # ✅ Now import blueprint and pass model
 from login import login_bp
 app.register_blueprint(login_bp(User))
@@ -144,28 +128,6 @@ app.register_blueprint(market_bp)
 app.register_blueprint(sysmon_bp)
 app.register_blueprint(copilot_bp)
 
-class Patient(db.Model):
-    __tablename__ = 'patient'
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100), unique=True, nullable=False)
-    password = db.Column(db.String(200), nullable=False)  # or password_hash if applicable
-
-
-
-
-# Define the Appointment model
-class Appointment(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(100))
-    last_name = db.Column(db.String(100))
-    age = db.Column(db.String(10))
-    gender = db.Column(db.String(10))
-    mobile = db.Column(db.String(15), unique=True)
-    appointment = db.Column(db.String(100))
-    problem = db.Column(db.Text)
-    status = db.Column(db.String(20), default='Pending')
-    preferred_time = db.Column(db.String(50), nullable=True)
-    doctor_note = db.Column(db.Text, nullable=True)
 
 with app.app_context():
     db.create_all()
