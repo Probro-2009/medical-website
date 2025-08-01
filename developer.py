@@ -8,6 +8,8 @@ from flask_socketio import SocketIO, emit, join_room
 from flask import Blueprint, request, render_template, redirect, session, url_for, flash
 from werkzeug.security import check_password_hash
 import psycopg2
+import sqlite3
+
 
 developer_bp = Blueprint('developer', __name__, url_prefix='/developer')
 
