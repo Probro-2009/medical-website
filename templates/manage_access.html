@@ -162,11 +162,12 @@
             <i class="fas fa-eye hide-password" onclick="togglePassword(this)"></i>
           </td>
           <td>
-            <form method="POST" onsubmit="closeBoxAfterSave(event, {{ user['id'] }})">
-              <input type="hidden" name="user_id" value="{{ user['id'] }}">
-              <input type="hidden" name="action" value="delete">
-              <button type="submit" class="btn btn-delete" title="Delete"><i class="fas fa-trash"></i></button>
-            </form>
+<form method="POST" onsubmit="deleteUser(event, {{ user['id'] }})">
+  <input type="hidden" name="user_id" value="{{ user['id'] }}">
+  <input type="hidden" name="action" value="delete">
+  <button type="submit" class="btn btn-delete" title="Delete"><i class="fas fa-trash"></i></button>
+</form>
+
 
             <button class="btn btn-access" onclick="toggleRoleBox({{ user['id'] }})" title="Manage Access">
               <i class="fas fa-user-cog"></i>
@@ -248,6 +249,19 @@
     });
   }
 </script>
+<script>
+  function deleteUser(event, userId) {
+    event.preventDefault();
+    const form = event.target;
 
+    fetch(form.action || window.location.href, {
+      method: "POST",
+      body: new FormData(form)
+    }).then(() => {
+      alert("❌ User deleted.");
+      location.reload();  // optional: refresh to update the table
+    });
+  }
+</script>
 </body>
 </html>
