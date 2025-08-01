@@ -32,6 +32,7 @@ import json
 from email.mime.application import MIMEApplication
 from datetime import datetime, timezone
 from copilot_bp import copilot_bp
+import sqlite3
 
 
 login_attempts = defaultdict(list)  # { ip_address: [timestamps...] }
