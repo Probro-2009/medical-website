@@ -46,10 +46,15 @@ load_dotenv()
 
 app = Flask(__name__, static_folder="frontend/public")
 app.secret_key = os.getenv("SECRET_KEY")
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///appointments.db'
+
+# Fix: allow thread-safe access for SQLite
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///appointments.db?check_same_thread=False'
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 socketio = SocketIO(app)
 db = SQLAlchemy(app)
+
 #app.config.update({
    # 'SESSION_COOKIE_SECURE': True,         # Only over HTTPS
     #'SESSION_COOKIE_HTTPONLY': True,       # JS can't access session
