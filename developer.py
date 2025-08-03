@@ -1,3 +1,4 @@
+
 from flask import Flask, request, render_template, jsonify, session, redirect
 import requests
 import subprocess
@@ -8,7 +9,7 @@ from flask_socketio import SocketIO, emit, join_room
 from flask import Blueprint, request, render_template, redirect, session, url_for, flash
 from werkzeug.security import check_password_hash
 import psycopg2
-
+from models import db, User  # ✅ NO import from app.py
 developer_bp = Blueprint('developer', __name__, url_prefix='/developer')
 
 active_url = None
@@ -126,29 +127,50 @@ def error_summary():
     return render_template("errors.html", errors=errors)
 
 
+
+
 @developer_bp.route("/manage-access", methods=["GET", "POST"])
 def manage_access():
-    conn = sqlite3.connect("instance/appointments.db")
-    conn.row_factory = sqlite3.Row
-    cur = conn.cursor()
+    from app import User  # import here to avoid circular import
 
     if request.method == "POST":
         action = request.form.get("action")
-        user_id = request.form.get("user_id")
+        user_id = int(request.form.get("user_id"))
         is_admin = int(request.form.get("is_admin", 0))
         is_developer = int(request.form.get("is_developer", 0))
 
+        user = User.query.get(user_id)
+        if not user:
+            flash("❌ User not found.")
+            return redirect(url_for("developer.manage_access"))
+
         if action == "update_roles":
-            cur.execute("UPDATE users SET is_admin = ?, is_developer = ? WHERE id = ?",
-                        (is_admin, is_developer, user_id))
-            conn.commit()
+            user.is_admin = is_admin
+            user.is_developer = is_developer
             flash("✅ Role updated.")
         elif action == "delete":
-            cur.execute("DELETE FROM users WHERE id = ?", (user_id,))
-            conn.commit()
+            db.session.delete(user)
             flash("❌ User deleted.")
 
-    cur.execute("SELECT * FROM users ORDER BY id")
-    users = cur.fetchall()
-    conn.close()
+        db.session.commit()
+
+    users = User.query.order_by(User.id).all()
     return render_template("manage_access.html", users=users)
+
+@developer_bp.route("/api/logs")
+def api_logs():
+    try:
+        with open("logs/error.log", "r") as f:
+            logs = f.readlines()[-10:]  # Get last 10 logs
+    except FileNotFoundError:
+        logs = ["No logs found."]
+    return jsonify({"logs": [log.strip() for log in logs]})
+
+@developer_bp.route("/api/audits")
+def api_audits():
+    try:
+        with open("logs/audit.log", "r") as f:
+            audits = f.readlines()[-10:]  # Get last 10 audit logs
+    except FileNotFoundError:
+        audits = ["No audit logs found."]
+    return jsonify({"audits": [audit.strip() for audit in audits]})

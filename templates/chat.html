@@ -42,7 +42,9 @@
     <header class="flex justify-between items-center px-6 py-3 bg-white bg-opacity-10 dark:bg-opacity-30 backdrop-blur-md">
       <button onclick="window.history.back()" class="text-2xl text-white"><i class="bi bi-arrow-left-circle"></i></button>
       <h1 class="text-lg font-bold">Consult with Doctor</h1>
-      <button id="toggleDark" class="text-2xl text-white"><i class="bi bi-moon-stars"></i></button>
+      <button id="exportChatBtn" class="text-2xl text-white ml-4">
+       <i class="bi bi-share-fill"></i>
+      </button>
     </header>
     <main id="chatContainer" class="flex-1 overflow-y-auto flex flex-col gap-4 px-4 py-6">
       <div class="text-xl font-semibold text-center animate-pulse">How are you, {{ username }}?</div>
@@ -62,6 +64,24 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
+<div id="exportPopup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+  <div class="bg-white text-black rounded-xl p-6 w-96 relative dark:bg-gray-800 dark:text-white">
+    <button id="closeExportPopup" class="absolute top-2 right-2 text-xl text-gray-600 hover:text-gray-900">
+      <i class="bi bi-x-circle-fill"></i>
+    </button>
+    <h3 class="text-lg font-bold mb-4">Export Chat</h3>
+    <div class="flex justify-center mb-4">
+      <img id="qrCodeImage" src="" alt="QR Code" class="w-40 h-40 rounded-md shadow" />
+    </div>
+    <div class="bg-gray-100 dark:bg-gray-700 text-sm flex items-center justify-between rounded px-3 py-2 mb-4">
+      <span id="shareLink" class="truncate">Loading...</span>
+      <button id="copyLinkBtn" class="text-blue-600 text-xl"><i class="bi bi-clipboard"></i></button>
+    </div>
+    <button id="downloadPdfBtn" class="w-full py-2 bg-blue-600 hover:bg-blue-700 rounded text-white font-semibold">
+      <i class="bi bi-download"></i> Download Now
+    </button>
   </div>
 </div>
 
@@ -213,144 +233,32 @@ function deleteChat(id) {
     }
   });
 </script>
-
-<script type="module">
-  import { env, pipeline } from "https://cdn.jsdelivr.net/npm/@xenova/transformers@2.10.0";
-
-  // Configure environment
-  env.allowLocalModels = false;
-
-  // Load LLaMA 3 quantized model via WebGPU
-  const generator = await pipeline('text-generation', 'Xenova/llama3-8b-chat', {
-    quantized: true,
-    progress_callback: status => console.log("Model loading:", status)
-  });
-
-  // DOM references
-  const chatInput = document.getElementById('chatInput');
-  const sendBtn = document.getElementById('sendBtn');
-  const chatContainer = document.getElementById('chatContainer');
-  const toggleDarkBtn = document.getElementById('toggleDark');
-  const toggleFileMenuBtn = document.getElementById('toggleFileMenu');
-  const fileMenu = document.getElementById('fileMenu');
-
-  let greetingRemoved = false;
-
-  // UI helpers
-  toggleDarkBtn?.addEventListener('click', () => {
-    document.documentElement.classList.toggle('dark');
-  });
-
-  toggleFileMenuBtn?.addEventListener('click', () => {
-    fileMenu?.classList.toggle('hidden');
-  });
-
-  function appendMessage(text, sender = "user", animate = false) {
-    const div = document.createElement("div");
-    div.className = "p-3 rounded-xl max-w-2xl my-2 whitespace-pre-line " +
-      (sender === "user"
-        ? "bg-blue-100 text-black self-end"
-        : "bg-white dark:bg-gray-800 text-black dark:text-white self-start");
-
-    if (animate) {
-      div.innerHTML = `<span class="typing-dots"><span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>`;
-    } else {
-      div.innerHTML = text;
-    }
-
-    chatContainer.appendChild(div);
-    chatContainer.scrollTop = chatContainer.scrollHeight;
-    return div;
-  }
-
-  async function sendMessage() {
-    const message = chatInput.value.trim();
-    if (!message) return;
-
-    if (!greetingRemoved) {
-      document.querySelector("#chatContainer h2")?.remove();
-      greetingRemoved = true;
-    }
-
-    appendMessage(message, "user");
-    chatInput.value = "";
-
-    const typingBubble = appendMessage("...", "bot", true);
-
-    try {
-      const result = await generator(message, {
-        max_new_tokens: 128,
-        temperature: 0.7,
-        top_k: 50,
-        top_p: 0.9,
-        repetition_penalty: 1.1,
-      });
-
-      typingBubble.innerHTML = result[0].generated_text;
-    } catch (err) {
-      console.error("LLM error:", err);
-      typingBubble.innerHTML = "⚠️ Error: LLM failed to respond.";
-    }
-  }
-
-  // Ensure only this sendMessage() is attached
-  sendBtn?.addEventListener("click", sendMessage);
-  chatInput?.addEventListener("keydown", function (event) {
-    if (event.key === "Enter" && !event.shiftKey) {
-      event.preventDefault();
-      sendMessage();
-    }
-  });
-</script>
-
 <script>
   const toggleDarkBtn = document.getElementById('toggleDark');
   const toggleFileMenuBtn = document.getElementById('toggleFileMenu');
   const fileMenu = document.getElementById('fileMenu');
-  const chatInput = document.getElementById('chatInput');
+   const chatInput = document.getElementById('chatInput');
   const sendBtn = document.getElementById('sendBtn');
   const chatContainer = document.getElementById('chatContainer');
-  let greetingRemoved = false;
 
-  toggleDarkBtn?.addEventListener('click', () => {
-    document.documentElement.classList.toggle('dark');
-  });
-
-  toggleFileMenuBtn?.addEventListener('click', () => {
-    fileMenu?.classList.toggle('hidden');
-  });
-
-  function appendMessage(text, sender = "user", animate = false) {
+  function appendMessage(text, sender = "user") {
     const div = document.createElement("div");
-    div.className = "p-3 rounded-xl max-w-2xl my-2 whitespace-pre-line " +
-      (sender === "user"
-        ? "bg-blue-100 text-black self-end"
-        : "bg-white dark:bg-gray-800 text-black dark:text-white self-start");
+    div.className = "p-3 rounded-xl max-w-xs my-2 whitespace-pre-line " +
+      (sender === "user" ? "bg-blue-100 text-black self-end ml-auto" : "bg-gray-800 text-white self-start");
 
-    if (animate) {
-      div.innerHTML = `<span class="typing-dots"><span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>`;
-    } else {
-      div.innerHTML = text;
-    }
-
+    div.textContent = text;
     chatContainer.appendChild(div);
     chatContainer.scrollTop = chatContainer.scrollHeight;
-    return div;
   }
 
   async function sendMessage() {
     const message = chatInput.value.trim();
     if (!message) return;
 
-    if (!greetingRemoved) {
-      document.querySelector("#chatContainer h2")?.remove();
-      greetingRemoved = true;
-    }
-
     appendMessage(message, "user");
     chatInput.value = "";
 
-    const typingBubble = appendMessage("...", "bot", true);
+    appendMessage("...", "assistant");
 
     try {
       const res = await fetch("/consult/ai", {
@@ -358,22 +266,67 @@ function deleteChat(id) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message })
       });
-
       const data = await res.json();
-      typingBubble.innerHTML = data.response;
+      const lastBubble = chatContainer.querySelector("div:last-child");
+      lastBubble.textContent = data.response;
     } catch (err) {
-      console.error("Error:", err);
-      typingBubble.innerHTML = "⚠️ Failed to get response.";
+      console.error(err);
     }
   }
 
-  sendBtn?.addEventListener("click", sendMessage);
-  chatInput?.addEventListener("keydown", function (event) {
-    if (event.key === "Enter" && !event.shiftKey) {
-      event.preventDefault();
+  sendBtn.addEventListener("click", sendMessage);
+  chatInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
       sendMessage();
     }
   });
+
+
 </script>
+<script>
+  const exportBtn = document.getElementById('exportChatBtn');
+  const exportPopup = document.getElementById('exportPopup');
+  const closeExportPopup = document.getElementById('closeExportPopup');
+  const qrCodeImage = document.getElementById('qrCodeImage');
+  const shareLink = document.getElementById('shareLink');
+  const copyLinkBtn = document.getElementById('copyLinkBtn');
+  const downloadPdfBtn = document.getElementById('downloadPdfBtn');
+
+  const patientId = "{{ user_id }}";
+  const chatSessionId = "{{ chat_session_id }}";
+
+  exportBtn.addEventListener('click', async () => {
+    exportPopup.classList.remove('hidden');
+    try {
+      const res = await fetch(`/chat-history/${patientId}/${chatSessionId}/export`);
+      if (!res.ok) throw new Error('Failed to fetch export data');
+      const data = await res.json();
+
+      qrCodeImage.src = data.qr_url;
+      shareLink.textContent = data.share_link;
+      shareLink.setAttribute('title', data.share_link);
+      downloadPdfBtn.setAttribute('data-pdf-url', data.pdf_url);
+    } catch (err) {
+      alert('Failed to generate export. Please try again.');
+      console.error(err);
+    }
+  });
+
+  closeExportPopup.addEventListener('click', () => {
+    exportPopup.classList.add('hidden');
+  });
+
+  copyLinkBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(shareLink.textContent);
+    alert('Link copied to clipboard!');
+  });
+
+  downloadPdfBtn.addEventListener('click', () => {
+    const pdfUrl = downloadPdfBtn.getAttribute('data-pdf-url');
+    window.open(pdfUrl, '_blank');
+  });
+</script>
+
 </body>
 </html>

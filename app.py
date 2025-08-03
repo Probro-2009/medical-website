@@ -32,6 +32,7 @@ import json
 from email.mime.application import MIMEApplication
 from datetime import datetime, timezone
 from copilot_bp import copilot_bp
+from models import db, User, Patient, Appointment
 
 
 login_attempts = defaultdict(list)  # { ip_address: [timestamps...] }
@@ -45,10 +46,16 @@ load_dotenv()
 
 app = Flask(__name__, static_folder="frontend/public")
 app.secret_key = os.getenv("SECRET_KEY")
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///appointments.db'
+
+# Fix: allow thread-safe access for SQLite
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///appointments.db?check_same_thread=False'
+
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 socketio = SocketIO(app)
-db = SQLAlchemy(app)
+
+db.init_app(app)
 #app.config.update({
    # 'SESSION_COOKIE_SECURE': True,         # Only over HTTPS
     #'SESSION_COOKIE_HTTPONLY': True,       # JS can't access session
@@ -80,6 +87,169 @@ audit_handler.setFormatter(logging.Formatter('%(asctime)s [%(levelname)s] %(mess
 audit_logger.setLevel(logging.INFO)
 audit_logger.addHandler(audit_handler)
 
+# Simple Audit Logger
+def log_audit(action, user="System"):
+    log_entry = f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] {user}: {action}\n"
+    with open("logs/audit.log", "a") as f:
+        f.write(log_entry)
+
+# Test Audit Entry Route
+@app.route("/test-audit")
+def test_audit():
+    log_audit("Test audit entry added!", user="Developer")
+    return "Audit logged."
+
+
+SECURITY_DIR = "security"
+SECURITY_STATUS_FILE = os.path.join(SECURITY_DIR, "security_status.json")
+
+if not os.path.exists(SECURITY_DIR):
+    os.makedirs(SECURITY_DIR)
+
+def load_security_status():
+    if not os.path.exists(SECURITY_STATUS_FILE):
+        default_data = {
+            "last_security_rating_update": "1970-01-01T00:00:00",
+            "security_rating": 8.5,
+            "last_scan_time": "1970-01-01T00:00:00"
+        }
+        with open(SECURITY_STATUS_FILE, "w") as f:
+            json.dump(default_data, f)
+    with open(SECURITY_STATUS_FILE, "r") as f:
+        return json.load(f)
+
+def save_security_status(data):
+    with open(SECURITY_STATUS_FILE, "w") as f:
+        json.dump(data, f)
+
+@app.route("/api/real-security-status")
+def real_security_status():
+    target_url = "https://drdhanashreechitre.com"  # Change this to your target site
+
+    headers_score = 0
+    vulnerabilities_found = 0
+    headers_analysis = {}
+
+    try:
+        response = requests.get(target_url)
+        resp_headers = response.headers
+
+        # Check important security headers
+        expected_headers = {
+            "Content-Security-Policy": 3,
+            "Strict-Transport-Security": 2,
+            "X-Content-Type-Options": 1,
+            "X-Frame-Options": 1,
+            "Referrer-Policy": 1,
+            "Permissions-Policy": 1
+        }
+
+        for header, weight in expected_headers.items():
+            if header in resp_headers:
+                headers_score += weight
+                headers_analysis[header] = "✅ Present"
+            else:
+                headers_analysis[header] = "❌ Missing"
+
+        # Simulate Vulnerability Scan (Extend with ZAP/Nmap later)
+        if "X-XSS-Protection" not in resp_headers:
+            vulnerabilities_found += 1  # Example XSS Check
+
+        if "X-Content-Type-Options" not in resp_headers:
+            vulnerabilities_found += 1  # MIME Sniffing Check
+
+        if response.status_code != 200:
+            vulnerabilities_found += 2  # Site returned non-200
+
+    except Exception as e:
+        print(f"Scan Failed: {e}")
+        headers_analysis = {"Error": str(e)}
+
+    # Rating out of 10
+    security_rating = min(10, headers_score + (2 if vulnerabilities_found == 0 else 0))
+
+    return jsonify({
+        "security_rating": security_rating,
+        "vulnerabilities_found": vulnerabilities_found,
+        "headers_analysis": headers_analysis
+    })
+
+@app.route("/api/files-structure")
+def api_files_structure():
+    root_dir = "."  # Adjust if needed
+
+    file_tree = []
+
+    for root, dirs, files in os.walk(root_dir):
+        # Skip hidden/system folders
+        if any(part.startswith('.') for part in root.split(os.sep)):
+            continue
+
+        depth = root.count(os.sep)
+        indent = "│   " * depth + "├── "
+
+        if root != ".":
+            file_tree.append(f"{indent}{os.path.basename(root)}/")
+
+        subindent = "│   " * (depth + 1) + "├── "
+        for f in files:
+            f_path = os.path.join(root, f)
+            size = os.path.getsize(f_path) // 1024  # KB
+            mtime = time.strftime('%d-%m-%Y %H:%M', time.localtime(os.path.getmtime(f_path)))
+            file_tree.append(f"{subindent}{f} ({size} KB) [{mtime}]")
+
+    return jsonify({"files": file_tree})
+
+
+@app.route("/api/active-apis")
+def api_active_apis():
+    api_routes = []
+    for rule in app.url_map.iter_rules():
+        if "static" in rule.endpoint:
+            continue
+        api_routes.append({
+            "endpoint": rule.rule,
+            "methods": list(rule.methods - {'HEAD', 'OPTIONS'})
+        })
+
+    return jsonify({"routes": api_routes})
+    
+    return jsonify({"files": file_tree})
+@app.route("/api/env-files")
+def api_env_files():
+    try:
+        with open(".env", "r") as f:
+            lines = f.readlines()
+    except FileNotFoundError:
+        lines = ["No .env file found."]
+
+    env_changes = []
+    for idx, line in enumerate(lines, 1):
+        line = line.strip()
+        if line and not line.startswith("#"):
+            if "=" in line:
+                key = line.split("=")[0].strip()
+                env_changes.append(f"{idx}. {key}")
+
+    return jsonify({"env_changes": env_changes})
+
+@app.route("/api/error-reports")
+def api_error_reports():
+    try:
+        with open("logs/error.log", "r") as f:
+            lines = f.readlines()[-10:]  # Last 10 lines
+    except FileNotFoundError:
+        lines = ["No error logs found."]
+
+    errors = []
+    for line in lines[::-1]:  # Start from latest
+        if "ERROR" in line or "Traceback" in line:
+            timestamp = line.split(' ')[0]  # Assuming log starts with timestamp
+            errors.append(f"{timestamp} - {line.strip()}")
+
+    return jsonify({"errors": errors if errors else ["No tracebacks found."]})
+
+
 
 # ✅ Middleware to inject viewport meta for mobile responsiveness
 @app.after_request
@@ -109,23 +279,6 @@ def add_mobile_meta(response):
 
     return response
 
-class User(db.Model):
-    __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100), nullable=False, unique=True)
-    email = db.Column(db.String(150), nullable=False, unique=True)
-    mobile = db.Column(db.String(20), nullable=False, unique=True)
-    password = db.Column(db.String(200), nullable=False)
-
-    def set_password(self, password):
-        from werkzeug.security import generate_password_hash
-        self.password = generate_password_hash(password)
-
-    def check_password(self, password):
-        from werkzeug.security import check_password_hash
-        return check_password_hash(self.password, password)
-
-
 # ✅ Now import blueprint and pass model
 from login import login_bp
 app.register_blueprint(login_bp(User))
@@ -138,28 +291,6 @@ app.register_blueprint(market_bp)
 app.register_blueprint(sysmon_bp)
 app.register_blueprint(copilot_bp)
 
-class Patient(db.Model):
-    __tablename__ = 'patient'
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100), unique=True, nullable=False)
-    password = db.Column(db.String(200), nullable=False)  # or password_hash if applicable
-
-
-
-
-# Define the Appointment model
-class Appointment(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(100))
-    last_name = db.Column(db.String(100))
-    age = db.Column(db.String(10))
-    gender = db.Column(db.String(10))
-    mobile = db.Column(db.String(15), unique=True)
-    appointment = db.Column(db.String(100))
-    problem = db.Column(db.Text)
-    status = db.Column(db.String(20), default='Pending')
-    preferred_time = db.Column(db.String(50), nullable=True)
-    doctor_note = db.Column(db.Text, nullable=True)
 
 with app.app_context():
     db.create_all()
@@ -518,6 +649,24 @@ def consult():
 def chat():
     username = session.get("username", "Guest")
     return render_template("chat.html", username=username)
+
+@app.route("/api/logs")
+def api_logs():
+    try:
+        with open("logs/error.log", "r") as f:
+            logs = f.readlines()[-10:]  # Get last 10 lines
+    except FileNotFoundError:
+        logs = ["No logs found."]
+    return jsonify({"logs": [log.strip() for log in logs]})
+
+@app.route("/api/audits")
+def api_audits():
+    try:
+        with open("logs/audit.log", "r") as f:
+            audits = f.readlines()[-10:]  # Get last 10 lines
+    except FileNotFoundError:
+        audits = ["No audit logs found."]
+    return jsonify({"audits": [audit.strip() for audit in audits]})
 
 @app.route("/add_review")
 def add_review():

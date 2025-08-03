@@ -395,6 +395,137 @@ document.getElementById("profileBtn").onclick = function () {
 
   </script>
 
+<script>
+// Fetch Sysmon Data
+function fetchSysmonData() {
+    fetch('/sysmon/status')
+        .then(response => response.json())
+        .then(data => {
+            document.querySelectorAll('p strong')[0].textContent = `${data.cpu}%`;    // CPU Usage
+            const memPercent = ((data.ram_used / data.ram_total) * 100).toFixed(1);   // Memory %
+            document.querySelectorAll('p strong')[1].textContent = `${memPercent}%`;  // Update Memory Preview
+        })
+        .catch(err => console.error("Sysmon API Error:", err));
+}
+
+
+// Fetch Logs Preview
+function fetchLogsPreview() {
+    fetch('/api/logs')
+        .then(response => response.json())
+        .then(data => {
+            const logsList = document.querySelector(".dashboard-box ul");
+            logsList.innerHTML = '';
+            data.logs.slice(0, 5).forEach((log, idx) => {
+                logsList.innerHTML += `<li>${idx + 1}. ${log}</li>`;
+            });
+        })
+        .catch(err => console.error("Logs API Error:", err));
+}
+
+// Fetch Audit Logs Preview
+function fetchAuditPreview() {
+    fetch('/api/audits')
+        .then(response => response.json())
+        .then(data => {
+            const auditList = document.querySelectorAll(".dashboard-box ul")[1]; // 2nd ul
+            auditList.innerHTML = '';
+            data.audits.slice(0, 5).forEach((audit, idx) => {
+                auditList.innerHTML += `<li>${idx + 1}. ${audit}</li>`;
+            });
+        })
+        .catch(err => console.error("Audit API Error:", err));
+}
+
+// Auto Refresh every 5s
+setInterval(() => {
+    fetchSysmonData();
+    fetchLogsPreview();
+    fetchAuditPreview();
+}, 5000);
+
+fetchSysmonData();
+fetchLogsPreview();
+fetchAuditPreview();
+
+function fetchRealSecurityStatus() {
+    fetch('/api/real-security-status')
+        .then(response => response.json())
+        .then(data => {
+            // Update Security Rating Box
+            document.querySelector('.dashboard-box:nth-child(2) .rating').textContent = `Rating: ${data.security_rating} / 10`;
+
+            // Update Security Scan Box
+            const scanText = `Last scan: ${new Date().toLocaleTimeString()}. ${data.vulnerabilities_found} vulnerabilities found.`;
+            document.querySelectorAll('.dashboard-box .desc')[0].textContent = scanText;
+        })
+        .catch(err => console.error("Real Security API Error:", err));
+}
+
+// Run scan every 5 mins
+fetchRealSecurityStatus();
+setInterval(fetchRealSecurityStatus, 300000);  // 5 min interval
+function fetchFilesStructure() {
+    fetch('/api/files-structure')
+        .then(response => response.json())
+        .then(data => {
+            const fileBox = document.querySelector('.dashboard-box:nth-child(4) ul');  // Adjust nth-child
+            fileBox.innerHTML = '';
+            data.files.slice(0, 5).forEach(file => {
+                fileBox.innerHTML += `<li>${file}</li>`;
+            });
+        })
+        .catch(err => console.error("Files API Error:", err));
+}
+
+
+fetchFilesStructure();
+function fetchApiRoutes() {
+    fetch('/api/active-apis')
+        .then(response => response.json())
+        .then(data => {
+            const apiBox = document.querySelector('.dashboard-box:nth-child(8) ul');  // Adjust index if needed
+            apiBox.innerHTML = '';
+            data.routes.slice(0, 3).forEach(route => {
+                apiBox.innerHTML += `<li>• ${route.endpoint}</li>`;
+            });
+        })
+        .catch(err => console.error("APIs API Error:", err));
+}
+
+
+
+function fetchEnvFiles() {
+    fetch('/api/env-files')
+        .then(response => response.json())
+        .then(data => {
+            const envBox = document.querySelector('.dashboard-box:nth-child(6) ul');  // Adjust nth-child correctly
+            envBox.innerHTML = '';
+            data.env_changes.slice(0, 5).forEach(change => {
+                envBox.innerHTML += `<li>${change}</li>`;
+            });
+        })
+        .catch(err => console.error("Env Files API Error:", err));
+}
+
+
+function fetchErrorReports() {
+    fetch('/api/error-reports')
+        .then(response => response.json())
+        .then(data => {
+            const errorBox = document.querySelector('.dashboard-box:nth-child(3) .desc');  // Adjust nth-child if needed
+            errorBox.textContent = data.errors[0];  // Latest Error with Timestamp
+        })
+        .catch(err => console.error("Error Reports API Error:", err));
+}
+
+setInterval(() => {
+    fetchFilesStructure();
+    fetchEnvFiles();
+    fetchErrorReports();
+}, 30000);  // Refresh every 30 seconds
+
+</script>
 
 </body>
 <footer>
