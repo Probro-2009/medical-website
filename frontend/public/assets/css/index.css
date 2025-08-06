@@ -1,0 +1,1040 @@
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+        }
+
+        /* Section 1: Video Background */
+        #video-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #background-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 20px;
+        }
+
+        .logo {
+            position: absolute;
+            top: 20px;
+            left: 50px;
+            width: 100px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+            position: absolute;
+            top: 30px;
+            right: 80px;
+        }
+
+        .btn {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 12px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            color: #333;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            background-color: rgba(255, 255, 255, 1);
+            transform: scale(1.05);
+        }
+
+        /* Mute Button */
+        #mute-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 9999; /* Ensure it's above everything */
+    border-radius: 5px;
+}
+
+        #mute-btn:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+/* Section 2 Styling */
+#section-2 {
+    background-color: ivory;
+    text-align: center;
+    padding: 80px 20px;
+    width: 100%;
+    height: 100vh; /* Full height to match Section 1 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Horizontal Divider Between Sections */
+.section-divider {
+    border: none;
+    height: 4px;
+    background: linear-gradient(to right, #555, #aaa, #555);
+    width: 80%;
+    margin-bottom: 30px;
+}
+
+/* 3D Effect for Title */
+.section-title {
+    font-size: 42px;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Button Container */
+.button-container {
+    display: flex;
+    justify-content: space-around; /* Left, Center, Right */
+    align-items: center;
+    width: 80%;
+    margin: 30px auto;
+}
+
+/* 3D Circular Rectangle Buttons */
+.treatment-btn {
+    width: 270px;
+    height: 190px;
+    background: linear-gradient(to bottom, #ffffff, #e6e6e6);
+    border-radius: 40px;
+    box-shadow: 6px 6px 18px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    font-weight: bold;
+    color: #333;
+    font-size: 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 25px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Button Hover Effect */
+.treatment-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(to bottom, #f5f5f5, #d9d9d9);
+}
+
+/* Button Text Styling */
+.treatment-btn span {
+    font-size: 26px;
+    margin-bottom: 10px;
+    color: #000;
+    font-weight: bold;
+}
+
+.treatment-btn p {
+    font-size: 16px;
+    color: #555;
+    margin: 0;
+    padding: 0 15px;
+}
+
+/* Treatment Info Paragraph */
+.treatment-info {
+    font-size: 18px;
+    color: #333;
+    max-width: 600px;
+    margin: 40px auto;
+    line-height: 1.5;
+    text-align: center;
+}
+
+/* "Consult Now" Button */
+.consult-btn {
+    display: inline-block;
+    background: linear-gradient(145deg, #ff914d, #ff6500);
+    color: white;
+    font-size: 18px;
+    padding: 14px 28px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 20px;
+    box-shadow: 4px 4px 12px #b85b00, -4px -4px 12px #ffaf66;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover Effect for "Consult Now" Button */
+.consult-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 6px 6px 15px #b85b00, -6px -6px 15px #ffaf66;
+}
+/* Section 3 Styling */
+#section-3 {
+    background-color: #d4edb3; /* Bright Pista */
+    text-align: center;
+    padding: 80px 20px;
+    width: 100%;
+    height: 100vh; /* Full height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Horizontal Divider */
+.section-divider {
+    border: none;
+    height: 4px;
+    background: linear-gradient(to right, #555, #aaa, #555);
+    width: 80%;
+    margin-bottom: 30px;
+}
+
+/* 3D Effect for Title */
+.section-title {
+    font-size: 42px;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Testimonials Container */
+.testimonials-container {
+    display: flex;
+    justify-content: center;
+    gap: 25px; /* Increased spacing */
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+/* Testimonial Box (3D Frame) */
+.testimonial-box {
+    width: 320px; /* Increased width */
+    height: 420px; /* Increased height */
+    background: linear-gradient(to bottom, #ffffff, #e6e6e6);
+    border-radius: 40px;
+    box-shadow: 6px 6px 18px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover Effect */
+.testimonial-box:hover {
+    transform: scale(1.08);
+    box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Testimonial Slider */
+.testimonial-slider {
+    width: 100%;
+    height: 250px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.testimonial-slider img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 40px;
+    object-fit: cover;
+    opacity: 1;
+    transition: opacity 1s ease-in-out;
+}
+
+.testimonial-slider img.active {
+    opacity: 1;
+    z-index: 1;
+}
+
+
+
+/* Review Section */
+.review {
+    text-align: center;
+    padding: 15px 0;
+}
+
+/* Review Text */
+.review-text {
+    font-size: 18px; /* Slightly larger text */
+    color: #444;
+    font-style: italic;
+    min-height: 55px;
+    transition: opacity 1s ease-in-out;
+}
+
+/* Star Rating */
+.stars {
+    font-size: 22px; /* Bigger stars */
+    color: gold;
+    margin-top: 5px;
+}
+
+/* Encouraging Text */
+.booking-text {
+    font-size: 18px;
+    color: #333;
+    max-width: 600px;
+    margin: 40px auto;
+    line-height: 1.5;
+    text-align: center;
+}
+
+/* "Book Now" Button */
+.book-btn {
+    display: inline-block;
+    background: linear-gradient(145deg, #42b72a, #2a8c1f);
+    color: white;
+    font-size: 18px;
+    padding: 14px 28px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 20px;
+    box-shadow: 4px 4px 12px #1c5f13, -4px -4px 12px #64d84a;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover Effect for "Book Now" Button */
+.book-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 6px 6px 15px #1c5f13, -6px -6px 15px #64d84a;
+}
+
+/* Custom Horizontal Line */
+.custom-hr {
+    border: 2px solid #333;
+    width: 80%;
+    margin: 20px auto;
+}
+
+
+/* Section 4 Styling */
+#section-4 {
+    padding: 80px 5%;
+    background: #f5f5f5;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Section Title */
+.section-title {
+    font-size: 42px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #222;
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+    margin-bottom: 40px;
+}
+
+/* Main Container */
+.section-4-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* Image Comparison Frame */
+.image-comparison-container {
+    position: relative;
+    width: 100%;
+    max-width: 650px;
+    height: 550px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.before-image,
+.after-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.after-image {
+    clip-path: inset(0 50% 0 0); /* Default at 50% */
+    transition: clip-path 0.2s ease-in-out;
+}
+
+/* Draggable Slider */
+.slider {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 25px;
+    height: 25px;
+    background: white;
+    border: 3px solid black;
+    border-radius: 50%;
+    cursor: grab;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Change cursor when dragging */
+.slider:active {
+    cursor: grabbing;
+}
+
+/* Circular Drag Button */
+.drag-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 25px;
+    height: 25px;
+    background: white;
+    border-radius: 50%;
+    border: 3px solid black;
+    transform: translate(-50%, -50%);
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
+    cursor: grab;
+}
+
+.drag-button:active {
+    cursor: grabbing;
+}
+
+/* Right Side Content */
+.right-content {
+    width: 40%;
+    text-align: left;
+}
+
+.right-content p {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+/* "Consult Now" Button */
+.blue-btn {
+    display: inline-block;
+    padding: 14px 28px;
+    background: #007bff;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 4px 4px 0px #0056b3, 6px 6px 10px rgba(0, 0, 0, 0.3);
+}
+
+.blue-btn:hover {
+    background: #0056b3;
+    transform: translateY(-4px);
+    box-shadow: 6px 6px 0px #004499, 10px 10px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .section-4-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .image-comparison-container {
+        width: 90%;
+        max-width: 500px;
+        height: 300px;
+    }
+
+    .right-content {
+        width: 90%;
+        margin-top: 30px;
+        text-align: center;
+    }
+}
+/* Specifically for the second HR */
+#section-4 .custom-hr:last-of-type {
+    margin-top: 100px;  /* Push it further down */
+    margin-bottom: 40px; /* Add some space below */
+}
+/* Section 5 Styling */
+#section-5 {
+    padding: 80px 5%;
+    background: #fce4ec; /* Cream Pink Background */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Section Title */
+.section-title {
+    font-size: 42px;
+    font-weight: bold;
+    color: #222;
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+    margin-bottom: 40px;
+}
+
+/* Blog Slider */
+.blog-slider {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* 3D Hovering Image Frame with Rounded Rectangle */
+.blog-image-frame {
+    width: 50%;
+    max-width: 500px;
+    height: 350px;
+    border-radius: 25px; /* Rounded Rectangle */
+    overflow: hidden;
+    box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.4);
+    transform: perspective(1000px) rotateY(-10deg);
+    transition: transform 0.5s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.blog-image-frame:hover {
+    transform: perspective(1000px) rotateY(0deg) scale(1.05);
+    box-shadow: 12px 12px 24px rgba(0, 0, 0, 0.5);
+}
+
+.blog-image-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 1s ease-in-out; /* Fade Effect */
+}
+
+/* Blog Content */
+.blog-content {
+    width: 40%;
+    text-align: left;
+}
+
+/* 3D Text Effect for Changing Text */
+.blog-content p {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 25px;
+    line-height: 1.5;
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+    transition: opacity 1s ease-in-out, transform 0.5s ease-in-out; /* Fade & Slide Effect */
+}
+
+/* 3D "Learn More" Button */
+.blue-btn {
+    display: inline-block;
+    padding: 14px 28px;
+    background: #007bff;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 4px 4px 0px #0056b3, 6px 6px 10px rgba(0, 0, 0, 0.3);
+}
+
+.blue-btn:hover {
+    background: #0056b3;
+    transform: translateY(-4px);
+    box-shadow: 6px 6px 0px #004499, 10px 10px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .blog-slider {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .blog-image-frame {
+        width: 90%;
+        max-width: 500px;
+        height: 300px;
+    }
+
+    .blog-content {
+        width: 90%;
+        margin-top: 30px;
+        text-align: center;
+    }
+}
+/* Push only the second HR down without affecting background */
+#section-5 .custom-hr:last-of-type {
+    position: relative;
+    top: 80px;  /* Moves HR further down */
+}
+
+/* If needed, increase section bottom padding */
+#section-5 {
+    padding-bottom: 100px; /* Adds more space below without affecting background */
+}
+/* Section 6 Styling */
+#section-6 {
+    padding: 80px 5%;
+    background: ivory;  /* Ivory Background */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Section Title */
+.section-title {
+    font-size: 42px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #222;
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+    margin-bottom: 40px;
+}
+
+/* Main Container */
+.map-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* Left Side: Address */
+.address-content {
+    width: 40%;
+    text-align: left;
+}
+
+.address-text {
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3); /* 3D Text Effect */
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+/* Right Side: Google Map with Enhanced 3D Shadow */
+.map-frame {
+    width: 50%;
+    max-width: 600px;
+    height: 450px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: -6px -6px 12px rgba(0, 0, 0, 0.2), 6px 6px 12px rgba(0, 0, 0, 0.3); /* Shadow on All Sides */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.map-frame:hover {
+    transform: scale(1.05);
+    box-shadow: -10px -10px 20px rgba(0, 0, 0, 0.25), 10px 10px 20px rgba(0, 0, 0, 0.4); /* Stronger Hover Shadow */
+}
+
+/* "Contact Now" Button */
+.blue-btn {
+    display: inline-block;
+    padding: 14px 28px;
+    background: #007bff;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 4px 4px 0px #0056b3, 6px 6px 10px rgba(0, 0, 0, 0.3);
+}
+
+.blue-btn:hover {
+    background: #0056b3;
+    transform: translateY(-4px);
+    box-shadow: 6px 6px 0px #004499, 10px 10px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .map-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .map-frame {
+        width: 90%;
+        max-width: 500px;
+        height: 350px;
+    }
+
+    .address-content {
+        width: 90%;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+}
+/* Specifically for Section 6 Horizontal Lines */
+#section-6 .custom-hr:first-of-type {
+    margin-top: 50px;  /* Adjusts the top line position */
+    margin-bottom: 30px; /* Space below the top line */
+}
+
+#section-6 .custom-hr:last-of-type {
+    margin-top: 60px; /* Adjusts the bottom line position */
+    margin-bottom: 30px; /* Pushes the bottom line further down */
+}
+/* Section 7-9: Footer-like Final Section */
+#section-7-9 {
+    background: #2c2c2c; /* Darkish Gray */
+    color: gray; /* Default Text Color */
+    padding: 50px 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* Left Side: Logo & Social Media */
+.footer-left {
+    text-align: left;
+    max-width: 300px;
+}
+
+.footer-logo {
+    width: 120px; /* Adjust logo size */
+    margin-bottom: 10px;
+}
+
+.clinic-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.social-icons {
+    display: flex;
+    gap: 10px;
+}
+
+.social-icons img {
+    width: 30px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.social-icons img:hover {
+    transform: scale(1.1);
+}
+
+/* Essential Links, Legal, and Contact Us */
+.footer-links, .footer-center, .footer-right {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    flex: 1;
+    padding: 10px;
+}
+
+/* Titles in White */
+.footer-links h3, 
+.footer-center h3, 
+.footer-right h3 {
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 10px;
+}
+
+/* Footer Links */
+.footer-links a, .footer-center a {
+    color: gray;
+    text-decoration: none;
+    margin-top: 5px;
+    transition: color 0.3s;
+}
+
+.footer-links a:hover, .footer-center a:hover {
+    color: white;
+}
+
+/* Contact Us Section */
+.footer-right {
+    text-align: right;
+    max-width: 300px;
+}
+
+.footer-right p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: gray;
+}
+
+/* Ensuring Legal Section is Centered */
+.footer-center {
+    text-align: center;
+}
+/* Footer Styling */
+#footer {
+    background: #1e1e1e; /* Slightly lighter dark gray than Section 7 */
+    color: #ccc; /* Light gray text for contrast */
+    text-align: center;
+    padding: 15px 0;
+    font-size: 14px;
+}
+
+#footer p {
+    margin: 0;
+}
+/* Section 8: Homeopathic Academic Courses */
+#section-8 {
+    background: #cfe7b1; /* Pista Green Background */
+    padding: 60px 5%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* 3D Title */
+.section-title {
+    font-size: 36px;
+    font-weight: bold;
+    color: #1d3b1d; /* Dark Green */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* 3D Text Effect */
+    margin-bottom: 20px;
+}
+
+/* 3D Course Description */
+.courses-description {
+    font-size: 18px;
+    line-height: 1.8;
+    max-width: 900px;
+    color: #2a472a; /* Dark Green Text */
+    background: rgba(255, 255, 255, 0.3); /* Slight White Overlay */
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+}
+
+/* View Courses Button - Circular Rectangle with 3D Hover */
+.view-courses-button {
+    display: inline-block;
+    background: #0a5b0a;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 15px 40px;
+    border-radius: 30px; /* Circular Rectangle */
+    text-decoration: none;
+    margin-top: 20px;
+    box-shadow: 0 6px 0 #063c06, 0 10px 20px rgba(0, 0, 0, 0.3); /* 3D Effect */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover Effect - Pops Out */
+.view-courses-button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 0 #063c06, 0 15px 25px rgba(0, 0, 0, 0.4);
+}
+#section-8 .custom-hr:last-of-type {
+    margin-top: 60px; /* Adjusts the bottom line position */
+    margin-bottom: 30px; /* Pushes the bottom line further down */
+@media (max-width: 768px) {
+    .button-container, .testimonials-container, .section-4-container, .map-container, .blog-slider {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .logo {
+        left: 20px;
+        width: 80px;
+    }
+
+    .buttons {
+        top: 20px;
+        right: 20px;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .treatment-btn, .testimonial-box, .blog-image-frame, .map-frame {
+        width: 90% !important;
+        max-width: 400px !important;
+    }
+
+    .right-content, .blog-content, .address-content {
+        width: 100%;
+        text-align: center;
+        margin-top: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .section-title {
+        font-size: 28px;
+    }
+
+    .btn {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+
+    .consult-btn, .book-btn, .blue-btn {
+        font-size: 16px;
+        padding: 10px 20px;
+    }
+}
+@media (max-width: 768px) {
+    .overlay {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
+    }
+
+    .logo {
+        width: 70px;
+    }
+
+    .buttons {
+        position: relative;
+        top: auto;
+        right: auto;
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .footer-left, .footer-links, .footer-center, .footer-right {
+        max-width: 100%;
+        margin-bottom: 20px;
+    }
+}
+
+
+</style>
+<style>
+/* Responsive Fix for Treatments & Testimonials Sections */
+@media (max-width: 992px) {
+    .button-container, .testimonials-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .treatment-btn, .testimonial-box {
+        width: 90% !important;
+        max-width: 400px;
+        height: auto;
+    }
+
+    .section-title {
+        font-size: 28px;
+        text-align: center;
+    }
+
+    .review-text {
+        font-size: 16px;
+    }
+
+    .stars {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 576px) {
+    .btn {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+
+    .consult-btn, .book-btn {
+        font-size: 16px;
+        padding: 10px 20px;
+    }
+
+    .treatment-info, .booking-text {
+        font-size: 14px;
+        padding: 0 10px;
+    }
+}
+
+/* Ensure horizontal lines scale properly */
+.custom-hr {
+    width: 90%;
+    margin: 20px auto;
+}
+</style>

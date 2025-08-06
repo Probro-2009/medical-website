@@ -1,0 +1,91 @@
+
+/* Global Fixes */
+body, html {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+
+/* Video Section Fixes */
+#video-container, #background-video {
+    width: 100vw;
+    max-width: 100%;
+}
+
+/* Overlay Stack Fix for Mobile */
+@media (max-width: 768px) {
+    .overlay {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding-top: 20px;  /* Reduce top padding */
+    }
+
+    .logo {
+        margin-bottom: 5px; /* Minimal spacing */
+    }
+
+    .buttons {
+        margin-top: 0;       /* Remove excess top margin */
+        gap: 8px;            /* Slightly tighter gap */
+    }
+}
+
+
+/* Treatments & Testimonials Stack */
+@media (max-width: 768px) {
+    #section-2, #section-3 {
+        height: auto !important;
+        padding: 40px 20px !important;
+    }
+
+    .button-container, .testimonials-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .treatment-btn, .testimonial-box {
+        width: 90% !important;
+        max-width: 400px !important;
+        height: auto !important;
+    }
+}
+
+/* Font Scaling for Small Screens */
+@media (max-width: 576px) {
+    .section-title {
+        font-size: 24px !important;
+    }
+
+    .btn, .consult-btn, .book-btn, .blue-btn {
+        font-size: 14px !important;
+        padding: 8px 16px !important;
+    }
+
+    .review-text, .booking-text, .treatment-info {
+        font-size: 14px !important;
+    }
+}
+
+/* Footer and Containers to Stack */
+@media (max-width: 768px) {
+    .footer-container, .section-4-container, .blog-slider, .map-container {
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+    }
+
+    .footer-left, .footer-links, .footer-center, .footer-right {
+        width: 100% !important;
+        margin-bottom: 20px;
+    }
+}
+
+/* Ensure HR Lines Scale */
+.custom-hr {
+    width: 90%;
+    margin: 20px auto;
+}
