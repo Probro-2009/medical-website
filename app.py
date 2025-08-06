@@ -48,7 +48,7 @@ app = Flask(__name__, static_folder="frontend/public")
 app.secret_key = os.getenv("SECRET_KEY")
 
 # Fix: allow thread-safe access for SQLite
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///appointments.db?check_same_thread=False'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://neondb_owner:npg_d21gDjxPSAue@ep-restless-poetry-abcawrk8-pooler.eu-west-2.aws.neon.tech:5432/neondb'
 
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -292,8 +292,8 @@ app.register_blueprint(sysmon_bp)
 app.register_blueprint(copilot_bp)
 
 
-with app.app_context():
-    db.create_all()
+
+  
 
 
 def send_sms(mobile, message):
@@ -598,19 +598,6 @@ def register():
 
     return render_template("register.html")
 
-
-import sqlite3
-from flask import session, render_template, redirect, url_for
-
-def get_user_from_db(user_id):
-    conn = sqlite3.connect("instance/appointments.db")  # ✅ adjust if needed
-    conn.row_factory = sqlite3.Row
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM users WHERE id = ?", (user_id,))
-    user = cur.fetchone()
-    conn.close()
-    return user
-
 @app.route("/dashboard")
 def dashboard():
     if "patient_user" not in session:
@@ -619,7 +606,8 @@ def dashboard():
     username = session["patient_user"]
     user_id = session["user_id"]
 
-    user = get_user_from_db(user_id)
+    user = User.query.filter_by(id=user_id).first()
+
     if not user:
         return redirect(url_for("login"))
 
@@ -749,7 +737,7 @@ app.logger.info('Application startup')
 
 
 with app.app_context():
-    db.create_all()
+  
     send_logs_if_due()
 
 
