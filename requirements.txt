@@ -11,7 +11,7 @@ python-dotenv==1.0.1
 
 # Server / WebSockets
 gunicorn==21.2.0
-eventlet==0.35.1  # Required for Flask-SocketIO on Render
+
 
 # Async Task Support (Optional if using SocketIO with background tasks)
 redis==5.0.4
