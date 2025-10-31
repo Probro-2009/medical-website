@@ -34,3 +34,4 @@ qrcode[pil]>=7.4.2
 psutil>=5.9.8
 Pillow>=10.3.0
 flask-apscheduler==1.13.1
+psycopg2-binary==2.9.9
