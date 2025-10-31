@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Blogs — Cosmetology, Laser & Homeopathy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: "Segoe UI", Tahoma, sans-serif; background:#f8fafc; color:#0f172a; }
+
+  /* 3D Header */
+  .header-3d {
+    background: linear-gradient(145deg, #0f172a, #1e293b);
+    padding: 1rem 0;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    position: sticky; top: 0; z-index: 50;
+  }
+  .header-container {
+    max-width: 1200px; margin: 0 auto; padding: 0 1rem;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .logo { height:60px; }
+  nav ul { list-style:none; display:flex; gap:1.5rem; }
+  nav a { color:#fff; text-decoration:none; font-weight:500; }
+  nav a:hover { color:#38bdf8; }
+
+  /* Search + filter row */
+  .toolbar { max-width: 1200px; margin: 2rem auto 1rem; padding: 0 1rem; }
+  .search-bar { max-width: 900px; margin: 0 auto; display:flex; gap:.5rem; }
+  .search-bar input {
+    flex:1; padding:.75rem .9rem; border:2px solid #cbd5e1;
+    border-radius:8px; outline:none;
+  }
+  .btn {
+    padding:.75rem 1rem; background:#0ea5e9; color:#fff; border:none;
+    border-radius:8px; cursor:pointer; transition:.2s; font-weight:600;
+  }
+  .btn:hover { background:#0284c7; }
+  .chipbar { max-width: 900px; margin: .75rem auto 0; display:flex; flex-wrap:wrap; gap:.5rem; }
+  .chip { background:#e2e8f0; color:#0f172a; padding:.35rem .6rem; border-radius:999px; font-size:.82rem; cursor:pointer; }
+  .chip.active { background:#0ea5e9; color:#fff; }
+
+  /* Grid */
+  .blog-grid {
+    max-width: 1200px; margin: 0 auto; padding: 0 1rem;
+    display:grid; gap:1.5rem; grid-template-columns: repeat(auto-fill, minmax(300px,1fr));
+  }
+  .blog-card {
+    background:#fff; border-radius:12px; overflow:hidden;
+    box-shadow: 0 8px 18px rgba(2,6,23,.06);
+    transition: transform .25s ease;
+  }
+  .blog-card:hover { transform: translateY(-4px); }
+  .blog-card img {
+    width:100%; height:200px; object-fit:cover; display:block;
+    background:#e2e8f0;
+  }
+  .content { padding: 1rem; }
+  .content h3 { font-size:1.08rem; font-weight:700; margin-bottom:.4rem; color:#0f172a; }
+  .content p { font-size:.92rem; color:#475569; margin-bottom:.5rem; line-height:1.45; }
+  .badge {
+    display:inline-block; background:#e2e8f0; color:#1e293b;
+    font-size:.72rem; padding:.22rem .5rem; border-radius:6px; margin:.15rem .25rem .15rem 0;
+  }
+  .read-btn {
+    display:inline-block; margin-top:.6rem; text-decoration:none; font-size:.86rem;
+    background:#0ea5e9; color:#fff; padding:.5rem .8rem; border-radius:8px;
+    transition:.2s; font-weight:600;
+  }
+  .read-btn:hover { background:#0284c7; }
+
+  /* Footer (Section 7–9) */
+  #section-7-9 {
+    background:#0f172a; color:#fff; padding: 3.25rem 1rem;
+    margin-top: 4.5rem; /* extra space below grid */
+  }
+  .footer-container {
+    max-width:1200px; margin:0 auto;
+    display:grid; gap:2rem; grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+  }
+  .footer-logo { height:60px; margin-bottom: .75rem; }
+  .footer-left p { margin:.35rem 0; color:#e2e8f0; }
+  .social-icons img { height:22px; margin-right:.45rem; vertical-align:middle; }
+  .footer-links a, .footer-center a {
+    display:block; color:#e2e8f0; text-decoration:none; margin:.3rem 0;
+  }
+  .footer-links a:hover, .footer-center a:hover { color:#38bdf8; }
+  .footer-right p { margin:.25rem 0; color:#e2e8f0; }
+
+  /* Bottom strip */
+  #footer {
+    background:#020617; color:#94a3b8; text-align:center; padding:.9rem; font-size:.88rem;
+  }
+  /* Utility */
+  .hidden { display:none !important; }
+</style>
+</head>
+<body>
+
+<!-- 3D Header -->
+<header class="header-3d">
+  <div class="header-container">
+    <img src="assets/images/logo.png.png" alt="Logo" class="logo" />
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="testimonials.html">Testimonials</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- Search + Filter -->
+<div class="toolbar">
+  <div class="search-bar">
+    <input id="searchInput" type="text" placeholder="Search blogs (title or summary)..." />
+    <button id="filterToggle" class="btn" type="button">Filter</button>
+  </div>
+
+  <!-- Filter chips (click to toggle). Also shown/hidden via Filter button for mobile. -->
+  <div id="chipBar" class="chipbar">
+    <!-- chips injected by JS -->
+  </div>
+</div>
+
+<!-- Blog Grid -->
+<div id="blogGrid" class="blog-grid">
+  <!-- 1 -->
+  <article class="blog-card" data-title="Laser Hair Removal: What to Expect" data-excerpt="Safety, sessions, and results—your quick guide to modern laser hair removal." data-tags="cosmetology,laser">
+    <img src="https://images.unsplash.com/photo-1512250306093-44cbe89bf008?w=1000&auto=format&fit=crop" alt="Laser hair removal device" onerror="this.src='https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=1000&auto=format&fit=crop';" />
+    <div class="content">
+      <h3>Laser Hair Removal: What to Expect</h3>
+      <p>Safety, sessions, and results—your quick guide to modern laser hair removal.</p>
+      <span class="badge">Cosmetology</span><span class="badge">Laser</span>
+      <a class="read-btn" target="_blank" href="https://www.aad.org/public/cosmetic/hair-removal/laser-hair-removal">Read More</a>
+    </div>
+  </article>
+
+  <!-- 2 -->
+  <article class="blog-card" data-title="Acne Scar Laser Resurfacing (Fractional CO2)" data-excerpt="How fractional lasers help soften acne scars and smooth skin texture." data-tags="laser,dermatology">
+    <img src="https://images.unsplash.com/photo-1556228720-195a672e8a03?w=1000&auto=format&fit=crop" alt="Skincare product texture" onerror="this.src='https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=1000&auto=format&fit=crop';" />
+    <div class="content">
+      <h3>Acne Scar Laser Resurfacing (Fractional CO₂)</h3>
+      <p>How fractional lasers help soften acne scars and smooth skin texture.</p>
+      <span class="badge">Laser</span><span class="badge">Dermatology</span>
+      <a class="read-btn" target="_blank" href="https://my.clevelandclinic.org/health/treatments/11015-laser-skin-resurfacing">Read More</a>
+    </div>
+  </article>
+
+  <!-- 3 (replaced the 404 image URL) -->
+  <article class="blog-card" data-title="Pigmentation & Melasma: Laser + Daily Care" data-excerpt="What helps melasma, where lasers fit, and smart sun-care essentials." data-tags="cosmetology,laser,skin">
+    <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=1000&auto=format&fit=crop" alt="Skin care and glow" />
+    <div class="content">
+      <h3>Pigmentation &amp; Melasma: Laser + Daily Care</h3>
+      <p>What helps melasma, where lasers fit, and smart sun-care essentials.</p>
+      <span class="badge">Cosmetology</span><span class="badge">Laser</span>
+      <a class="read-btn" target="_blank" href="https://www.aad.org/public/diseases/a-z/melasma-overview">Read More</a>
+    </div>
+  </article>
+
+  <!-- 4 -->
+  <article class="blog-card" data-title="Q-Switched Lasers for Tattoo Removal" data-excerpt="Fading ink safely: number of sessions, after-care, and expectations." data-tags="laser,cosmetology">
+    <img src="https://images.unsplash.com/photo-1512250306093-44cbe89bf008?w=1000&auto=format&fit=crop" alt="Tattoo removal concept" />
+    <div class="content">
+      <h3>Q‑Switched Lasers for Tattoo Removal</h3>
+      <p>Fading ink safely: number of sessions, after‑care, and expectations.</p>
+      <span class="badge">Laser</span><span class="badge">Cosmetology</span>
+      <a class="read-btn" target="_blank" href="https://www.aad.org/public/cosmetic/scars-stretch-marks/tattoo-removal">Read More</a>
+    </div>
+  </article>
+
+  <!-- 5 -->
+  <article class="blog-card" data-title="Laser Toning for Glow & Pores" data-excerpt="A gentle approach to brighten tone and refine texture over multiple sessions." data-tags="laser,cosmetology">
+    <img src="https://images.unsplash.com/photo-1512250306093-44cbe89bf008?w=1000&auto=format&fit=crop" alt="Woman with fresh skincare" />
+    <div class="content">
+      <h3>Laser Toning for Glow &amp; Pores</h3>
+      <p>A gentle approach to brighten tone and refine texture over multiple sessions.</p>
+      <span class="badge">Laser</span><span class="badge">Cosmetology</span>
+      <a class="read-btn" target="_blank" href="https://www.hopkinsmedicine.org/health/treatment-tests-and-therapies/laser-skin-resurfacing">Read More</a>
+    </div>
+  </article>
+
+  <!-- 6 -->
+  <article class="blog-card" data-title="PRP vs Lasers for Hair & Skin" data-excerpt="When platelet-rich plasma shines, when lasers lead, and when to combine." data-tags="cosmetology,regenerative,hair,skin">
+    <img src="https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=1000&auto=format&fit=crop" alt="Dermatology tools" />
+    <div class="content">
+      <h3>PRP vs Lasers for Hair &amp; Skin</h3>
+      <p>When platelet‑rich plasma shines, when lasers lead, and when to combine.</p>
+      <span class="badge">Cosmetology</span><span class="badge">Regenerative</span>
+      <a class="read-btn" target="_blank" href="https://my.clevelandclinic.org/health/treatments/15834-platelet-rich-plasma-prp-therapy">Read More</a>
+    </div>
+  </article>
+
+  <!-- 7 -->
+  <article class="blog-card" data-title="Homeopathy for Acne & Sensitive Skin" data-excerpt="An overview of homeopathic care approaches and lifestyle basics." data-tags="homeopathy,skin">
+    <img src="https://images.unsplash.com/photo-1512250306093-44cbe89bf008?w=1000&auto=format&fit=crop" alt="Homeopathic globules bottle" />
+    <div class="content">
+      <h3>Homeopathy for Acne &amp; Sensitive Skin</h3>
+      <p>An overview of homeopathic care approaches and lifestyle basics.</p>
+      <span class="badge">Homeopathy</span><span class="badge">Skin</span>
+      <a class="read-btn" target="_blank" href="https://www.nccih.nih.gov/health/homeopathy">Read More</a>
+    </div>
+  </article>
+
+  <!-- 8 -->
+  <article class="blog-card" data-title="Homeopathic Support for Hair Fall" data-excerpt="Holistic considerations for hair health alongside routine dermatologic care." data-tags="homeopathy,hair">
+    <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=1000&auto=format&fit=crop" alt="Hair health concept" />
+    <div class="content">
+      <h3>Homeopathic Support for Hair Fall</h3>
+      <p>Holistic considerations for hair health alongside routine dermatologic care.</p>
+      <span class="badge">Homeopathy</span><span class="badge">Hair</span>
+      <a class="read-btn" target="_blank" href="https://www.nccih.nih.gov/health/homeopathy">Read More</a>
+    </div>
+  </article>
+
+  <!-- 9 -->
+  <article class="blog-card" data-title="Homeopathy & Allergic Skin Tendency" data-excerpt="Ideas discussed in the context of sensitive skin and seasonal triggers." data-tags="homeopathy,allergy,skin">
+    <img src="https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=1000&auto=format&fit=crop" alt="Allergy concept" />
+    <div class="content">
+      <h3>Homeopathy &amp; Allergic Skin Tendency</h3>
+      <p>Ideas discussed in the context of sensitive skin and seasonal triggers.</p>
+      <span class="badge">Homeopathy</span><span class="badge">Allergy</span>
+      <a class="read-btn" target="_blank" href="https://www.nccih.nih.gov/health/homeopathy">Read More</a>
+    </div>
+  </article>
+</div>
+
+<!-- Section 7–9 (slightly lower than grid) -->
+<section id="section-7-9">
+  <div class="footer-container">
+    <!-- Left Side: Logo and Socials -->
+    <div class="footer-left">
+      <img src="assets/images/logo.png.png" alt="Clinic Logo" class="footer-logo" />
+      <p>Dr. Dhanashree Chitre's Homeopathic Cosmetic and Laser Clinic</p>
+      <div class="social-icons">
+        <a href="https://www.google.com" target="_blank"><img src="assets/images/google-icon.png" alt="Google" /></a>
+        <a href="https://www.facebook.com" target="_blank"><img src="assets/images/facebook-icon.png" alt="Facebook" /></a>
+        <a href="https://www.instagram.com" target="_blank"><img src="assets/images/instagram-icon.png" alt="Instagram" /></a>
+      </div>
+    </div>
+
+    <!-- Essential Links -->
+    <div class="footer-links">
+      <h3>Essential Links</h3>
+      <a href="book.html">Book an Appointment</a>
+      <a href="about.html">About Us</a>
+      <a href="blogs.html">Blogs</a>
+      <a href="testimonials.html">Testimonials</a>
+    </div>
+
+    <!-- Legal -->
+    <div class="footer-center">
+      <h3>Legal</h3>
+      <a href="terms.html">Terms &amp; Conditions</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="refund.html">Refund Policy</a>
+    </div>
+
+    <!-- Contact -->
+    <div class="footer-right">
+      <h3>Contact Us</h3>
+      <p>
+        Shop no. 1, Bobby Pathak Avenue Society,<br />
+        near Aapla Samadhan Hotel, Sudhindra Nagar,<br />
+        Dahisar East, Mumbai, Maharashtra 400068
+      </p>
+      <p>📞 9819139154, 9869345997</p>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer id="footer">
+  <p>© 2025 Dr. Dhanashree R. Chitre | Developed by Vedant R. Chitre</p>
+</footer>
+
+<!-- ===== Client-side Search & Filter (no backend) ===== -->
+<script>
+(function(){
+  const searchInput = document.getElementById('searchInput');
+  const grid = document.getElementById('blogGrid');
+  const cards = Array.from(grid.querySelectorAll('.blog-card'));
+
+  // Themes to show as chips (collect from cards)
+  const tagSet = new Set();
+  cards.forEach(card => {
+    const tags = (card.dataset.tags || '').split(',').map(t => t.trim().toLowerCase()).filter(Boolean);
+    tags.forEach(t => tagSet.add(t));
+  });
+  const themes = Array.from(tagSet).sort();
+
+  // Build chip bar
+  const chipBar = document.getElementById('chipBar');
+  themes.forEach(t => {
+    const chip = document.createElement('button');
+    chip.type = 'button';
+    chip.className = 'chip';
+    chip.textContent = t.charAt(0).toUpperCase() + t.slice(1);
+    chip.dataset.tag = t;
+    chip.addEventListener('click', () => {
+      chip.classList.toggle('active');
+      applyFilters();
+    });
+    chipBar.appendChild(chip);
+  });
+
+  // Toggle chip bar on small screens
+  document.getElementById('filterToggle').addEventListener('click', () => {
+    chipBar.classList.toggle('hidden');
+  });
+
+  // Search handler
+  searchInput.addEventListener('input', applyFilters);
+
+  function applyFilters(){
+    const q = searchInput.value.trim().toLowerCase();
+    const activeTags = Array.from(chipBar.querySelectorAll('.chip.active')).map(c => c.dataset.tag);
+
+    cards.forEach(card => {
+      const title = (card.dataset.title || '').toLowerCase();
+      const excerpt = (card.dataset.excerpt || '').toLowerCase();
+      const tags = (card.dataset.tags || '').split(',').map(t => t.trim().toLowerCase()).filter(Boolean);
+
+      const matchesQuery = !q || title.includes(q) || excerpt.includes(q);
+      const matchesTags = activeTags.length === 0 || tags.some(t => activeTags.includes(t));
+
+      card.style.display = (matchesQuery && matchesTags) ? '' : 'none';
+    });
+  }
+
+  // Start with chip bar visible on desktop, hidden on small screens if you want:
+ chipBar.classList.add('hidden'); // uncomment if you want it collapsed by default
+
+})();
+</script>
+</body>
+</html>

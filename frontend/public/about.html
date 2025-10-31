@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>About — Dr. Dhanashree Chitre</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root{
+    --bg:#f8fafc; --ink:#0f172a; --sub:#475569;
+    --brand:#0ea5e9; --brand-dark:#0284c7;
+    --panel:#ffffff; --muted:#e2e8f0; --shadow:0 8px 18px rgba(2,6,23,.06);
+    --header-grad:linear-gradient(145deg,#0f172a,#1e293b);
+  }
+  body{ font-family:"Segoe UI",Tahoma,sans-serif; background:var(--bg); color:var(--ink); }
+
+  /* 3D Header */
+  .header-3d{ background:var(--header-grad); padding:1rem 0; box-shadow:0 8px 16px rgba(0,0,0,.3); position:sticky; top:0; z-index:50; }
+  .header-container{ max-width:1200px; margin:0 auto; padding:0 1rem; display:flex; align-items:center; justify-content:space-between; }
+  .logo{ height:60px; }
+  nav ul{ list-style:none; display:flex; gap:1.5rem; }
+  nav a{ color:#fff; text-decoration:none; font-weight:500; }
+  nav a:hover{ color:#38bdf8; }
+
+  /* Layout */
+  .wrap{ max-width:1200px; margin:2rem auto; padding:0 1rem; display:grid; gap:2rem; grid-template-columns: 1.1fr .9fr; }
+  @media (max-width: 900px){ .wrap{ grid-template-columns:1fr; } }
+
+  /* Left (content) */
+  .section{ background:var(--panel); border-radius:14px; box-shadow:var(--shadow); padding:1.25rem 1.25rem; }
+  .section h1{ font-size:1.6rem; margin-bottom:.25rem; }
+  .section .sub{ color:var(--sub); margin-bottom:1rem; }
+  .section p{ color:var(--sub); line-height:1.65; margin:.6rem 0; }
+
+  /* Accordion */
+  .accordion{ margin-top:1rem; border-top:1px solid var(--muted); }
+  .acc-item{ border-bottom:1px solid var(--muted); }
+  .acc-btn{
+    width:100%; text-align:left; padding:1rem .25rem; background:transparent; border:0; font-size:1rem; font-weight:700; color:var(--ink);
+    display:flex; align-items:center; justify-content:space-between; cursor:pointer;
+  }
+  .acc-btn:focus{ outline:2px solid var(--brand); outline-offset:2px; }
+  .acc-icon{ transition:transform .25s ease; }
+  .acc-content{
+    max-height:0; overflow:hidden; transition:max-height .35s ease; color:var(--sub);
+  }
+  .acc-content > div{ padding:0 0 1rem 0; }
+  .acc-item.open .acc-icon{ transform:rotate(90deg); }
+  .acc-item.open .acc-content{ max-height:400px; } /* enough for a few paragraphs */
+
+  /* Right (photo card) */
+  .profile{
+    background:var(--panel); border-radius:14px; box-shadow:var(--shadow); overflow:hidden; display:flex; flex-direction:column; align-items:center;
+  }
+  .profile .imgbox{ width:100%; background:#eef2f7; }
+  .profile img{ display:block; width:100%; height:420px; object-fit:cover; }
+  .profile .title{
+    width:100%; text-align:center; padding:1rem; border-top:1px solid var(--muted); background:#fff;
+  }
+  .profile .title h2{ font-size:1.2rem; font-weight:800; }
+
+  /* Footer (Section 7–9) */
+  #section-7-9{ background:#0f172a; color:#fff; padding:3.25rem 1rem; margin-top:3.5rem; }
+  .footer-container{
+    max-width:1200px; margin:0 auto; display:grid; gap:2rem; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  }
+  .footer-logo{ height:60px; margin-bottom:.75rem; }
+  .footer-left p{ margin:.35rem 0; color:#e2e8f0; }
+  .social-icons img{ height:22px; margin-right:.45rem; vertical-align:middle; }
+  .footer-links a,.footer-center a{ display:block; color:#e2e8f0; text-decoration:none; margin:.3rem 0; }
+  .footer-links a:hover,.footer-center a:hover{ color:#38bdf8; }
+  .footer-right p{ margin:.25rem 0; color:#e2e8f0; }
+  #footer{ background:#020617; color:#94a3b8; text-align:center; padding:.9rem; font-size:.9rem; }
+</style>
+</head>
+<body>
+
+<!-- 3D Header -->
+<header class="header-3d">
+  <div class="header-container">
+    <img src="assets/images/logo.png.png" alt="Logo" class="logo" />
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="blogs.html">Blogs</a></li>
+        <li><a href="testimonials.html">Testimonials</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- Left: Overview + Accordion -->
+  <section class="section">
+    <h1>About Dr. Dhanashree Chitre</h1>
+    <p class="sub">Homeopathic, Cosmetic &amp; Laser Care</p>
+
+    <h2 style="font-size:1.1rem;margin:.25rem 0 .5rem 0;">Overview</h2>
+    <p>
+      Dr. Dhanashree Chitre focuses on patient‑centric homeopathic care alongside
+      cosmetology and laser treatments. This page offers a concise profile with a
+      quick overview and collapsible sections for background details.
+    </p>
+
+    <div class="accordion" id="about-accordion">
+      <!-- Early life -->
+      <div class="acc-item">
+        <button class="acc-btn" aria-expanded="false">
+          Early life
+          <span class="acc-icon">›</span>
+        </button>
+        <div class="acc-content" aria-hidden="true">
+          <div>
+            <p>
+              Add a short narrative about early influences, community and values.
+              Keep it warm, human, and privacy‑safe. You can include inspirations
+              that led to pursuing healthcare and patient advocacy.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Education / Graduation -->
+      <div class="acc-item">
+        <button class="acc-btn" aria-expanded="false">
+          Education / Graduation
+          <span class="acc-icon">›</span>
+        </button>
+        <div class="acc-content" aria-hidden="true">
+          <div>
+            <p>
+              Summarize formal education (degrees, institutions) and relevant
+              certifications or workshops. You can also list key interests such
+              as dermatology‑adjacent cosmetology, laser safety, and clinical
+              research updates.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Experience -->
+      <div class="acc-item">
+        <button class="acc-btn" aria-expanded="false">
+          Experience
+          <span class="acc-icon">›</span>
+        </button>
+        <div class="acc-content" aria-hidden="true">
+          <div>
+            <p>
+              Outline years in practice, areas of focus (e.g., acne care, hair
+              fall support, pigmentation protocols, non‑invasive laser solutions),
+              and approach (evidence‑informed, gentle, individualized plans).
+            </p>
+            <p>
+              You can add clinic milestones, patient education initiatives, and
+              collaborations or workshops conducted.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Right: Photo + Name -->
+  <aside class="profile">
+    <div class="imgbox">
+      <img src="/assets/images/dhanashree.jpg" alt="Dr. Dhanashree Chitre" />
+    </div>
+    <div class="title">
+      <h2>Dr. Dhanashree Chitre</h2>
+    </div>
+  </aside>
+</main>
+
+<!-- Section 7-9 -->
+<section id="section-7-9">
+  <div class="footer-container">
+    <!-- Left Side: Logo and Socials -->
+    <div class="footer-left">
+      <img src="assets/images/logo.png.png" alt="Clinic Logo" class="footer-logo" />
+      <p>Dr. Dhanashree Chitre's Homeopathic Cosmetic and Laser Clinic</p>
+      <div class="social-icons">
+        <a href="https://www.google.com" target="_blank"><img src="assets/images/google-icon.png" alt="Google" /></a>
+        <a href="https://www.facebook.com" target="_blank"><img src="assets/images/facebook-icon.png" alt="Facebook" /></a>
+        <a href="https://www.instagram.com" target="_blank"><img src="assets/images/instagram-icon.png" alt="Instagram" /></a>
+      </div>
+    </div>
+
+    <!-- Essential Links -->
+    <div class="footer-links">
+      <h3>Essential Links</h3>
+      <a href="book.html">Book an Appointment</a>
+      <a href="about.html">About Us</a>
+      <a href="blogs.html">Blogs</a>
+      <a href="testimonials.html">Testimonials</a>
+    </div>
+
+    <!-- Legal -->
+    <div class="footer-center">
+      <h3>Legal</h3>
+      <a href="terms.html">Terms &amp; Conditions</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="refund.html">Refund Policy</a>
+    </div>
+
+    <!-- Contact -->
+    <div class="footer-right">
+      <h3>Contact Us</h3>
+      <p>
+        Shop no. 1, Bobby Pathak Avenue Society,<br />
+        near Aapla Samadhan Hotel, Sudhindra Nagar,<br />
+        Dahisar East, Mumbai, Maharashtra 400068
+      </p>
+      <p>📞 9819139154, 9869345997</p>
+    </div>
+  </div>
+</section>
+
+<footer id="footer">
+  <p>© 2025 Dr. Dhanashree R. Chitre | Developed by Vedant R. Chitre</p>
+</footer>
+
+<script>
+  // Accessible accordion
+  document.querySelectorAll('.acc-item').forEach(function(item){
+    const btn = item.querySelector('.acc-btn');
+    const content = item.querySelector('.acc-content');
+
+    btn.addEventListener('click', function(){
+      const isOpen = item.classList.contains('open');
+      // close all siblings
+      document.querySelectorAll('.acc-item').forEach(i=>{
+        i.classList.remove('open');
+        i.querySelector('.acc-btn').setAttribute('aria-expanded','false');
+        i.querySelector('.acc-content').setAttribute('aria-hidden','true');
+      });
+      // open this one if it was closed
+      if(!isOpen){
+        item.classList.add('open');
+        btn.setAttribute('aria-expanded','true');
+        content.setAttribute('aria-hidden','false');
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

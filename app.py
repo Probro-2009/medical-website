@@ -1,4 +1,3 @@
-from flask_wtf.csrf import CSRFProtect
 import logging
 from redis import Redis
 from flask_talisman import Talisman
@@ -31,9 +30,14 @@ from datetime import datetime, timedelta
 import json
 from email.mime.application import MIMEApplication
 from datetime import datetime, timezone
-from copilot_bp import copilot_bp
+#from copilot_bp import copilot_bp
 from models import db, User, Patient, Appointment
-
+from pathlib import Path
+import csv
+import time
+from email.message import EmailMessage
+import mimetypes
+#from user_agents import parse
 
 login_attempts = defaultdict(list)  # { ip_address: [timestamps...] }
 MAX_ATTEMPTS = 5
@@ -46,10 +50,9 @@ load_dotenv()
 
 app = Flask(__name__, static_folder="frontend/public")
 app.secret_key = os.getenv("SECRET_KEY")
-from werkzeug.middleware.proxy_fix import ProxyFix
-app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
+
 # Fix: allow thread-safe access for SQLite
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///appointments.db?check_same_thread=False'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://neondb_owner:npg_d21gDjxPSAue@ep-restless-poetry-abcawrk8-pooler.eu-west-2.aws.neon.tech:5432/neondb'
 
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -290,11 +293,11 @@ app.register_blueprint(fallback_bp)
 app.register_blueprint(developer_bp)
 app.register_blueprint(market_bp)
 app.register_blueprint(sysmon_bp)
-app.register_blueprint(copilot_bp)
+#app.register_blueprint(copilot_bp)
 
 
-with app.app_context():
-    db.create_all()
+
+  
 
 
 def send_sms(mobile, message):
@@ -413,9 +416,9 @@ def serve_combined_assets(filename):
     else:
         abort(404)
 
-@app.route("/")
-def serve_index():
-    return send_from_directory(app.static_folder, "index.html")
+@app.route('/')
+def home():
+    return send_from_directory(app.static_folder, 'index.html')
 
 @app.route("/book")
 def serve_book():
@@ -599,19 +602,6 @@ def register():
 
     return render_template("register.html")
 
-
-import sqlite3
-from flask import session, render_template, redirect, url_for
-
-def get_user_from_db(user_id):
-    conn = sqlite3.connect("instance/appointments.db")  # ✅ adjust if needed
-    conn.row_factory = sqlite3.Row
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM users WHERE id = ?", (user_id,))
-    user = cur.fetchone()
-    conn.close()
-    return user
-
 @app.route("/dashboard")
 def dashboard():
     if "patient_user" not in session:
@@ -620,7 +610,8 @@ def dashboard():
     username = session["patient_user"]
     user_id = session["user_id"]
 
-    user = get_user_from_db(user_id)
+    user = User.query.filter_by(id=user_id).first()
+
     if not user:
         return redirect(url_for("login"))
 
@@ -633,12 +624,13 @@ def dashboard():
     appointment_dates = [a.appointment for a in appointments]
 
     return render_template("dashboard.html",
-                       user=user,
-                       username=user["username"],
-                       appointments=appointments,
-                       blogs_count=blogs_count,
-                       reviews_count=reviews_count,
-                       appointment_dates=appointment_dates)
+                           user=user,
+                           username=user.username,
+                           appointments=appointments,
+                           blogs_count=blogs_count,
+                           reviews_count=reviews_count,
+                           appointment_dates=appointment_dates)
+
 
 
 @app.route("/consult")
@@ -730,7 +722,186 @@ def read():
 def buy_plan():
     plan = request.args.get('plan', 'Standard Patient Plan')  # Default fallback
     return render_template('buy.html', plan=plan)
+@app.route("/blogs")
+def blogs():
+    sample_blogs = [
+        {
+            "title": "Understanding Hypertension: Causes, Symptoms, and Management",
+            "excerpt": "High blood pressure often has no symptoms. Learn risk factors, lifestyle changes, and when to see a doctor.",
+            "themes": ["Cardiology", "Nutrition"],
+            "minutes": 6,
+            "views": 1280,
+            "likes": 210,
+            "author": "Dr. A. Mehta",
+            "date": "2025-07-28",
+            "image": "https://images.unsplash.com/photo-1581594693700-d5ddfcdc8a83?q=80&w=1600&auto=format&fit=crop"
+        },
+        {
+            "title": "Skin Care 101: Daily Habits Backed by Dermatologists",
+            "excerpt": "A practical guide to cleansers, sunscreen, and active ingredients like retinoids and vitamin C.",
+            "themes": ["Dermatology"],
+            "minutes": 5,
+            "views": 980,
+            "likes": 162,
+            "author": "Dr. S. Rao",
+            "date": "2025-06-10",
+            "image": "https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=1600&auto=format&fit=crop"
+        },
+        {
+            "title": "Migraine or Headache? Here's How to Tell",
+            "excerpt": "We break down typical triggers, red flags, and evidence-based treatment options for migraines.",
+            "themes": ["Neurology", "Mental Health"],
+            "minutes": 7,
+            "views": 1920,
+            "likes": 305,
+            "author": "Dr. N. Banerjee",
+            "date": "2025-05-19",
+            "image": "https://images.unsplash.com/photo-1512250306093-44cbe89bf008?q=80&w=1600&auto=format&fit=crop"
+        }
+    ]
+    return render_template("blog.html", blogs=sample_blogs)
+BASE_DIR = Path(__file__).resolve().parent
+NEWSLETTER_DIR = BASE_DIR / "newsletter"
+UPLOADS_DIR = NEWSLETTER_DIR / "uploads"
+CSV_PATH = NEWSLETTER_DIR / "Newsletter_accounts.csv"
 
+EMAIL_ENV = os.getenv("SMTP_EMAIL")         # e.g. "arunakchitre@gmail.com"
+PASS_ENV  = os.getenv("SMTP_PASSWORD")      # e.g. Google App Password (recommended)
+
+EMAIL_REGEX = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+
+def ensure_paths():
+    NEWSLETTER_DIR.mkdir(parents=True, exist_ok=True)
+    UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
+    if not CSV_PATH.exists():
+        with CSV_PATH.open("w", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f)
+            writer.writerow(["full_name", "email"])
+ensure_paths()
+
+def read_existing_emails():
+    emails = set()
+    try:
+        with CSV_PATH.open("r", newline="", encoding="utf-8") as f:
+            r = csv.DictReader(f)
+            for row in r:
+                if row.get("email"):
+                    emails.add(row["email"].strip().lower())
+    except FileNotFoundError:
+        pass
+    return emails
+
+def append_signup(full_name: str, email: str):
+    email_l = email.strip().lower()
+    existing = read_existing_emails()
+    if email_l in existing:
+        return False  # duplicate
+    with CSV_PATH.open("a", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow([full_name.strip(), email_l])
+    return True
+
+@app.post("/api/newsletter")
+def api_newsletter():
+    full_name = (request.form.get("full_name") or "").strip()
+    email = (request.form.get("email") or "").strip()
+
+    if not full_name or not email:
+        return jsonify({"message":"Full name and email are required."}), 400
+    if not EMAIL_REGEX.match(email):
+        return jsonify({"message":"Please enter a valid email address."}), 400
+
+    try:
+        created = append_signup(full_name, email)
+        if not created:
+            return jsonify({"message":"You're already subscribed with this email."}), 200
+        return jsonify({"message":"Thanks! You’re subscribed."}), 200
+    except Exception as e:
+        return jsonify({"message":"Could not save your subscription."}), 500
+
+@app.get("/admin/send_newsletter")
+def send_newsletter_page():
+    # Provide counts to the UI
+    emails = sorted(list(read_existing_emails()))
+    return render_template("Newsletter.html", total=len(emails))
+
+@app.post("/admin/send_newsletter")
+def send_newsletter_action():
+    title = (request.form.get("title") or "").strip()
+    body  = (request.form.get("body") or "").strip()
+    media = request.files.get("media")  # optional
+
+    if not title or not body:
+        flash("Title and Body are required.", "error")
+        return redirect(url_for("send_newsletter_page"))
+
+    if not EMAIL_ENV or not PASS_ENV:
+        flash("SMTP_EMAIL / SMTP_PASSWORD not configured in environment.", "error")
+        return redirect(url_for("send_newsletter_page"))
+
+    # Read recipients
+    recipients = sorted(list(read_existing_emails()))
+    if not recipients:
+        flash("No subscribers found.", "error")
+        return redirect(url_for("send_newsletter_page"))
+
+    # Optional: save uploaded media and attach
+    attachment_path = None
+    if media and media.filename:
+        safe_name = f"{int(time.time())}_{media.filename.replace(' ', '_')}"
+        attachment_path = UPLOADS_DIR / safe_name
+        media.save(attachment_path)
+
+    # Prepare message template (we'll reuse per batch)
+    def make_msg(recipients_batch):
+        msg = EmailMessage()
+        msg["From"] = EMAIL_ENV
+        # Gmail best practice: To yourself; BCC real recipients
+        msg["To"] = EMAIL_ENV
+        msg["Bcc"] = ", ".join(recipients_batch)
+        msg["Subject"] = title
+        # Provide both plain and simple HTML
+        msg.set_content(body)
+        msg.add_alternative(f"""\
+        <html><body style="font-family:Arial,Helvetica,sans-serif;line-height:1.6">
+          <h2 style="margin:0 0 10px 0;">{title}</h2>
+          <div>{body.replace('\n','<br>')}</div>
+          <hr style="border:none;border-top:1px solid #eee;margin:18px 0;">
+          <div style="color:#6b7280;font-size:12px">You are receiving this because you subscribed to our newsletter.</div>
+        </body></html>
+        """, subtype="html")
+
+        if attachment_path and attachment_path.exists():
+            ctype, _ = mimetypes.guess_type(str(attachment_path))
+            maintype, subtype = (ctype or "application/octet-stream").split("/", 1)
+            with open(attachment_path, "rb") as f:
+                msg.add_attachment(f.read(),
+                                   maintype=maintype,
+                                   subtype=subtype,
+                                   filename=attachment_path.name)
+        return msg
+
+    # Send in batches to respect Gmail BCC limits (~500/day; keep batches small)
+    batch_size = 80
+    batches = [recipients[i:i+batch_size] for i in range(0, len(recipients), batch_size)]
+
+    try:
+        with smtplib.SMTP("smtp.gmail.com", 587) as smtp:
+            smtp.ehlo()
+            smtp.starttls()
+            smtp.login(EMAIL_ENV, PASS_ENV)
+
+            for batch in batches:
+                msg = make_msg(batch)
+                smtp.send_message(msg)
+
+        flash(f"Newsletter sent to {len(recipients)} subscribers.", "success")
+    except smtplib.SMTPAuthenticationError:
+        flash("SMTP authentication failed. Check SMTP_EMAIL/SMTP_PASSWORD (use a Gmail App Password).", "error")
+    except Exception as e:
+        flash(f"Failed to send: {e}", "error")
+
+    return redirect(url_for("send_newsletter_page"))
 
 import logging
 from logging.handlers import RotatingFileHandler
@@ -750,7 +921,7 @@ app.logger.info('Application startup')
 
 
 with app.app_context():
-    db.create_all()
+  
     send_logs_if_due()
 
 

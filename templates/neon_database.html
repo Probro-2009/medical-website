@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Neon Database Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { background: #000; color: #fff; font-family: 'Segoe UI'; margin: 0; padding: 20px; }
+    .container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+    .card { background: #111; padding: 20px; border-radius: 12px; box-shadow: 0 0 10px rgba(255,255,255,0.1); }
+    .card h3 { color: #00ffcc; margin-top: 0; }
+    .card p { font-size: 14px; }
+    .back-btn { margin-top: 30px; background: #00ffcc; color: #000; font-weight: bold; padding: 10px 20px; border-radius: 10px; border: none; cursor: pointer; }
+    canvas { background-color: #111; border-radius: 10px; padding: 10px; }
+    h2, h3.section-header { color: white; font-size: 20px; display: flex; align-items: center; gap: 10px; }
+    .section-grid { display: flex; gap: 20px; margin-top: 20px; }
+    .section-grid .card { flex: 1; min-width: 300px; }
+    .sql-link-btn { background: #00ffcc; color: #000; border: none; padding: 8px 12px; font-weight: bold; border-radius: 8px; cursor: pointer; }
+  </style>
+</head>
+<body>
+<h2><i class="fas fa-database"></i> Neon Database Overview</h2>
+  <div class="container">
+    <div class="card"><h3>Project Info</h3><p>Name: <span id="project-name">Loading...</span></p><p>ID: <span id="project-id">Loading...</span></p><p>Region: <span id="project-region">Loading...</span></p></div>
+    <div class="card"><h3>Compute</h3><p>Total: <span id="compute-total">Loading...</span></p><p>Branch Compute: <span id="branch-compute">Loading...</span></p></div>
+    <div class="card"><h3>Storage</h3><p>Used: <span id="storage-used">Loading...</span></p><p>Data Transfer: <span id="data-transfer">Loading...</span></p></div>
+    <div class="card"><h3>Last Backup</h3><p><span id="last-backup">Loading...</span></p></div>
+    <div class="card"><h3>Branches (Live)</h3><div id="branches-list">Loading...</div></div>
+    <div class="card"><h3>System Operations</h3><ul id="system-ops" style="font-size: 13px; line-height: 1.4em;"><li><strong>Start compute</strong> - 202 ms</li><li><strong>Suspend compute</strong> - 2 s</li><li><strong>Apply config</strong> - 73 ms</li></ul></div>
+    <div class="card"><h3>SQL Tables</h3><ul id="sql-tables"><li>appointment</li><li>patient</li><li>users</li></ul></div>
+    <div class="card"><h3>SQL Editor</h3><p style="font-size: 13px;">Requires Neon login to access the editor.</p><a href="https://console.neon.tech" target="_blank"><button class="sql-link-btn"><i class="fas fa-terminal"></i> Open SQL Editor</button></a></div>
+  </div>
+
+  <h3 class="section-header"><i class="fas fa-chart-line"></i> Neon Usage Charts</h3>
+  <div class="container">
+    <div class="card"><h3>RAM Usage</h3><canvas id="ramChart"></canvas></div>
+    <div class="card"><h3>CPU Usage</h3><canvas id="cpuChart"></canvas></div>
+    <div class="card"><h3>Connections</h3><canvas id="connectionsChart"></canvas></div>
+    <div class="card"><h3>Database Size</h3><canvas id="dbSizeChart"></canvas></div>
+    <div class="card"><h3>Deadlocks</h3><canvas id="deadlocksChart"></canvas></div>
+    <div class="card"><h3>Row Ops</h3><canvas id="rowOpsChart"></canvas></div>
+    <div class="card"><h3>Cache Hit Rate</h3><canvas id="cacheChart"></canvas></div>
+    <div class="card"><h3>Working Set</h3><canvas id="workingSetChart"></canvas></div>
+  </div>
+
+  <button class="back-btn" onclick="location.href='/developer/dashboard'">
+    <i class="fas fa-arrow-left"></i> Back to Dashboard
+  </button>
+  <script>
+  async function fetchNeonContainers() {
+    try {
+      const res = await fetch('/developer/api/neon');
+      const data = await res.json();
+
+      // Update Project Info
+      document.getElementById('project-name').textContent = data.project_name;
+      document.getElementById('project-id').textContent = data.project_id;
+      document.getElementById('project-region').textContent = data.region;
+
+      // Update Compute
+      document.getElementById('compute-total').textContent = data.compute_total;
+      document.getElementById('branch-compute').textContent = data.branch_compute;
+
+      // Update Storage
+      document.getElementById('storage-used').textContent = data.storage_used;
+      document.getElementById('data-transfer').textContent = data.data_transfer;
+
+      // Update Last Backup
+      document.getElementById('last-backup').textContent = data.last_backup;
+
+      // Update Branches
+      let branchesHTML = '';
+      data.branches.forEach(branch => {
+        branchesHTML += `<p><strong>${branch.name}</strong> - ${branch.compute} [${branch.status}]</p>`;
+      });
+      document.getElementById('branches-list').innerHTML = branchesHTML;
+
+    } catch (error) {
+      console.error("Failed to fetch Neon container data:", error);
+    }
+  }
+
+  // First load + live updates every 30 seconds
+  fetchNeonContainers();
+  setInterval(fetchNeonContainers, 30000);
+</script>
+
+
+<script>
+  const maxPoints = 10;
+
+  const charts = {
+    ram: { data: [], labels: [], color: '#00ffcc', label: 'RAM (GB)', canvas: 'ramChart' },
+    cpu: { data: [], labels: [], color: '#ffcc00', label: 'CPU (CU)', canvas: 'cpuChart' },
+    connections: { data: [], labels: [], label: 'Connections', canvas: 'connectionsChart' },
+    dbSize: { data: [], labels: [], color: '#66ffcc', label: 'Size (MB)', canvas: 'dbSizeChart' },
+    deadlocks: { data: [], labels: [], color: '#ff6666', label: 'Deadlocks', canvas: 'deadlocksChart' },
+    rowOps: { data: [], labels: [], canvas: 'rowOpsChart' },
+    cache: { data: [], labels: [], color: '#ffff66', label: 'Cache Hit %', canvas: 'cacheChart' },
+    workingSet: { data: [], labels: [], canvas: 'workingSetChart' },
+  };
+
+  const chartInstances = {};
+
+  function getTimeLabel() {
+    const now = new Date();
+    return now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  }
+
+  function createChart(canvasId, label, color, type = 'line') {
+    const ctx = document.getElementById(canvasId).getContext('2d');
+    return new Chart(ctx, {
+      type,
+      data: {
+        labels: [],
+        datasets: [{
+          label,
+          data: [],
+          borderColor: color,
+          backgroundColor: color,
+          fill: false
+        }]
+      },
+      options: {
+        responsive: true,
+        animation: false,
+        plugins: { legend: { labels: { color: 'white' } } },
+        scales: {
+          x: { ticks: { color: 'white' } },
+          y: { ticks: { color: 'white' } }
+        }
+      }
+    });
+  }
+
+  function initAllCharts() {
+    chartInstances.ram = createChart(charts.ram.canvas, charts.ram.label, charts.ram.color);
+    chartInstances.cpu = createChart(charts.cpu.canvas, charts.cpu.label, charts.cpu.color);
+    chartInstances.dbSize = createChart(charts.dbSize.canvas, charts.dbSize.label, charts.dbSize.color);
+    chartInstances.deadlocks = createChart(charts.deadlocks.canvas, charts.deadlocks.label, charts.deadlocks.color);
+    chartInstances.connections = createChart(charts.connections.canvas, charts.connections.label, charts.connections.color);
+    chartInstances.cache = createChart(charts.cache.canvas, charts.cache.label, charts.cache.color);
+
+    chartInstances.rowOps = new Chart(document.getElementById(charts.rowOps.canvas).getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: [],
+        datasets: [
+          { label: 'Inserted', data: [], backgroundColor: '#00cc66' },
+          { label: 'Updated', data: [], backgroundColor: '#3399ff' },
+          { label: 'Deleted', data: [], backgroundColor: '#ccccff' }
+        ]
+      },
+      options: {
+        responsive: true,
+        animation: false,
+        plugins: { legend: { labels: { color: 'white' } } },
+        scales: {
+          x: { stacked: true, ticks: { color: 'white' } },
+          y: { stacked: true, ticks: { color: 'white' } }
+        }
+      }
+    });
+
+    chartInstances.workingSet = new Chart(document.getElementById(charts.workingSet.canvas).getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [
+          { label: '5M', data: [], borderColor: '#00ffcc', fill: false },
+          { label: '15M', data: [], borderColor: '#0099ff', fill: false },
+          { label: '1H', data: [], borderColor: '#ff66cc', fill: false },
+          { label: 'Local Cache', data: [], borderColor: '#ffaa00', fill: false }
+        ]
+      },
+      options: {
+        responsive: true,
+        animation: false,
+        plugins: { legend: { labels: { color: 'white' } } },
+        scales: {
+          x: { ticks: { color: 'white' } },
+          y: { ticks: { color: 'white' } }
+        }
+      }
+    });
+  }
+
+  function updateChart(instance, value, chartKey) {
+    const label = getTimeLabel();
+    const chartData = instance.data.datasets[0].data;
+    const chartLabels = instance.data.labels;
+
+    if (chartData.length >= maxPoints) {
+      chartData.shift();
+      chartLabels.shift();
+    }
+
+    chartData.push(value);
+    chartLabels.push(label);
+    instance.update();
+  }
+
+  function updateAllCharts() {
+    updateChart(chartInstances.ram, (1 + Math.random()).toFixed(2), 'ram');
+    updateChart(chartInstances.cpu, (0.1 + Math.random() * 0.2).toFixed(2), 'cpu');
+    updateChart(chartInstances.dbSize, (30 + Math.random() * 5).toFixed(2), 'dbSize');
+    updateChart(chartInstances.deadlocks, Math.random() < 0.1 ? 1 : 0, 'deadlocks');
+    updateChart(chartInstances.cache, (90 + Math.random() * 10).toFixed(1), 'cache');
+     updateChart(chartInstances.connections, (90 + Math.random() * 10).toFixed(1), 'connections');
+    // RowOps stacked bars
+    const label = getTimeLabel();
+    const ds = chartInstances.rowOps.data.datasets;
+    if (ds[0].data.length >= maxPoints) {
+      ds.forEach(d => d.data.shift());
+      chartInstances.rowOps.data.labels.shift();
+    }
+    ds[0].data.push(Math.floor(Math.random() * 3));
+    ds[1].data.push(Math.floor(Math.random() * 3));
+    ds[2].data.push(Math.floor(Math.random() * 2));
+    chartInstances.rowOps.data.labels.push(label);
+    chartInstances.rowOps.update();
+
+    // Working Set (4 series)
+    const wsDs = chartInstances.workingSet.data.datasets;
+    if (wsDs[0].data.length >= maxPoints) {
+      wsDs.forEach(d => d.data.shift());
+      chartInstances.workingSet.data.labels.shift();
+    }
+    chartInstances.workingSet.data.labels.push(label);
+    wsDs[0].data.push((1 + Math.random()).toFixed(1));
+    wsDs[1].data.push((2 + Math.random()).toFixed(1));
+    wsDs[2].data.push((3 + Math.random()).toFixed(1));
+    wsDs[3].data.push((4).toFixed(1)); // Local cache remains constant
+    chartInstances.workingSet.update();
+  }
+
+  // 🚀 Init and Start Updating
+  initAllCharts();
+  updateAllCharts();
+  setInterval(updateAllCharts, 30000); // 30 sec
+</script>
+
+</body>
+</html>

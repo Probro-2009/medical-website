@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Blogs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+/* Tailwind-inspired utility styles (minimal for embedded use) */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f8fafc; color: #111; }
+
+/* 3D Header */
+.header-3d {
+  background: linear-gradient(145deg, #0f172a, #1e293b);
+  padding: 1rem 0;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+}
+.header-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.logo { height: 60px; }
+nav ul { display: flex; gap: 1.5rem; list-style: none; }
+nav ul li a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+nav ul li a:hover { color: #38bdf8; }
+
+/* Search + filter */
+.search-bar {
+  max-width: 800px;
+  margin: 2rem auto;
+  display: flex;
+  gap: 0.5rem;
+}
+.search-bar input {
+  flex: 1;
+  padding: 0.75rem;
+  border: 2px solid #cbd5e1;
+  border-radius: 6px;
+}
+.search-bar button {
+  padding: 0.75rem 1.25rem;
+  background: #0ea5e9;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.search-bar button:hover { background: #0284c7; }
+
+/* Blog grid */
+.blog-grid {
+  max-width: 1200px;
+  margin: auto;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  padding: 0 1rem;
+}
+.blog-card {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
+.blog-card:hover { transform: translateY(-4px); }
+.blog-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+.blog-card .content {
+  padding: 1rem;
+}
+.blog-card h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
+.blog-card p { font-size: 0.9rem; color: #475569; margin-bottom: 0.5rem; }
+.badge {
+  display: inline-block;
+  background: #e2e8f0;
+  color: #1e293b;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  margin-right: 0.25rem;
+}
+
+/* Section 7-9 footer */
+#section-7-9 {
+  background: #0f172a;
+  color: white;
+  padding: 3rem 1rem;
+}
+.footer-container {
+  max-width: 1200px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+}
+.footer-logo { height: 60px; margin-bottom: 1rem; }
+.footer-left p { margin: 0.5rem 0; }
+.social-icons img { height: 24px; margin-right: 0.5rem; }
+.footer-links a,
+.footer-center a {
+  display: block;
+  color: #e2e8f0;
+  text-decoration: none;
+  margin: 0.25rem 0;
+}
+.footer-links a:hover,
+.footer-center a:hover { color: #38bdf8; }
+.footer-right p { margin: 0.25rem 0; }
+
+/* Footer strip */
+#footer {
+  background: #020617;
+  color: #94a3b8;
+  text-align: center;
+  padding: 0.75rem;
+  font-size: 0.85rem;
+}
+</style>
+</head>
+<body>
+
+<!-- 3D Header -->
+<header class="header-3d">
+  <div class="header-container">
+    <img src="assets/images/logo.png.png" alt="Logo" class="logo">
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="blogs.html">Blogs</a></li>
+        <li><a href="testimonials.html">Testimonials</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- Search bar -->
+<div class="search-bar">
+  <input type="text" placeholder="Search blogs...">
+  <button>Filter</button>
+</div>
+
+<!-- Blog Grid -->
+<div class="blog-grid">
+  <div class="blog-card">
+    <img src="https://images.unsplash.com/photo-1581594693700-d5ddfcdc8a83?q=80&w=1600&auto=format&fit=crop" alt="Hypertension">
+    <div class="content">
+      <h3>Understanding Hypertension</h3>
+      <p>Learn risk factors, lifestyle changes, and when to see a doctor.</p>
+      <span class="badge">Cardiology</span>
+      <span class="badge">Nutrition</span>
+    </div>
+  </div>
+
+  <div class="blog-card">
+    <img src="https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=1600&auto=format&fit=crop" alt="Skin Care">
+    <div class="content">
+      <h3>Skin Care 101</h3>
+      <p>A practical guide to cleansers, sunscreen, and active ingredients.</p>
+      <span class="badge">Dermatology</span>
+    </div>
+  </div>
+
+  <div class="blog-card">
+    <img src="https://images.unsplash.com/photo-1512250306093-44cbe89bf008?q=80&w=1600&auto=format&fit=crop" alt="Migraine">
+    <div class="content">
+      <h3>Migraine or Headache?</h3>
+      <p>Typical triggers, red flags, and evidence-based treatment options.</p>
+      <span class="badge">Neurology</span>
+      <span class="badge">Mental Health</span>
+    </div>
+  </div>
+</div>
+
+<!-- Section 7-9: Footer Before Main Footer -->
+<section id="section-7-9">
+  <div class="footer-container">
+    <!-- Left Side: Logo and Socials -->
+    <div class="footer-left">
+      <img src="assets/images/logo.png.png" alt="Clinic Logo" class="footer-logo">
+      <p class="clinic-name white-text">Dr. Dhanashree Chitre's Homeopathic Cosmetic and Laser Clinic</p>
+      <div class="social-icons">
+        <a href="https://www.google.com" target="_blank">
+          <img src="assets/images/google-icon.png" alt="Google">
+        </a>
+        <a href="https://www.facebook.com" target="_blank">
+          <img src="assets/images/facebook-icon.png" alt="Facebook">
+        </a>
+        <a href="https://www.instagram.com" target="_blank">
+          <img src="assets/images/instagram-icon.png" alt="Instagram">
+        </a>
+      </div>
+    </div>
+
+    <!-- Essential Links -->
+    <div class="footer-links">
+      <h3 class="white-text">Essential Links</h3>
+      <a href="book.html">Book an Appointment</a>
+      <a href="about.html">About Us</a>
+      <a href="blogs.html">Blogs</a>
+      <a href="testimonials.html">Testimonials</a>
+    </div>
+
+    <!-- Legal -->
+    <div class="footer-center">
+      <h3 class="white-text">Legal</h3>
+      <a href="terms.html">Terms & Conditions</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="refund.html">Refund Policy</a>
+    </div>
+
+    <!-- Contact Us -->
+    <div class="footer-right">
+      <h3 class="white-text">Contact Us</h3>
+      <p>Shop no. 1, Bobby Pathak Avenue Society,<br>
+         near Aapla Samadhan Hotel, Sudhindra Nagar,<br>
+         Dahisar East, Mumbai, Maharashtra 400068</p>
+      <p>📞 9819139154, 9869345997</p>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer id="footer">
+  <p>© 2025 Dr. Dhanashree R. Chitre | Developed by Vedant R. Chitre</p>
+</footer>
+
+</body>
+</html>

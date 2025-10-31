@@ -1,135 +1,69 @@
-2025-07-24 00:19:47,757 INFO: Application startup 
-2025-07-24 00:19:50,689 INFO: Application startup 
-2025-07-24 00:24:00,674 INFO: Application startup 
-2025-07-24 00:24:03,469 INFO: Application startup 
-2025-07-24 00:32:05,950 INFO: Application startup 
-2025-07-24 00:32:08,862 INFO: Application startup 
-2025-07-24 09:25:04,391 INFO: Application startup 
-2025-07-24 09:25:07,228 INFO: Application startup 
-2025-07-24 09:27:08,883 INFO: Application startup 
-2025-07-24 09:27:11,686 INFO: Application startup 
-2025-07-24 14:37:13,421 INFO: Application startup 
-2025-07-24 14:37:16,276 INFO: Application startup 
-2025-07-24 14:39:56,956 INFO: Application startup 
-2025-07-24 14:39:59,729 INFO: Application startup 
-2025-07-24 14:45:36,749 INFO: Application startup 
-2025-07-24 14:45:39,494 INFO: Application startup 
-2025-07-25 17:54:36,946 INFO: Application startup 
-2025-07-25 17:54:39,624 INFO: Application startup 
-2025-07-25 17:56:06,611 INFO: Application startup 
-2025-07-25 17:56:09,648 INFO: Application startup 
-2025-07-25 18:07:42,414 INFO: Application startup 
-2025-07-25 18:07:45,059 INFO: Application startup 
-2025-07-25 18:14:48,472 INFO: Application startup 
-2025-07-25 18:14:51,278 INFO: Application startup 
-2025-07-25 18:19:05,588 INFO: Application startup 
-2025-07-25 18:19:08,418 INFO: Application startup 
-2025-07-25 21:51:22,198 INFO: Application startup 
-2025-07-25 21:51:31,393 INFO: Application startup 
-2025-07-25 22:08:52,155 INFO: Application startup 
-2025-07-25 22:12:13,338 INFO: Application startup 
-2025-07-25 22:40:27,419 INFO: Application startup 
-2025-07-25 22:45:22,107 INFO: Application startup 
-2025-07-25 22:50:25,391 INFO: Application startup 
-2025-07-25 22:51:17,101 INFO: Application startup 
-2025-07-25 23:01:45,709 INFO: Application startup 
-2025-07-25 23:02:09,329 INFO: Application startup 
-2025-07-25 23:02:24,491 INFO: Application startup 
-2025-07-25 23:04:31,741 INFO: Application startup 
-2025-07-25 23:04:33,578 INFO: Application startup 
-2025-07-25 23:05:35,756 INFO: Application startup 
-2025-07-25 23:12:16,143 INFO: Application startup 
-2025-07-25 23:13:54,651 INFO: Application startup 
-2025-07-25 23:15:52,444 INFO: Application startup 
-2025-07-25 23:27:54,587 INFO: Application startup 
-2025-07-25 23:30:22,823 INFO: Application startup 
-2025-07-25 23:30:24,547 INFO: Application startup 
-2025-07-25 23:31:14,733 INFO: Application startup 
-2025-07-25 23:31:23,522 INFO: Application startup 
-2025-07-25 23:31:31,329 INFO: Application startup 
-2025-07-25 23:34:19,473 INFO: Application startup 
-2025-07-25 23:34:21,206 INFO: Application startup 
-2025-07-25 23:35:22,541 INFO: Application startup 
-2025-07-25 23:36:12,914 INFO: Application startup 
-2025-07-25 23:36:36,118 INFO: Application startup 
-2025-07-25 23:41:27,720 INFO: Application startup 
-2025-07-25 23:41:29,490 INFO: Application startup 
-2025-07-25 23:52:04,953 INFO: Application startup 
-2025-07-26 00:05:22,774 INFO: Application startup 
-2025-07-26 00:05:24,505 INFO: Application startup 
-2025-07-26 00:07:49,296 INFO: Application startup 
-2025-07-26 11:33:48,110 INFO: Application startup 
-2025-07-26 11:33:50,662 INFO: Application startup 
-2025-07-26 11:37:56,068 INFO: Application startup 
-2025-07-26 11:37:58,700 INFO: Application startup 
-2025-07-26 11:38:51,094 INFO: Application startup 
-2025-07-26 11:54:18,447 INFO: Application startup 
-2025-07-26 12:01:01,847 INFO: Application startup 
-2025-07-26 12:09:33,420 INFO: Application startup 
-2025-07-26 12:09:36,028 INFO: Application startup 
-2025-07-27 07:11:14,300 INFO: Application startup 
-2025-07-27 07:11:16,917 INFO: Application startup 
-2025-07-30 20:32:33,035 INFO: Application startup 
-2025-07-30 20:32:44,795 INFO: Application startup 
-2025-07-31 17:53:14,656 INFO: Application startup 
-2025-07-31 17:53:26,366 INFO: Application startup 
-2025-07-31 18:03:34,303 INFO: Application startup 
-2025-07-31 20:15:52,237 INFO: Application startup 
-2025-07-31 20:15:56,718 INFO: Application startup 
-2025-07-31 21:25:28,091 INFO: Application startup 
-2025-07-31 21:25:30,525 INFO: Application startup 
-2025-07-31 22:06:59,082 INFO: Application startup 
-2025-07-31 22:07:01,543 INFO: Application startup 
-2025-07-31 22:40:41,959 INFO: Application startup 
-2025-07-31 22:40:46,055 INFO: Application startup 
-2025-07-31 22:57:55,490 INFO: Application startup 
-2025-07-31 22:57:59,921 INFO: Application startup 
-2025-07-31 23:04:44,767 INFO: Application startup 
-2025-07-31 23:05:39,055 INFO: Application startup 
-2025-08-01 16:15:32,466 INFO: Application startup 
-2025-08-01 16:15:42,498 INFO: Application startup 
-2025-08-01 16:16:43,999 INFO: Application startup 
-2025-08-01 16:23:50,161 INFO: Application startup 
-2025-08-01 16:26:23,850 INFO: Application startup 
-2025-08-01 16:30:22,083 INFO: Application startup 
-2025-08-01 16:32:38,021 INFO: Application startup 
-2025-08-01 16:32:40,436 INFO: Application startup 
-2025-08-01 16:53:26,764 INFO: Application startup 
-2025-08-01 16:53:29,234 INFO: Application startup 
-2025-08-01 16:53:38,894 INFO: Application startup 
-2025-08-01 16:53:38,894 INFO: Application startup 
-2025-08-01 16:56:40,191 INFO: Application startup 
-2025-08-01 16:56:42,667 INFO: Application startup 
-2025-08-01 16:59:20,507 INFO: Application startup 
-2025-08-01 17:03:25,922 INFO: Application startup 
-2025-08-01 17:03:25,922 INFO: Application startup 
-2025-08-01 17:28:31,948 INFO: Application startup 
-2025-08-01 17:29:06,636 INFO: Application startup 
-2025-08-01 17:29:26,783 INFO: Application startup 
-2025-08-01 17:29:26,783 INFO: Application startup 
-2025-08-03 01:11:03,383 INFO: Application startup 
-2025-08-03 01:11:13,081 INFO: Application startup 
-2025-08-03 01:19:19,384 INFO: Application startup 
-2025-08-03 11:42:27,222 INFO: Application startup 
-2025-08-03 11:42:30,386 INFO: Application startup 
-2025-08-03 11:49:41,896 INFO: Application startup 
-2025-08-03 20:36:06,455 INFO: Application startup 
-2025-08-03 20:36:16,269 INFO: Application startup 
-2025-08-03 20:39:07,555 INFO: Application startup 
-2025-08-03 20:39:10,216 INFO: Application startup 
-2025-08-03 20:41:42,161 INFO: Application startup 
-2025-08-03 20:48:15,920 INFO: Application startup 
-2025-08-03 20:59:12,126 INFO: Application startup 
-2025-08-03 21:02:20,618 INFO: Application startup 
-2025-08-03 21:26:53,171 INFO: Application startup 
-2025-08-03 21:26:55,917 INFO: Application startup 
-2025-08-03 21:29:47,089 INFO: Application startup 
-2025-08-03 21:33:26,582 INFO: Application startup 
-2025-08-03 21:47:21,906 INFO: Application startup 
-2025-08-03 21:49:09,062 INFO: Application startup 
-2025-08-03 22:03:37,475 INFO: Application startup 
-2025-08-03 22:03:40,086 INFO: Application startup 
-2025-08-03 22:09:15,606 INFO: Application startup 
-2025-08-03 22:09:18,199 INFO: Application startup 
-2025-08-03 22:14:46,003 INFO: Application startup 
-2025-08-03 22:20:15,679 INFO: Application startup 
+2025-08-21 08:14:07,152 ERROR: Exception on /developer/manage-access [GET] 
+Traceback (most recent call last):
+  File "/root/medical-website/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1961, in _exec_single_context
+    self.dialect.do_execute(
+  File "/root/medical-website/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 944, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.OperationalError: SSL connection has been closed unexpectedly
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/medical-website/venv/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/medical-website/venv/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/medical-website/venv/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/medical-website/venv/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/medical-website/developer.py", line 156, in manage_access
+    users = User.query.order_by(User.id).all()
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/medical-website/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2704, in all
+    return self._iter().all()  # type: ignore
+           ^^^^^^^^^^^^
+  File "/root/medical-website/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2857, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/root/medical-website/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/medical-website/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/medical-website/venv/lib/python3.12/site-packages/sqlalchemy/orm/context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "/root/medical-website/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1413, in execute
+    return meth(
+           ^^^^^
+  File "/root/medical-website/venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/medical-website/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1635, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/medical-website/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1840, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/medical-website/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1980, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/root/medical-website/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2349, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/root/medical-website/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1961, in _exec_single_context
+    self.dialect.do_execute(
+  File "/root/medical-website/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 944, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) SSL connection has been closed unexpectedly
+
+[SQL: SELECT users.id AS users_id, users.username AS users_username, users.email AS users_email, users.mobile AS users_mobile, users.password AS users_password, users.is_admin AS users_is_admin, users.is_developer AS users_is_developer 
+FROM users ORDER BY users.id]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-10-31 20:55:49,579 INFO: Application startup 
+2025-10-31 20:55:58,949 INFO: Application startup 

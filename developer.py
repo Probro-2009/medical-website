@@ -1,4 +1,3 @@
-
 from flask import Flask, request, render_template, jsonify, session, redirect
 import requests
 import subprocess
@@ -8,7 +7,7 @@ from flask import Flask, render_template, request, redirect, session, url_for, j
 from flask_socketio import SocketIO, emit, join_room
 from flask import Blueprint, request, render_template, redirect, session, url_for, flash
 from werkzeug.security import check_password_hash
-import psycopg2
+#import psycopg2
 from models import db, User  # ✅ NO import from app.py
 developer_bp = Blueprint('developer', __name__, url_prefix='/developer')
 
@@ -174,3 +173,50 @@ def api_audits():
     except FileNotFoundError:
         audits = ["No audit logs found."]
     return jsonify({"audits": [audit.strip() for audit in audits]})
+@developer_bp.route("/postgre/neon")
+def neon_database_view():
+    # For now, send empty data, as frontend fetches live data via AJAX
+    return render_template("neon_database.html")
+
+
+@developer_bp.route("/api/neon")
+def neon_api_data():
+    api_key = os.getenv("NEON_API_KEY")
+    org_id = os.getenv("NEON_ORG_ID")
+
+    if not api_key or not org_id:
+        return {"error": "Missing NEON_API_KEY or NEON_ORG_ID in environment"}, 500
+
+    headers = {"Authorization": f"Bearer {api_key}"}
+
+    # Get projects
+    projects_resp = requests.get(f"https://console.neon.tech/api/v2/projects?org_id={org_id}", headers=headers)
+    if not projects_resp.ok:
+        return {"error": "Failed to fetch Neon Project Data"}, 500
+
+    project = projects_resp.json()['projects'][0]
+    project_id = project["id"]
+
+    # Get branches
+    branches_resp = requests.get(f"https://console.neon.tech/api/v2/projects/{project_id}/branches", headers=headers)
+    branches_data = branches_resp.json().get("branches", [])
+
+    branches = [
+        {
+            "name": b["name"],
+            "compute": f"{b.get('compute_units', 'N/A')} CU",
+            "status": b.get("state", "Unknown")
+        } for b in branches_data
+    ]
+
+    return {
+        "project_name": project["name"],
+        "project_id": project_id,
+        "region": project["region_id"],
+        "compute_total": "Live compute not available",
+        "branch_compute": "Live branch compute not available",
+        "storage_used": f"{project.get('disk_quota_limit_mb', 0) / 1024:.2f} GB",
+        "data_transfer": "N/A",
+        "last_backup": branches_data[0].get("updated_at", "N/A") if branches_data else "N/A",
+        "branches": branches
+    }
