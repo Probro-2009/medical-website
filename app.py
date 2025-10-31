@@ -210,7 +210,9 @@ def api_files_structure():
             file_tree.append(f"{subindent}{f} ({size} KB) [{mtime}]")
 
     return jsonify({"files": file_tree})
-
+@app.route("/healthz")
+def healthz():
+    return jsonify(status="ok"), 200
 
 @app.route("/api/active-apis")
 def api_active_apis():
