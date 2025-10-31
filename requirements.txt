@@ -36,4 +36,5 @@ Pillow>=10.3.0
 flask-apscheduler==1.13.1
 psycopg[binary,pool]==3.2.12
 
+psycopg2-binary==2.9.9
 
