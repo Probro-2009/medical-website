@@ -52,7 +52,7 @@ app = Flask(__name__, static_folder="frontend/public")
 app.secret_key = os.getenv("SECRET_KEY")
 
 # Fix: allow thread-safe access for SQLite
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://neondb_owner:npg_d21gDjxPSAue@ep-restless-poetry-abcawrk8-pooler.eu-west-2.aws.neon.tech:5432/neondb'
+app.config['SQLALCHEMY_DATABASE_URL'] = 'postgresql+psycopg2://neondb_owner:npg_d21gDjxPSAue@ep-restless-poetry-abcawrk8-pooler.eu-west-2.aws.neon.tech:5432/neondb'
 
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
