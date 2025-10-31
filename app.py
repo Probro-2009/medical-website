@@ -52,14 +52,21 @@ app = Flask(__name__, static_folder="frontend/public")
 app.secret_key = os.getenv("SECRET_KEY")
 
 # Fix: allow thread-safe access for SQLite
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://neondb_owner:npg_d21gDjxPSAue@ep-restless-poetry-abcawrk8-pooler.eu-west-2.aws.neon.tech:5432/neondb'
+# 1) read DB from env, fallback to sqlite so app never crashes
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
+    "DATABASE_URL",
+    "sqlite:///medical.db"
+)
 
+# 2) usual SQLAlchemy setting
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# 3) socket.io – force threading to avoid eventlet/py3.13 issues
+socketio = SocketIO(app, async_mode="threading")
 
-socketio = SocketIO(app)
-
+# 4) init db AFTER config is set
 db.init_app(app)
+
 #app.config.update({
    # 'SESSION_COOKIE_SECURE': True,         # Only over HTTPS
     #'SESSION_COOKIE_HTTPONLY': True,       # JS can't access session
